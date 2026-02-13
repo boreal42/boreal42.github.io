@@ -143,6 +143,7 @@ footer_description: "Boreal42 — IA appliquée, du Québec vers le terrain. Je 
 #-------------------------------
 # Social Settings
 social:
+- {icon: "fa-brands fa-linkedin", name: "LinkedIn", link: "https://www.linkedin.com/in/christian-pouliot-8a7908132/"}
 - {icon: "fa-brands fa-github", name: "Github", link: "https://github.com/boreal42"}
 - {icon: "fa-solid fa-rss", name: "Rss", link: "/feed.xml"}
 
