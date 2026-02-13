@@ -130,10 +130,9 @@ gallery_section:
 mailchimp:
   enable: true
   mailchimp_title: "Signal 42 — veille & terrain \u270C\uFE0F"
-  mailchimp_description: "Ici sur ce carnet de bord ou sur mon profil LinkedIn."
+  mailchimp_description: "Chaque semaine, je partage ce qui m'a allume : une decouverte IA, un test AgriTech, une lecon d'entrepreneuriat. Du concret, pas du bruit."
   mailchimp_identifier: gmail.us21.list-manage.com/subscribe/post?u=8aeb9c31a5c97a3a5f9ff2740&amp;id=0e31fd7793&amp # Add your MailChimp form identifier
-  mailchimp_input_text: Ton adresse courriel...
-  mailchimp_button_text: Je m'abonne
+  
 
 
 #-------------------------------
