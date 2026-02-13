@@ -25,24 +25,17 @@ menu_settings:
   menu_items:
     - title: 'Home'
       url: '/'
-    - title: 'Videos'
-      url: '/videos/'
-    - title: 'Archive'
-      url: '/archive/'
-    - title: 'Pages'
-      submenu:
-      - url: '/about/'
-        title: 'About'
-      - url: '/contact/'
-        title: 'Contact'
-      - url: '/elements/'
-        title: 'Elements'
+    - title: 'About'
+      url: '/about/'
+    - title: 'Contact'
+      url: '/contact/'
+    
 
 
 #-------------------------------
 # Author Settings
 author:
-  author_name: Chris Pouliot
+  author_name: Christian Pouliot
   author_avatar: "https://avatars.githubusercontent.com/u/224421206?s=400&u=7265ae8c3ba11fb0dede3616b5732803ad28143f&v=4"
 
 
@@ -51,10 +44,10 @@ author:
 hero:
   enable: true
   hero_avatar: "https://avatars.githubusercontent.com/u/224421206?s=400&u=7265ae8c3ba11fb0dede3616b5732803ad28143f&v=4"
-  hero_title: "Salut ! Moi c'est Christian \U0001F44B"
+  hero_title: "Lab @Boreal42\U0001F44B"
   hero_subtitle: "Entrepreneur, prof et eternel curieux — je construis des solutions IA qui travaillent pour vrai."
   hero_description: |
-    Je suis le fondateur de Boreal42, une startup d'IA appliquee nee au Quebec. Entre l'automatisation manufacturiere, l'AgriTech et l'enseignement de la programmation, je documente ici mes experimentations, mes decouvertes et mes erreurs. Parce que la vraie innovation, ca se passe rarement comme prevu — et c'est ca qui est interessant.
+    Je suis le fondateur de Boreal42, une startup d'IA appliquee née au Quebec. Entre l'automatisation manufacturiere, l'AgriTech et l'enseignement de la programmation, je documente ici mes experimentations, mes decouvertes et mes erreurs. Parce que la vraie innovation, ca se passe rarement comme prevu — et c'est ca qui est interessant.
   hero_image: /images/homeimage.png
   hero_image_caption: Mon lab d'idees, ou l'IA rencontre le terrain.
   hero_button_text: Travaillons ensemble
