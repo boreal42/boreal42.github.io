@@ -1,8 +1,7 @@
 ---
 layout: contact
-title: Get In Touch
-description: Coderon comes with a built-in contact form, that you can use with Formspree service to handle up to 50 submissions per month for free.
+title: Jasons ensemble
+description: "Un projet d'automatisation, une idee d'AgriTech, une question sur l'IA ou juste envie d'echanger ? Ecris-moi. Je reponds a tout le monde — surtout quand c'est concret."
 permalink: /contact/
 image: '/images/40.jpg'
-image_caption: 'Photo by [Pablo Stanley](https://www.lummi.ai/creator/pablostanley) / [Lummi](https://www.lummi.ai/)'
 ---
