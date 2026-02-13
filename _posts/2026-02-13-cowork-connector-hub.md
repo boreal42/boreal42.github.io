@@ -11,7 +11,7 @@ Chaque entreprise a le même problème : des outils partout, des données nulle 
 
 L'ERP contient une version des faits. Le Excel de production en contient une autre. Le CRM raconte une troisième histoire. Gmail garde les vraies ententes clients dans des fils de discussion que personne ne retrouve. Et quelque part, un fichier `commandes-FINAL-v3-VRAI.xlsx` est la seule source de vérité — mais juste une personne le sait.
 
-Le Cowork Connector Hub ne remplace aucun de ces outils. Il les **connecte**. Claude lit vos systèmes via des connecteurs MCP, détecte les écarts, et agit — avec votre approbation.
+Le Cowork Connector Hub ne remplace aucun de ces outils. Il les **connecte**. Il lit vos systèmes via des connecteurs MCP, détecte les écarts, et agit — avec votre approbation.
 
 <div style="position:relative;width:100%;max-width:600px;margin:40px auto;aspect-ratio:1/1;">
   <style>
@@ -95,7 +95,7 @@ Voici 10 scénarios concrets.
 
 **Le problème :** Le superviseur de production gère son schedule dans Excel. L'ERP montre des données en retard de 2 jours. Le directeur des opérations ne sait jamais le vrai statut.
 
-**Ce que le Connector Hub fait :** Claude lit le fichier Excel (local ou OneDrive), le compare à l'ERP en temps réel, identifie les écarts, et propose la synchronisation en un clic. Le superviseur continue de travailler dans Excel. Il ne sait même pas que ça sync.
+**Ce que le Connector Hub fait :** Il lit le fichier Excel (local ou OneDrive), le compare à l'ERP en temps réel, identifie les écarts, et propose la synchronisation en un clic. Le superviseur continue de travailler dans Excel. Il ne sait même pas que ça sync.
 
 **Impact :** 45 minutes sauvées par jour, zéro erreur de transcription, zéro changement de workflow pour l'utilisateur réfractaire.
 
@@ -107,7 +107,7 @@ Voici 10 scénarios concrets.
 
 **Le problème :** L'équipe de production ferme des bons de travail sans vérifier si toutes les pièces ont été consommées. L'inventaire dérive tranquillement. Personne ne s'en rend compte avant le prochain décompte physique.
 
-**Ce que le Connector Hub fait :** Claude surveille les fermetures de work orders dans l'ERP, croise avec les BOM (bill of materials) et le stock réel. Quand une pièce manque au moment de la fermeture, il bloque et alerte : *« BP-2203 : 12 vis M8 non consommées selon le BOM. Stock ERP = 0. PO en route, ETA 10 février. »*
+**Ce que le Connector Hub fait :** Il surveille les fermetures de work orders dans l'ERP, croise avec les BOM (bill of materials) et le stock réel. Quand une pièce manque au moment de la fermeture, il bloque et alerte : *« BP-2203 : 12 vis M8 non consommées selon le BOM. Stock ERP = 0. PO en route, ETA 10 février. »*
 
 **Impact :** Inventaire fiable, problèmes détectés en temps réel au lieu du prochain audit, et le plancher de production peut débloquer les situations avant qu'elles ne s'accumulent.
 
@@ -117,7 +117,7 @@ Voici 10 scénarios concrets.
 
 **Le problème :** Le vendeur confirme un prix et une date par email. L'entrée de commande dans l'ERP est faite 3 jours plus tard par quelqu'un d'autre. Les conditions ne matchent pas toujours.
 
-**Ce que le Connector Hub fait :** Claude lit le fil Gmail de confirmation client, extrait le prix, la quantité, la date promise, et compare avec la sales order dans l'ERP. S'il y a un écart — prix différent, date décalée, quantité qui ne match pas — il flag immédiatement et montre les deux versions côte à côte.
+**Ce que le Connector Hub fait :** Il lit le fil Gmail de confirmation client, extrait le prix, la quantité, la date promise, et compare avec la sales order dans l'ERP. S'il y a un écart — prix différent, date décalée, quantité qui ne match pas — il flag immédiatement et montre les deux versions côte à côte.
 
 **Impact :** Plus de commandes livrées aux mauvaises conditions, moins de crédits à émettre, et une traçabilité entre ce qui a été promis et ce qui a été entré.
 
@@ -127,7 +127,7 @@ Voici 10 scénarios concrets.
 
 **Le problème :** Le directeur d'usine commence sa journée en ouvrant 4 systèmes différents : l'ERP pour la production, Excel pour le shipping, le CRM pour les ventes, Gmail pour les urgences. Ça lui prend 30 minutes juste pour savoir où il en est.
 
-**Ce que le Connector Hub fait :** Chaque matin à 7h30, Claude compile un briefing à partir de toutes les sources. Production : 3 bons en retard, 2 prêts à shipper. Ventes : nouveau PO de 45 000$ reçu hier soir. Achats : 2 PO en retard chez le fournisseur. Urgences : email du client Acier Pro qui demande une mise à jour.
+**Ce que le Connector Hub fait :** Chaque matin à 7h30, Il compile un briefing à partir de toutes les sources. Production : 3 bons en retard, 2 prêts à shipper. Ventes : nouveau PO de 45 000$ reçu hier soir. Achats : 2 PO en retard chez le fournisseur. Urgences : email du client Acier Pro qui demande une mise à jour.
 
 **Impact :** Le directeur a une vue 360° en 30 secondes au lieu de 30 minutes. Il prend de meilleures décisions parce qu'il a toute l'information, pas juste celle du système qu'il a eu le temps d'ouvrir.
 
@@ -137,7 +137,7 @@ Voici 10 scénarios concrets.
 
 **Le problème :** Les purchase orders sont envoyés par email. Le suivi se fait... par mémoire humaine. Quand un fournisseur est en retard, on s'en rend compte seulement quand la production bloque.
 
-**Ce que le Connector Hub fait :** Claude surveille les dates d'arrivée prévues des PO dans l'ERP. Quand un PO approche de sa date sans confirmation de réception, il vérifie dans Gmail s'il y a eu une mise à jour du fournisseur. S'il n'y a rien, il prépare un email de relance : *« Bonjour, nous voulons confirmer l'arrivée de notre PO-4401 prévue pour le 10 février. Pouvez-vous confirmer? »*
+**Ce que le Connector Hub fait :** Il surveille les dates d'arrivée prévues des PO dans l'ERP. Quand un PO approche de sa date sans confirmation de réception, il vérifie dans Gmail s'il y a eu une mise à jour du fournisseur. S'il n'y a rien, il prépare un email de relance : *« Bonjour, nous voulons confirmer l'arrivée de notre PO-4401 prévue pour le 10 février. Pouvez-vous confirmer? »*
 
 **Impact :** Les retards fournisseurs sont détectés 3 à 5 jours plus tôt, la production peut se réorganiser avant que ça devienne un incendie.
 
@@ -147,7 +147,7 @@ Voici 10 scénarios concrets.
 
 **Le problème :** Le planificateur gère la cédule de production dans un Excel. Les ventes promettent des dates au client sans vérifier la capacité. Résultat : des promesses impossibles et des retards chroniques.
 
-**Ce que le Connector Hub fait :** Quand une nouvelle commande entre dans l'ERP avec une date promise, Claude croise avec le Excel de planification. Si la capacité est déjà bookée cette semaine-là, il alerte immédiatement : *« La date du 14 février pour FabriMax (320 unités) entre en conflit avec BP-2205 déjà planifié. Capacité restante cette semaine : 80 unités. Prochaine fenêtre disponible : semaine du 24 février. »*
+**Ce que le Connector Hub fait :** Quand une nouvelle commande entre dans l'ERP avec une date promise, Il croise avec le Excel de planification. Si la capacité est déjà bookée cette semaine-là, il alerte immédiatement : *« La date du 14 février pour FabriMax (320 unités) entre en conflit avec BP-2205 déjà planifié. Capacité restante cette semaine : 80 unités. Prochaine fenêtre disponible : semaine du 24 février. »*
 
 **Impact :** Les vendeurs savent la vraie capacité avant de promettre. Les clients reçoivent des dates réalistes. L'usine arrête de courir après des deadlines impossibles.
 
@@ -157,7 +157,7 @@ Voici 10 scénarios concrets.
 
 **Le problème :** Les prix de la matière première fluctuent. Le coût réel d'un produit change, mais les quotes envoyées aux clients sont basées sur des prix d'il y a 3 mois. La marge s'érode sans que personne ne le voie.
 
-**Ce que le Connector Hub fait :** Claude surveille les coûts réels d'achat dans l'ERP (prix des dernières réceptions) et les compare aux prix utilisés dans les quotes actives. Quand l'écart dépasse un seuil — disons 5% — il alerte : *« Le coût de l'acier inox 304 a augmenté de 12% depuis votre dernière quote à MFG Corp. Marge estimée passée de 28% à 16%. »*
+**Ce que le Connector Hub fait :** Il surveille les coûts réels d'achat dans l'ERP (prix des dernières réceptions) et les compare aux prix utilisés dans les quotes actives. Quand l'écart dépasse un seuil — disons 5% — il alerte : *« Le coût de l'acier inox 304 a augmenté de 12% depuis votre dernière quote à MFG Corp. Marge estimée passée de 28% à 16%. »*
 
 **Impact :** Visibilité en temps réel sur la marge. Les quotes sont ajustées avant de perdre de l'argent, pas après.
 
@@ -167,7 +167,7 @@ Voici 10 scénarios concrets.
 
 **Le problème :** Chaque shipment nécessite des documents — packing list, bill of lading, documents douaniers pour les envois transfrontaliers. L'équipe de shipping les prépare manuellement à partir des données de l'ERP et du Excel.
 
-**Ce que le Connector Hub fait :** Quand un bon de production passe au statut « prêt à shipper » (dans le Excel de Bill ou dans l'ERP), Claude compile automatiquement les informations : poids, dimensions, valeur déclarée, code HS, destination. Il pré-remplit les documents et les soumet pour approbation. L'humain vérifie et clique « envoyer ».
+**Ce que le Connector Hub fait :** Quand un bon de production passe au statut « prêt à shipper » (dans le Excel de Bill ou dans l'ERP), Il compile automatiquement les informations : poids, dimensions, valeur déclarée, code HS, destination. Il pré-remplit les documents et les soumet pour approbation. L'humain vérifie et clique « envoyer ».
 
 **Impact :** La préparation documentaire passe de 20 minutes par shipment à 2 minutes de validation. Moins d'erreurs sur les formulaires douaniers, moins de shipments bloqués à la frontière.
 
@@ -177,7 +177,7 @@ Voici 10 scénarios concrets.
 
 **Le problème :** Les inspections qualité sont notées sur papier ou dans un Excel séparé. Les tendances ne sont jamais analysées. Le même problème de soudure revient 4 fois en 2 mois, mais personne ne connecte les points.
 
-**Ce que le Connector Hub fait :** Claude lit les logs de qualité (Excel, formulaires, notes), les croise avec les work orders de l'ERP, et identifie les patterns. *« 4 non-conformités de type soudure sur les 60 derniers jours, toutes sur des produits utilisant l'acier lot #L-2201. Le lot a été reçu le 15 janvier du fournisseur Métal Québec. »*
+**Ce que le Connector Hub fait :** Il lit les logs de qualité (Excel, formulaires, notes), les croise avec les work orders de l'ERP, et identifie les patterns. *« 4 non-conformités de type soudure sur les 60 derniers jours, toutes sur des produits utilisant l'acier lot #L-2201. Le lot a été reçu le 15 janvier du fournisseur Métal Québec. »*
 
 **Impact :** Les problèmes récurrents sont identifiés par pattern matching au lieu d'attendre qu'un humain fasse le lien. L'amélioration continue devient data-driven sans avoir à implémenter un QMS complexe.
 
@@ -187,7 +187,7 @@ Voici 10 scénarios concrets.
 
 **Le problème :** Quand une personne-clé part — retraite, maladie, vacances — tout son savoir est dans sa tête et ses fichiers. Le remplaçant passe des semaines à comprendre les processus, les contacts, les exceptions.
 
-**Ce que le Connector Hub fait :** Puisque Claude lit déjà tous les systèmes, il peut générer une documentation vivante. *« Voici comment Bill gère le shipping : 6 bons en cours, 3 transporteurs réguliers (Purolator pour le local, Manitoulin pour l'Ontario, customs broker XYZ pour les US), fréquence de shipping 3x/semaine, documents douaniers requis pour tout envoi > 2 500$. »* Le remplaçant pose des questions à Claude au lieu de déranger 5 collègues.
+**Ce que le Connector Hub fait :** Puisque Il lit déjà tous les systèmes, il peut générer une documentation vivante. *« Voici comment Bill gère le shipping : 6 bons en cours, 3 transporteurs réguliers (Purolator pour le local, Manitoulin pour l'Ontario, customs broker XYZ pour les US), fréquence de shipping 3x/semaine, documents douaniers requis pour tout envoi > 2 500$. »* Le remplaçant pose des questions à Il au lieu de déranger 5 collègues.
 
 **Impact :** L'onboarding d'un remplaçant passe de 3 semaines à 3 jours. Le savoir institutionnel n'est plus prisonnier d'une seule personne.
 
@@ -199,7 +199,7 @@ Ces 10 use cases partagent la même philosophie :
 
 **On ne change rien.** Personne n'apprend un nouveau système. Personne ne migre ses données. Personne n'abandonne son Excel.
 
-Le Connector Hub lit ce qui existe — ERP, Excel, Gmail, CRM, fichiers partagés — et crée le tissu connectif qui manque entre les systèmes. Claude devient le traducteur universel entre vos îles de données.
+Le Connector Hub lit ce qui existe — ERP, Excel, Gmail, CRM, fichiers partagés — et crée le tissu connectif qui manque entre les systèmes. Il devient le traducteur universel entre vos îles de données.
 
 Le changement est invisible pour les utilisateurs réfractaires. Le résultat est visible pour la direction.
 
