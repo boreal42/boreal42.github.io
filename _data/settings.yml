@@ -1,0 +1,184 @@
+#-------------------------------
+# Site Settings
+title: Chris Pouliot @Boreal42
+description: 42 is the answer to the Ultimate Question of Life, The Universe, and Everything.
+logo: # You can add own logo. For example '/images/logo.png'.
+logo_dark:
+
+
+#-------------------------------
+# Color Scheme Settings
+color_scheme:
+  default: dark # Default theme applied on the first visit (options: "light" or "dark")
+  toggle: true # Enable theme toggle
+
+# Enables or disables the theme toggle functionality:
+# - true: Users can switch between light and dark modes using a toggle button.
+#          The site will remember their choice for future visits.
+# - false: The theme will always use the default mode specified above,
+#          and the toggle button will not be displayed.
+
+
+#-------------------------------
+# Navigation Settings
+menu_settings:
+  menu_items:
+    - title: 'Home'
+      url: '/'
+    - title: 'Videos'
+      url: '/videos/'
+    - title: 'Archive'
+      url: '/archive/'
+    - title: 'Pages'
+      submenu:
+      - url: '/about/'
+        title: 'About'
+      - url: '/contact/'
+        title: 'Contact'
+      - url: '/elements/'
+        title: 'Elements'
+
+
+#-------------------------------
+# Author Settings
+author:
+  author_name: Chris Pouliot
+  author_avatar: "https://avatars.githubusercontent.com/u/224421206?s=400&u=7265ae8c3ba11fb0dede3616b5732803ad28143f&v=4"
+
+
+#-------------------------------
+# Hero Settings
+hero:
+  enable: true
+  hero_avatar: "https://avatars.githubusercontent.com/u/224421206?s=400&u=7265ae8c3ba11fb0dede3616b5732803ad28143f&v=4"
+  hero_title: Salut! Je suis Chris
+  hero_subtitle: 42 is the answer to the Ultimate Question of Life, The Universe, and Everything.
+  hero_description: |
+    Bienvenue sur mon blog personnel. Ici, je partage mes idees, projets et decouvertes en technologie.
+
+    Welcome to my personal blog. Here, I share my ideas, projects and discoveries in technology.
+  hero_image: /images/01.jpg
+  hero_image_caption: My creative space, where masterpieces are born
+  hero_button_text: Let’s Work Together
+  hero_button_link: '/contact/'
+
+
+# Logos
+logos:
+  enable: true
+  logos_title: Nerd Stuff
+  logo_image:
+    - alt: "Game Boy"
+      image: "/images/1000.jpg"
+    - alt: "Super Nintendo"
+      image: "/images/1001.jpg"
+    - alt: "Keyboard"
+      image: "/images/1002.jpg"
+    - alt: "Headphones"
+      image: "/images/1003.jpg"
+    - alt: "Mouse"
+      image: "/images/1004.jpg"
+
+
+#-------------------------------
+# Section Blog Settings
+blog:
+  enable: true
+  blog_title: The Binary Journal
+
+
+#-------------------------------
+# Tags Section Settings
+tags_section:
+  enable: true
+  tags_section_title: Hacker’s Haven
+  tags:
+    - tag: "Programming"
+      image: "/images/20.jpg"
+    - tag: "Linux"
+      image: "/images/21.jpg"
+    - tag: "Productivity"
+      image: "/images/22.jpg"
+    - tag: "Security"
+      image: "/images/23.jpg"
+
+
+#-------------------------------
+# Videos Section Settings
+videos_section:
+  enable: false
+  videos_section_title: Latest Videos
+
+
+#-------------------------------
+# Gallery Section Settings
+gallery_section:
+  enable: true
+  gallery_section_title: Byte Frame
+  gallery:
+    gallery_images:
+      - alt: 'Rest'
+        url: '/images/100.jpg'
+        caption: 'Small steps lead to big results.'
+      - alt: 'Lifestyle'
+        url: '/images/101.jpg'
+        caption: 'A peaceful moment captured during a serene evening.'
+      - alt: 'Hobby'
+        url: '/images/102.jpg'
+        caption: 'True friends are like stars — they shine brightest when the world feels dark.'
+      - alt: 'Computers'
+        url: '/images/103.jpg'
+        caption: 'Every click opens a new chapter in an endless story.'
+      - alt: 'Games'
+        url: '/images/104.jpg'
+        caption: 'Every level is a new opportunity to test your limits.'
+
+
+#-------------------------------
+# Newsletter Settings
+mailchimp:
+  enable: false
+  mailchimp_title: Stay inspired weekly ✌️
+  mailchimp_description: Every Sunday, I deliver actionable tips for enhancing productivity, practical life advice, and top-notch insights gathered from various sources, right to your email inbox.
+  mailchimp_identifier: gmail.us21.list-manage.com/subscribe/post?u=8aeb9c31a5c97a3a5f9ff2740&amp;id=0e31fd7793&amp # Add your MailChimp form identifier. For example - gmail.us21.list-manage.com/subscribe/post?u=8aeb9c31a5c97a3a5f9ff2740&amp;id=0e31fd7793&amp
+  mailchimp_input_text: Your email address...
+  mailchimp_button_text: Join Now
+
+
+#-------------------------------
+# Footer Settings
+footer_description: Blog personnel de Chris Pouliot — technologie, projets et reflexions.
+
+
+#-------------------------------
+# Social Settings
+social:
+- {icon: "fa-brands fa-github", name: "Github", link: "https://github.com/boreal42"}
+- {icon: "fa-solid fa-rss", name: "Rss", link: "/feed.xml"}
+
+# Example of adding a new link to the sidebar and footer - {icon: "fa-brands fa-youtube", name: "Youtube", link: https://youtube.com"}
+# Other icons can be found at https://fontawesome.com/icons
+
+
+#-------------------------------
+# Contact Settings
+contact:
+  form_id: your@email.com # Add your form_id
+  button_text: Send Now
+
+# NOTE
+# Coderon theme comes with a contact form built-in. You can use this form with Formspree (https://formspree.io/) service and get up to 50 submissions for free. Also, you can easily switch to another service if you want.
+
+
+#-------------------------------
+# Comment Section (Disqus)
+disqus:
+  enable: false
+  disqus_identifier: # Add your shortname for Disqus Comment
+  disqus_title: Start the conversation
+  disqus_button_text: Show Comments
+
+
+#-------------------------------
+# Google Analytics
+google_analytics: # Add your GA Tracking Id
