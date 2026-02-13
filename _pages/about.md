@@ -5,17 +5,17 @@ permalink: /about/
 image: '/images/photo_blog_christian.png'
 ---
 
-Je suis Christian, fondateur de Boreal42. Je construis des solutions d'IA qui se salissent les mains — dans les usines, dans les serres, dans les salles de classe.
+Je suis Christian Pouliot, Chris pour les intimes, fondateur de Boreal42. Je construis des solutions d'IA qui se salissent les mains — dans les usines, dans les serres, dans les ferme intérieur, dans les entrprises et..  dans les salles de classe.
 
 ## L'histoire
 
 Pendant des années, j'ai travaillé dans le monde des ERP manufacturiers. J'ai vu de l'intérieur comment les PME québécoises fonctionnent : avec de la débrouillardise, du duct tape numérique, et pas mal de fichiers Excel. Quand l'IA générative a débarqué, j'ai vu l'opportunité de changer la game — pas avec des buzzwords, mais avec des outils qui règlent des vrais problèmes.
 
-J'ai fondé Boreal42 pour ça. Une startup d'IA appliquée, autofinancée, basée à Donnacona. On développe des solutions d'automatisation pour le manufacturier, des plateformes IoT pour l'agriculture de précision, et des formations qui préparent la prochaine génération à travailler avec l'IA plutôt que contre.
+J'ai fondé Boreal42 pour ça. Une startup d'IA appliquée, autofinancée, basée à Donnacona. On développe des solutions d'automatisation pour le manufacturier, la distribution, l'administration d'entreprise, des plateformes IoT avec IA embarquée, des systèmes IA pour l'agriculture de précision, et des formations qui préparent la prochaine génération à travailler avec l'IA plutôt que contre.
 
 > La vraie innovation, ça se passe rarement comme prévu — et c'est ça qui est intéressant.
 
-En parallèle, j'enseigne la programmation au Campus Notre-Dame-de-Foy. Mes étudiants sont souvent les premiers à tester mes idées — et les premiers à me dire quand ça marche pas.
+En parallèle, j'enseigne la programmation au Campus Notre-Dame-de-Foy. Mes étudiants sont souvent les premiers à tester mes idées — et les premiers à me dire quand ça marche pas. ET. j'étudie, encore, à l'université. Je suis ce qu'on appelle un Hyperactif, mais contrôlé!
 
 <div class="gallery-box">
   <div class="gallery gallery-columns-2">

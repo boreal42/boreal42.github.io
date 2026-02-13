@@ -7,7 +7,7 @@ image: '/images/sailingboat.png'
 tags: [ia-appliquée, manufacturier, erp, automatisation, cowork]
 ---
 
-Chaque entreprise a le même problème : des outils partout, des données nulle part.
+Fait à noté, le Cowork Connector hub n'as pas encore de nom 42. Il faudrait lui en trouver un! Mais voici le topo: Chaque entreprise a le même problème : des outils partout, des données nulle part.
 
 L'ERP contient une version des faits. Le Excel de production en contient une autre. Le CRM raconte une troisième histoire. Gmail garde les vraies ententes clients dans des fils de discussion que personne ne retrouve. Et quelque part, un fichier `commandes-FINAL-v3-VRAI.xlsx` est la seule source de vérité — mais juste une personne le sait.
 
