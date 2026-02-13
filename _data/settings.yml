@@ -1,7 +1,7 @@
 #-------------------------------
 # Site Settings
 title: Chris Pouliot @Boreal42
-description: Mon lab d'idees, ou l'IA rencontre le terrain.
+description: Mon lab d'idées, où l'IA rencontre le terrain.
 logo: # You can add own logo. For example '/images/logo.png'.
 logo_dark:
 
@@ -45,18 +45,18 @@ hero:
   enable: true
   hero_avatar: "https://avatars.githubusercontent.com/u/224421206?s=400&u=7265ae8c3ba11fb0dede3616b5732803ad28143f&v=4"
   hero_title: "Lab @Boreal42\U0001F44B"
-  hero_subtitle: "Entrepreneur, prof et eternel curieux — je construis des solutions IA qui travaillent pour vrai."
+  hero_subtitle: "Entrepreneur, prof et éternel curieux — je construis des solutions IA qui travaillent pour vrai."
   hero_description: |
-    Je suis le fondateur de Boreal42, une startup d'IA appliquee née au Quebec. Entre l'automatisation manufacturiere, l'AgriTech et l'enseignement de la programmation, je documente ici mes experimentations, mes decouvertes et mes erreurs. Parce que la vraie innovation, ca se passe rarement comme prevu — et c'est ca qui est interessant.
+    Je suis le fondateur de Boreal42, une startup d'IA appliquée née au Québec. Entre l'automatisation manufacturière, l'AgriTech et l'enseignement de la programmation, je documente ici mes expérimentations, mes découvertes et mes erreurs. Parce que la vraie innovation, ça se passe rarement comme prévu — et c'est ça qui est intéressant.
   hero_image: /images/homeimage.png
-  hero_image_caption: Mon lab d'idees, ou l'IA rencontre le terrain.
+  hero_image_caption: Mon lab d'idées, où l'IA rencontre le terrain.
   hero_button_text: Travaillons ensemble
   hero_button_link: '/contact/'
 
 
 # Logos
 logos:
-  enable: true
+  enable: false
   logos_title: Le Lab 42
   logo_image:
     - alt: "Game Boy"
@@ -105,7 +105,7 @@ videos_section:
 # Gallery Section Settings
 gallery_section:
   enable: true
-  gallery_section_title: Instantanes
+  gallery_section_title: Instantanés
   gallery:
     gallery_images:
       - alt: 'Rest'
@@ -130,7 +130,7 @@ gallery_section:
 mailchimp:
   enable: true
   mailchimp_title: "Signal 42 — veille & terrain \u270C\uFE0F"
-  mailchimp_description: "Chaque semaine, je partage ce qui m'a allume : une decouverte IA, un test AgriTech, une lecon d'entrepreneuriat. Du concret, pas du bruit."
+  mailchimp_description: "Ici sur ce carnet de bord ou sur mon profil LinkedIn."
   mailchimp_identifier: gmail.us21.list-manage.com/subscribe/post?u=8aeb9c31a5c97a3a5f9ff2740&amp;id=0e31fd7793&amp # Add your MailChimp form identifier
   mailchimp_input_text: Ton adresse courriel...
   mailchimp_button_text: Je m'abonne
@@ -138,7 +138,7 @@ mailchimp:
 
 #-------------------------------
 # Footer Settings
-footer_description: "Boreal42 — IA appliquee, du Quebec vers le terrain. Je partage ici mes builds, mes reflexions et ce que j'apprends en construisant des solutions qui fonctionnent pour vrai."
+footer_description: "Boreal42 — IA appliquée, du Québec vers le terrain. Je partage ici mes builds, mes réflexions et ce que j'apprends en construisant des solutions qui fonctionnent pour vrai."
 
 
 #-------------------------------
@@ -154,7 +154,7 @@ social:
 #-------------------------------
 # Contact Settings
 contact:
-  form_id: your@email.com # Add your form_id
+  form_id: mojnezzw
   button_text: Envoyer
 
 # NOTE

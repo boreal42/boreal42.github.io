@@ -1,7 +1,7 @@
 ---
 layout: contact
 title: Jasons.
-description: "Un projet d'automatisation qui traine ? Une serre qui pourrait etre plus intelligente ? Une idee folle que tu veux valider ? Ecris-moi. Je reponds personnellement, et je suis toujours partant pour un bon cafe virtuel."
+description: "Un projet d'automatisation qui traîne ? Une serre qui pourrait être plus intelligente ? Une idée folle que tu veux valider ? Écris-moi. Je réponds personnellement, et je suis toujours partant pour un bon café virtuel."
 permalink: /contact/
 image: '/images/40.jpg'
 ---
