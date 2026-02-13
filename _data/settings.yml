@@ -1,7 +1,7 @@
 #-------------------------------
 # Site Settings
 title: Chris Pouliot @Boreal42
-description: 42 is the answer to the Ultimate Question of Life, The Universe, and Everything.
+description: Mon lab d'idees, ou l'IA rencontre le terrain.
 logo: # You can add own logo. For example '/images/logo.png'.
 logo_dark:
 
@@ -51,22 +51,20 @@ author:
 hero:
   enable: true
   hero_avatar: "https://avatars.githubusercontent.com/u/224421206?s=400&u=7265ae8c3ba11fb0dede3616b5732803ad28143f&v=4"
-  hero_title: Salut! Je suis Chris
-  hero_subtitle: 42 is the answer to the Ultimate Question of Life, The Universe, and Everything.
+  hero_title: "Salut ! Moi c'est Christian \U0001F44B"
+  hero_subtitle: "Entrepreneur, prof et eternel curieux — je construis des solutions IA qui travaillent pour vrai."
   hero_description: |
-    Bienvenue sur mon blog personnel. Ici, je partage mes idees, projets et decouvertes en technologie.
-
-    Welcome to my personal blog. Here, I share my ideas, projects and discoveries in technology.
-  hero_image: /images/01.jpg
-  hero_image_caption: My creative space, where masterpieces are born
-  hero_button_text: Let’s Work Together
+    Je suis le fondateur de Boreal42, une startup d'IA appliquee nee au Quebec. Entre l'automatisation manufacturiere, l'AgriTech et l'enseignement de la programmation, je documente ici mes experimentations, mes decouvertes et mes erreurs. Parce que la vraie innovation, ca se passe rarement comme prevu — et c'est ca qui est interessant.
+  hero_image: /images/homeimage.png
+  hero_image_caption: Mon lab d'idees, ou l'IA rencontre le terrain.
+  hero_button_text: Travaillons ensemble
   hero_button_link: '/contact/'
 
 
 # Logos
 logos:
   enable: true
-  logos_title: Nerd Stuff
+  logos_title: Le Lab 42
   logo_image:
     - alt: "Game Boy"
       image: "/images/1000.jpg"
@@ -84,22 +82,22 @@ logos:
 # Section Blog Settings
 blog:
   enable: true
-  blog_title: The Binary Journal
+  blog_title: Carnets de bord
 
 
 #-------------------------------
 # Tags Section Settings
 tags_section:
   enable: true
-  tags_section_title: Hacker’s Haven
+  tags_section_title: Sous le capot
   tags:
-    - tag: "Programming"
+    - tag: "IA & Automatisation"
       image: "/images/20.jpg"
-    - tag: "Linux"
+    - tag: "AgriTech & IoT"
       image: "/images/21.jpg"
-    - tag: "Productivity"
+    - tag: "La vie 42"
       image: "/images/22.jpg"
-    - tag: "Security"
+    - tag: "En classe"
       image: "/images/23.jpg"
 
 
@@ -114,7 +112,7 @@ videos_section:
 # Gallery Section Settings
 gallery_section:
   enable: true
-  gallery_section_title: Byte Frame
+  gallery_section_title: Instantanes
   gallery:
     gallery_images:
       - alt: 'Rest'
@@ -137,17 +135,17 @@ gallery_section:
 #-------------------------------
 # Newsletter Settings
 mailchimp:
-  enable: false
-  mailchimp_title: Stay inspired weekly ✌️
-  mailchimp_description: Every Sunday, I deliver actionable tips for enhancing productivity, practical life advice, and top-notch insights gathered from various sources, right to your email inbox.
-  mailchimp_identifier: gmail.us21.list-manage.com/subscribe/post?u=8aeb9c31a5c97a3a5f9ff2740&amp;id=0e31fd7793&amp # Add your MailChimp form identifier. For example - gmail.us21.list-manage.com/subscribe/post?u=8aeb9c31a5c97a3a5f9ff2740&amp;id=0e31fd7793&amp
-  mailchimp_input_text: Your email address...
-  mailchimp_button_text: Join Now
+  enable: true
+  mailchimp_title: "Signal 42 — veille & terrain \u270C\uFE0F"
+  mailchimp_description: "Chaque semaine, je partage ce qui m'a allume : une decouverte IA, un test AgriTech, une lecon d'entrepreneuriat. Du concret, pas du bruit."
+  mailchimp_identifier: gmail.us21.list-manage.com/subscribe/post?u=8aeb9c31a5c97a3a5f9ff2740&amp;id=0e31fd7793&amp # Add your MailChimp form identifier
+  mailchimp_input_text: Ton adresse courriel...
+  mailchimp_button_text: Je m'abonne
 
 
 #-------------------------------
 # Footer Settings
-footer_description: Blog personnel de Chris Pouliot — technologie, projets et reflexions.
+footer_description: "Boreal42 — IA appliquee, du Quebec vers le terrain. Je partage ici mes builds, mes reflexions et ce que j'apprends en construisant des solutions qui fonctionnent pour vrai."
 
 
 #-------------------------------

@@ -1,60 +1,45 @@
 ---
 layout: page
-title: About Me
+title: "A propos"
 permalink: /about/
-image: '/images/01-2.jpg'
+image: '/images/photo_blog_christian.png'
 ---
 
-Hey, I’m Alex - part developer, part digital explorer, and full-time lover of all things tech. From crafting lines of code on Linux to unraveling the layers of cybersecurity, my passion for technology goes beyond just a career.
+Je suis Christian, fondateur de Boreal42. Je construis des solutions d'IA qui se salissent les mains — dans les usines, dans les serres, dans les salles de classe.
 
-{: .note }
-Even the most experienced developers don't know everything
+## L'histoire
 
-Over the years, my curiosity only deepened. I became a coder, learning languages like Python, JavaScript, and C++, and fell in love with the sheer power of programming. For me, coding isn’t just a skill; it’s a language for bringing ideas to life. The thrill of debugging, the satisfaction of building something from scratch, and the endless potential of code keep me motivated every day. Coding lets me shape my vision into reality, one line at a time.
+Pendant des annees, j'ai travaille dans le monde des ERP manufacturiers. J'ai vu de l'interieur comment les PME quebecoises fonctionnent : avec de la debrouillardise, du duct tape numerique, et pas mal de fichiers Excel. Quand l'IA generative a debarque, j'ai vu l'opportunite de changer la game — pas avec des buzzwords, mais avec des outils qui reglent des vrais problemes.
 
-> Curiosity fuels my code, Linux keeps me grounded, and every bug is just a puzzle waiting to be solved.
+J'ai fonde Boreal42 pour ca. Une startup d'IA appliquee, autofinancee, basee a Donnacona. On developpe des solutions d'automatisation pour le manufacturier, des plateformes IoT pour l'agriculture de precision, et des formations qui preparent la prochaine generation a travailler avec l'IA plutot que contre.
 
-Linux was a turning point. Once I got into Linux, I realized how transformative open-source software could be. I started with Ubuntu, dabbled in Debian, and eventually moved on to Arch. Linux taught me how customizable, flexible, and free technology could truly be. It’s more than an operating system—it’s a philosophy that resonates with my love for exploration and problem-solving. My Linux setup is always evolving, whether I'm configuring a new window manager or experimenting with terminal commands. It’s like a puzzle I never get tired of solving.
+> La vraie innovation, ca se passe rarement comme prevu — et c'est ca qui est interessant.
+
+En parallele, j'enseigne la programmation au Campus Notre-Dame-de-Foy. Mes etudiants sont souvent les premiers a tester mes idees — et les premiers a me dire quand ca marche pas.
 
 <div class="gallery-box">
   <div class="gallery gallery-columns-2">
-    {% include img.html src ="/images/01-4.jpg" alt="Keyboard" caption="The symphony of keys" %}
-    {% include img.html src ="/images/01-5.jpg" alt="Keyboard" caption="Where every keystroke brings ideas to life" %}
-    {% include img.html src ="/images/01-6.jpg" alt="Keyboard" caption="The quiet hum of creativity" %}
-    {% include img.html src ="/images/01-7.jpg" alt="Keyboard" caption="Ready to transform thoughts into text" %}
+    {% include img.html src ="/images/01-4.jpg" alt="Lab" caption="Le lab en action" %}
+    {% include img.html src ="/images/01-5.jpg" alt="Setup" caption="Mon setup de travail" %}
+    {% include img.html src ="/images/01-6.jpg" alt="Prototypage" caption="Prototypage en cours" %}
+    {% include img.html src ="/images/01-7.jpg" alt="Terrain" caption="Du code au terrain" %}
   </div>
-  <em>Gallery / <a href="https://unsplash.com/" target="_blank">Unsplash</a></em>
 </div>
 
-Gaming is another integral part of my story. Growing up with video games, I’ve seen firsthand how gaming has evolved from simple pixelated platforms to immersive, narrative-driven experiences. My love for gaming goes beyond just playing; I enjoy analyzing game mechanics, studying character design, and understanding the technology behind these virtual worlds. Indie games hold a special place in my heart because they represent the creativity and innovation of small teams that pour their souls into making something unique.
+## Ce que je fais concretement
 
-```js
-  $('.top').click(function () {
-    $('html, body').stop().animate({ scrollTop: 0 }, 'slow', 'swing');
-  });
-  $(window).scroll(function () {
-    if ($(this).scrollTop() > $(window).height()) {
-      $('.top').addClass("top-active");
-    } else {
-      $('.top').removeClass("top-active");
-    };
-  });
-```
+**IA & Automatisation** — Des workflows intelligents pour les PME manufacturieres. Validation de feuilles de temps, traitement de commandes, integration ERP. Le genre de trucs plates que l'IA fait mieux que nous.
 
-When I’m not coding or gaming, I’m diving into the world of comics and sci-fi movies. Both are more than hobbies—they’re ways to explore the “what ifs” of life. Comics taught me that even fictional heroes have real struggles, and sci-fi movies sparked my imagination about the future.
+**AgriTech42** — Une plateforme IoT accessible pour les petits producteurs en serre. Monitoring environnemental, detection de maladies par vision, automatisation locale avec Raspberry Pi. Parce que Priva a 100k$, c'est pas pour tout le monde.
 
-## The Mind Behind the Keyboard
+**Enseignement** — Des cours de programmation et de bases de donnees ou l'IA est un outil, pas un ennemi. J'experimente avec des approches pedagogiques qui refletent la realite du marche.
 
-Building this blog has been a passion project. It’s a place where I can share my journey, document what I learn, and connect with people who have the same interests. I’ve written countless tutorials, tech tips, and reviews because I want to create a resource I wish I had when I was starting out. The tech world can be intimidating, but it doesn’t have to be. Thоrough this blog, I hope to make technology accessible, fun, and rewarding for people of all skill levels.
+## Le 42
 
-![Keyboard]({{site.baseurl}}/images/01-3.jpg)
-*Photo by [Pablo Stanley](https://www.lummi.ai/photo/contemplative-technicolor-workstation-sonrb) on [Lummi](https://www.lummi.ai/)*
+Si tu te demandes pourquoi tout finit par 42 — c'est la reponse ultime a la grande question sur la vie, l'univers et le reste. Du moins selon Douglas Adams. Moi je trouve que c'est un bon rappel de pas se prendre trop au serieux, meme quand on essaie de changer les choses.
 
-Looking back, I see that each step in my journey—whether it was installing my first Linux distro, debugging my first program, or exploring cybersecurity—has shaped me into who I am today.
+## Le mot de la fin
 
-The geek in me thrives on discovery, and as I explore new topics and skills, I’m reminded that there’s always more to learn. That’s the beauty of the tech world: no matter how much you know, there’s always a new challenge or a new horizon waiting.
+Ce blog, c'est mon carnet de terrain. Je documente ce que je construis, ce que j'apprends, et ce qui plante. Si ca peut t'inspirer ou t'eviter une erreur, mission accomplie.
 
-{: .important }
-Automate repetitive tasks. If you find yourself doing the same task multiple times, it's a sign you should automate it.
-
-Thank you for being here and for sharing in this journey with me. This blog is more than just articles and posts; it’s a community of curious, passionate individuals who love technology, creativity, and the endless pursuit of knowledge. Whether you’re a fellow Linux enthusiast, a developer looking for new ideas, or just someone curious about the digital world, I’m excited to connect and share this space with you.
+Envie de jaser ? → [Ecris-moi](/contact/)
