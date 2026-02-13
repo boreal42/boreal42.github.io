@@ -23,9 +23,9 @@ color_scheme:
 # Navigation Settings
 menu_settings:
   menu_items:
-    - title: 'Home'
+    - title: 'Accueil'
       url: '/'
-    - title: 'About'
+    - title: 'À propos'
       url: '/about/'
     - title: 'Contact'
       url: '/contact/'

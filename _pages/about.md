@@ -28,7 +28,7 @@ En parallèle, j'enseigne la programmation au Campus Notre-Dame-de-Foy. Mes étu
 
 ## Ce que je fais concrètement
 
-**IA & Automatisation** — Des workflows intelligents pour les PME manufacturières. Validation de feuilles de temps, traitement de commandes, intégration ERP. Le genre de trucs plates que l'IA fait mieux que nous.
+**IA, de la R&D  et de l'Automatisation** — Des applications intelligentes pour les PME manufacturières et autres. Boreal42 mène des activités de R&D en intelligence appliquée visant la conception de systèmes intégrant applications, IA et matériel.. Le genre de trucs plates que l'IA fait mieux que nous mais qui est drôlement plaisant à réaliser.
 
 **AgriTech42** — Une plateforme IoT accessible pour les petits producteurs en serre. Monitoring environnemental, détection de maladies par vision, automatisation locale avec Raspberry Pi. Parce que Priva à 100k$, c'est pas pour tout le monde.
 
