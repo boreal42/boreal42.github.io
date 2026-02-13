@@ -139,7 +139,7 @@ mailchimp:
 
 #-------------------------------
 # Footer Settings
-footer_description: "Boreal42 — IA appliquée, du Québec vers le terrain. Je partage ici mes builds, mes réflexions et ce que j'apprends en construisant des solutions qui fonctionnent pour vrai."
+footer_description: "<a href='https://boreal42.com'>Boreal42</a> — IA appliquée, du Québec vers le terrain. Je partage ici mes builds, mes réflexions et ce que j'apprends en construisant des solutions qui fonctionnent pour vrai."
 
 
 #-------------------------------
