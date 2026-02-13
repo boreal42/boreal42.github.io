@@ -7,7 +7,7 @@ image: '/images/sailingboat.png'
 tags: [ia-appliquée, manufacturier, erp, automatisation, cowork]
 ---
 
-Fait à noté, le Cowork Connector hub n'as pas encore de nom 42. Il faudrait lui en trouver un! Mais voici le topo: Chaque entreprise a le même problème : des outils partout, des données nulle part.
+Fait à noté, le Cowork Connector hub n'as pas encore de nom 42. Il faudrait lui en trouver un parce que sinon ça sera Kraken-42! Mais voici le topo: Chaque entreprise a le même problème : des outils partout, des données nulle part.
 
 L'ERP contient une version des faits. Le Excel de production en contient une autre. Le CRM raconte une troisième histoire. Gmail garde les vraies ententes clients dans des fils de discussion que personne ne retrouve. Et quelque part, un fichier `commandes-FINAL-v3-VRAI.xlsx` est la seule source de vérité — mais juste une personne le sait.
 
@@ -81,7 +81,7 @@ Le Cowork Connector Hub ne remplace aucun de ces outils. Il les **connecte**. Il
       <path d="M250,155 Q275,140 300,148 Q325,140 350,155" fill="none" stroke="#00ffc8" stroke-width="1" opacity="0.3"/>
       <g filter="url(#glowFilter)" opacity="0.6"><text x="300" y="210" text-anchor="middle" fill="#00ffc8" font-family="'Orbitron',sans-serif" font-size="14" font-weight="700" letter-spacing="3">AI</text></g>
     </svg>
-    <div class="k-title">KRAKEN IA</div>
+    <div class="k-title">KRAKEN-42</div>
     <div class="k-subtitle">Intelligence Artificielle Abyssale</div>
     <div class="scanlines"></div>
   </div>
