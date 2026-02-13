@@ -36,9 +36,14 @@
             <div class="hero__description">{{ site.data.settings.hero.hero_description | markdownify }}</div>
             {% endif %}
 
-            {% if site.data.settings.hero.hero_button_text %}
-            <a href="{{ site.data.settings.hero.hero_button_link }}" class="hero__button button button--primary">{{ site.data.settings.hero.hero_button_text }}</a>
-            {% endif %}
+            <div class="hero__buttons">
+              {% if site.data.settings.hero.hero_button_text %}
+              <a href="{{ site.data.settings.hero.hero_button_link }}" class="hero__button button button--primary">{{ site.data.settings.hero.hero_button_text }}</a>
+              {% endif %}
+              {% if site.data.settings.hero.hero_button2_text %}
+              <a href="{{ site.data.settings.hero.hero_button2_link }}" class="hero__button button button--green" target="_blank">{{ site.data.settings.hero.hero_button2_text }}</a>
+              {% endif %}
+            </div>
           </div>
         </div>
 

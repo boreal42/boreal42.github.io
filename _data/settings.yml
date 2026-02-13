@@ -52,6 +52,8 @@ hero:
   hero_image_caption: Mon lab d'idées, où l'IA rencontre le terrain.
   hero_button_text: Travaillons ensemble
   hero_button_link: '/contact/'
+  hero_button2_text: "Découvrez Boreal42"
+  hero_button2_link: "https://boreal42.com"
 
 
 # Logos
