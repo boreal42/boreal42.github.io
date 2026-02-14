@@ -1,6 +1,6 @@
 #-------------------------------
 # Site Settings
-title: Chris @Boreal42 
+title: Lab @Boreal42 
 description: Mon lab d'idées, où l'IA rencontre le terrain.
 logo: # You can add own logo. For example '/images/logo.png'.
 logo_dark:
@@ -29,6 +29,8 @@ menu_settings:
       url: '/about/'
     - title: 'Contact'
       url: '/contact/'
+    - title: 'Boreal42'
+      url: 'https://boreal42.com'
     
 
 
@@ -44,7 +46,7 @@ author:
 hero:
   enable: true
   hero_avatar: "https://avatars.githubusercontent.com/u/224421206?s=400&u=7265ae8c3ba11fb0dede3616b5732803ad28143f&v=4"
-  hero_title: "Lab @Boreal42"
+  hero_title: "Chris @Boreal42"
   hero_subtitle: "Entrepreneur, prof, étudiant et éternel curieux — je construis des solutions IA qui travaillent pour vrai."
   hero_description: |
     Je suis le fondateur de <a href='https://boreal42.com'>Boreal42</a>, une startup d'IA appliquée née au Québec. Entre la R&D, l'AgriTech et l'enseignement de la programmation, je documente ici mes expérimentations, mes découvertes et mes erreurs. Parce que la vraie innovation, ça se passe rarement comme prévu — et c'est ça qui est intéressant.
