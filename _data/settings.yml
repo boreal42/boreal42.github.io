@@ -109,8 +109,8 @@ videos_section:
 # Gallery Section Settings
 gallery_section:
   enable: true
-  gallery_section_title: Instantanés => Parce qu'il n'y a pas que le code dans la vie.
-   gallery:
+  gallery_section_title: "Instantanés => Parce qu'il n'y a pas que le code dans la vie."
+  gallery:
     gallery_images:
       - alt: 'Rest'
         url: '/images/img201.jpg'
