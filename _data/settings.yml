@@ -109,23 +109,23 @@ videos_section:
 # Gallery Section Settings
 gallery_section:
   enable: true
-  gallery_section_title: Instantanés
-  gallery:
+  gallery_section_title: Instantanés => Parce qu'il n'y a pas que le code dans la vie.
+   gallery:
     gallery_images:
       - alt: 'Rest'
-        url: '/images/100.jpg'
+        url: '/images/img201.jpg'
         caption: 'Small steps lead to big results.'
       - alt: 'Lifestyle'
-        url: '/images/101.jpg'
+        url: '/images/img202.jpg'
         caption: 'A peaceful moment captured during a serene evening.'
       - alt: 'Hobby'
-        url: '/images/102.jpg'
+        url: '/images/img203.jpg'
         caption: 'True friends are like stars — they shine brightest when the world feels dark.'
       - alt: 'Computers'
-        url: '/images/103.jpg'
+        url: '/images/img204.jpg'
         caption: 'Every click opens a new chapter in an endless story.'
       - alt: 'Games'
-        url: '/images/104.jpg'
+        url: '/images/img205.jpg'
         caption: 'Every level is a new opportunity to test your limits.'
 
 
