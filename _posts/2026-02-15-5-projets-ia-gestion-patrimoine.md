@@ -121,6 +121,6 @@ Parce que la réponse à « comment rester pertinent dans un monde où l'IA acc�
 
 ---
 
-*Christian est fondateur de Boréal42, une firme de consultation IA basée à Donnacona, Québec. Il accompagne les PME québécoises dans leur transformation par l'intelligence artificielle appliquée.*
+*Christian est le fondateur de Boréal42, un studio d'intelligence appliquée basée en banlieu de Québec. Il accompagne les PME dans leur transformation par l'intelligence artificielle appliquée.* 
 
 *Vous explorez l'IA pour votre firme ? [Jasons.](https://boreal42.com)*
