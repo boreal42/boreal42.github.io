@@ -85,7 +85,7 @@ blog:
 #-------------------------------
 # Tags Section Settings
 tags_section:
-  enable: true
+  enable: false
   tags_section_title: Sous le capot
   tags:
     - tag: "IA & Automatisation"
