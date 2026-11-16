@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="fr-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ch. 5 · La boucle for · 420-SN1-RE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/lecture.css?v=ce0c5a90">
+</head>
+<body data-chapitre="5">
+<header class="topbar"><div class="in">
+  <a class="home" href="../#chapitre-5"><span>420-SN1-RE</span>Programmation en sciences</a>
+  <span class="chap">Chapitre 5 · Semaine 5</span>
+</div></header>
+<div class="layout">
+<article>
+  <p class="eyebrow">Chapitre 5 · Semaine 5</p>
+  <h1>La boucle for</h1>
+  <div class="prep">
+    <div><h2>À faire avant le cours</h2><ol><li>Lis ce chapitre et exécute les exemples (environ 1 h).</li><li>Fais les exercices préparatoires 5.1 à 5.10, au bas de la page (environ 1 h 30).</li><li>Télécharge ton rapport et remets-le sur LÉA avant le cours.</li></ol></div>
+    <a class="btn" href="#exercices">Aller aux exercices</a>
+  </div>
+  <p class="aide">Tout le code de cette page s'exécute dans ton navigateur : clique sur <strong>▶ Exécuter</strong>. Tu peux modifier les exemples librement; <strong>Réinitialiser</strong> remet le code d'origine. Raccourci : Maj + Entrée.</p>
+<div class="admonition probleme">
+<p class="admonition-title">Problème d'ouverture</p>
+<p>Pour préparer un graphique, tu dois calculer la position d'un objet en chute libre à chaque dixième de seconde, de 0 à 3 s : 31 calculs identiques, avec une valeur qui change à chaque fois.</p>
+<p>Cette fois, on sait d'avance combien de répétitions il faut. La boucle <code>for</code> est faite pour ça : elle répète un bloc pour chaque valeur d'une suite.</p>
+</div>
+<h2 id="objectifs">Objectifs</h2>
+<ol>
+<li>Écrire une boucle <code>for</code> avec <code>range()</code>, en choisissant le début, la fin et le pas.</li>
+<li>Choisir entre <code>for</code> et <code>while</code>.</li>
+<li>Calculer une somme ou un produit avec un accumulateur dans une boucle <code>for</code>.</li>
+<li>Imbriquer deux boucles.</li>
+<li>Simuler un phénomène aléatoire avec le module <code>random</code>.</li>
+</ol>
+<h2 id="la-boucle-for-et-range">La boucle for et range()</h2>
+<pre><code><span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">debut</span><span class="p">,</span> <span class="n">fin</span><span class="p">,</span> <span class="n">pas</span><span class="p">):</span>
+    <span class="n">instructions</span> <span class="n">répétées</span> <span class="n">pour</span> <span class="n">chaque</span> <span class="n">valeur</span>
+</code></pre>
+<p>À chaque tour, la variable prend la valeur suivante de la suite. Python gère lui-même le compteur : pas d'initialisation, pas de <code>+ 1</code> à oublier.</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">for seconde in range(5):
+    print(&quot;t =&quot;, seconde, &quot;s&quot;)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Appel</th>
+<th>Valeurs produites</th>
+<th>Nombre de tours</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>range(5)</code></td>
+<td>0, 1, 2, 3, 4</td>
+<td>5</td>
+</tr>
+<tr>
+<td><code>range(1, 6)</code></td>
+<td>1, 2, 3, 4, 5</td>
+<td>5</td>
+</tr>
+<tr>
+<td><code>range(0, 20, 5)</code></td>
+<td>0, 5, 10, 15</td>
+<td>4</td>
+</tr>
+<tr>
+<td><code>range(10, 0, -2)</code></td>
+<td>10, 8, 6, 4, 2</td>
+<td>5</td>
+</tr>
+</tbody>
+</table></div>
+<div class="admonition piege">
+<p class="admonition-title">Piège : la fin est exclue</p>
+<p><code>range(1, 10)</code> s'arrête à <strong>9</strong>. Pour aller jusqu'à 10 inclusivement, écris <code>range(1, 11)</code>. C'est la source d'erreur la plus fréquente avec <code>for</code>.</p>
+</div>
+<h3 id="un-pas-reel">Un pas réel</h3>
+<p><code>range()</code> n'accepte que des entiers. Pour avancer par pas de 0.1 s, on boucle sur des entiers et on calcule le temps :</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">g = 9.81
+for i in range(0, 31, 5):        # i = 0, 5, 10, ..., 30
+    t = i / 10                   # t = 0.0, 0.5, 1.0, ..., 3.0
+    y = 0.5 * g * t ** 2
+    print(f&quot;t = {t:.1f} s   y = {y:6.2f} m&quot;)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<p>Le format <code>{y:6.2f}</code> réserve 6 caractères : les colonnes restent alignées.</p>
+<h2 id="for-ou-while">for ou while?</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Situation</th>
+<th>Boucle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Le nombre de tours est connu d'avance (31 instants, 10 mesures, n termes)</td>
+<td><code>for</code></td>
+</tr>
+<tr>
+<td>On répète <strong>jusqu'à</strong> une condition (un seuil, une convergence, une saisie valide)</td>
+<td><code>while</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>Toute boucle <code>for</code> peut s'écrire avec un <code>while</code>, mais la version <code>for</code> est plus courte et ne peut pas devenir infinie.</p>
+<h2 id="sommes-et-produits-avec-for">Sommes et produits avec for</h2>
+<p>L'accumulateur du chapitre 4 fonctionne de la même façon. Exemple : la série de Leibniz approche π / 4 = 1 − 1/3 + 1/5 − 1/7 + …</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">n = 1000
+somme = 0
+for k in range(n):
+    somme = somme + (-1) ** k / (2 * k + 1)
+print(&quot;Approximation de pi :&quot;, 4 * somme)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<div class="admonition essaie">
+<p class="admonition-title">Essaie-le</p>
+<p>Change <code>n</code> pour 10, 100, puis 100000. Combien de décimales justes gagnes-tu à chaque fois? Cette série converge lentement.</p>
+</div>
+<h2 id="boucles-imbriquees">Boucles imbriquées</h2>
+<p>Une boucle peut en contenir une autre. Pour <strong>chaque</strong> tour de la boucle extérieure, la boucle intérieure fait <strong>tous</strong> ses tours.</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">for ligne in range(1, 4):
+    for colonne in range(1, 5):
+        print(ligne * colonne, end=&quot;\t&quot;)
+    print()</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<p>Le nombre total de tours est le produit des deux : ici, 3 × 4 = 12. <code>end="\t"</code> remplace le retour à la ligne de <code>print()</code> par une tabulation.</p>
+<h2 id="le-hasard-le-module-random">Le hasard : le module random</h2>
+<p>Beaucoup de phénomènes scientifiques se simulent avec des tirages aléatoires : désintégrations, diffusion, erreurs de mesure.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Fonction</th>
+<th>Résultat</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>random.random()</code></td>
+<td>un réel entre 0 et 1 (1 exclu)</td>
+</tr>
+<tr>
+<td><code>random.randint(a, b)</code></td>
+<td>un entier de <code>a</code> à <code>b</code>, <strong>inclus</strong></td>
+</tr>
+<tr>
+<td><code>random.uniform(a, b)</code></td>
+<td>un réel entre <code>a</code> et <code>b</code></td>
+</tr>
+<tr>
+<td><code>random.seed(n)</code></td>
+<td>fixe le point de départ : la même suite de tirages à chaque exécution</td>
+</tr>
+</tbody>
+</table></div>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">import random
+random.seed(1)
+for essai in range(5):
+    print(random.randint(1, 6), end=&quot; &quot;)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<p><code>random.seed()</code> rend une simulation <strong>reproductible</strong> : exécute deux fois le bloc, tu obtiens les mêmes nombres. Enlève la ligne <code>random.seed(1)</code> et les nombres changent à chaque exécution. Dans les exercices, on fixe toujours la graine pour pouvoir vérifier les résultats.</p>
+<h2 id="exemple-complet-une-table-de-valeurs">Exemple complet : une table de valeurs</h2>
+<h3 id="planifier">Planifier</h3>
+<p>Afficher la hauteur d'une balle lancée vers le haut à 15 m/s, toutes les 0.5 s, de 0 à 3 s : y = v₀t − ½gt².</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Réponse</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Intrants</td>
+<td>vitesse initiale (m/s), pas de temps (s), durée (s)</td>
+</tr>
+<tr>
+<td>Extrants</td>
+<td>une ligne par instant : t et y; la hauteur maximale atteinte parmi ces instants</td>
+</tr>
+<tr>
+<td>Traitements</td>
+<td>pour chaque instant : calculer y, l'afficher, garder le plus grand y vu jusqu'ici</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Jeu d'essais</strong> : à t = 0, y = 0; à t = 1.5, y = 11.46 m; le maximum parmi les instants est atteint à t = 1.5 s.</p>
+<h3 id="coder">Coder</h3>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">g = 9.81
+v0 = 15.0
+y_max = 0
+t_max = 0
+for i in range(7):            # 7 instants : 0, 0.5, ..., 3.0
+    t = i * 0.5
+    y = v0 * t - 0.5 * g * t ** 2
+    print(f&quot;t = {t:.1f} s   y = {y:6.2f} m&quot;)
+    if y &gt; y_max:
+        y_max = y
+        t_max = t
+print(f&quot;Maximum parmi ces instants : {y_max:.2f} m à t = {t_max} s&quot;)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<h3 id="verifier">Vérifier</h3>
+<p>Compare avec le jeu d'essais. Pourquoi la hauteur maximale réelle (11.47 m, à t = 1.53 s) est-elle un peu plus grande que celle trouvée? Parce que la table ne regarde que certains instants. Un pas plus petit donnerait une meilleure estimation.</p>
+<h2 id="pieges-frequents">Pièges fréquents</h2>
+<ul>
+<li>Oublier que la fin de <code>range()</code> est exclue.</li>
+<li>Donner un pas réel à <code>range()</code> : <code>range(0, 3, 0.5)</code> provoque une erreur.</li>
+<li>Modifier la variable de la boucle dans le bloc : le tour suivant l'écrase de toute façon.</li>
+<li>Mettre l'initialisation d'un accumulateur à l'intérieur de la boucle.</li>
+<li>Oublier <code>random.seed()</code> quand on veut des résultats reproductibles.</li>
+</ul>
+<h2 id="autoquiz">Autoquiz</h2>
+<ol>
+<li>Quelles valeurs produit <code>range(3, 12, 3)</code>?</li>
+<li>Combien de fois s'exécute le bloc intérieur de deux boucles imbriquées de 5 et 8 tours?</li>
+<li>Quand préfère-t-on <code>while</code> à <code>for</code>?</li>
+<li>Comment obtenir des pas de 0.25 s avec <code>range()</code>?</li>
+<li>À quoi sert <code>random.seed()</code>?</li>
+</ol>
+<h2 id="vocabulaire">Vocabulaire</h2>
+<div class="vocab"><span>for</span><span>range</span><span>pas</span><span>itération</span><span>accumulateur</span><span>série</span><span>boucles imbriquées</span><span>module random</span><span>graine (seed)</span><span>simulation</span><span>reproductible</span></div>
+<h2 id="exercices">Exercices préparatoires</h2><p>Écris ton code dans chaque exercice : remplace les <code>None</code> par ta réponse, puis clique sur <strong>Vérifier</strong>. La vérification te dit si ta réponse est bonne, sans la montrer. Ton travail est sauvegardé automatiquement dans ce navigateur.</p>
+<section class="exo" id="exo-5-1" data-id="5.1" data-checks="[[&quot;nb_valeurs&quot;, &quot;7eee9525c86f&quot;], [&quot;derniere&quot;, &quot;2012e0c395ce&quot;]]">
+  <div class="exo-head"><h3>Exercice 5.1 — Que produit range()?</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p><strong>Sans exécuter de code</strong>, réponds pour <code>range(2, 15, 4)</code> : combien de valeurs produit-il, et quelle est la dernière?</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 5.1 — Que produit range()?">nb_valeurs = None
+derniere = None</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-5-2" data-id="5.2" data-checks="[[&quot;total_final&quot;, &quot;374f1f5ffcaa&quot;]]">
+  <div class="exo-head"><h3>Exercice 5.2 — Trace d&#x27;une boucle for</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p><strong>Sans exécuter de code</strong>, fais la trace de ce programme et donne la valeur finale de <code>total</code>.</p>
+<pre><code><span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="n">total</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="mi">2</span>
+</code></pre></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 5.2 — Trace d&#x27;une boucle for">total_final = None</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-5-3" data-id="5.3" data-checks="[[&quot;somme&quot;, &quot;36992d135e4b&quot;]]">
+  <div class="exo-head"><h3>Exercice 5.3 — La somme des impairs</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Avec une boucle <code>for</code> et un pas de 2, calcule la somme des nombres impairs de 1 à 99 inclusivement.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 5.3 — La somme des impairs">somme = None
+# ta boucle ici
+print(somme)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-5-4" data-id="5.4" data-checks="[[&quot;factorielle&quot;, &quot;52d724f46f77&quot;]]">
+  <div class="exo-head"><h3>Exercice 5.4 — Une factorielle</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Calcule 12! = 1 × 2 × … × 12 avec une boucle <code>for</code>. Attention à la valeur de départ d'un accumulateur de <strong>produit</strong>.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 5.4 — Une factorielle">factorielle = None
+# ta boucle ici
+print(factorielle)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-5-5" data-id="5.5" data-checks="[[&quot;pi_approx&quot;, &quot;2f44ef877aba&quot;]]">
+  <div class="exo-head"><h3>Exercice 5.5 — La série de Leibniz</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Calcule l'approximation de π donnée par les 500 premiers termes de la série 4 × (1 − 1/3 + 1/5 − 1/7 + …).</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 5.5 — La série de Leibniz">n = 500
+pi_approx = None
+# ta boucle ici
+print(pi_approx)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-5-6" data-id="5.6" data-checks="[[&quot;compte&quot;, &quot;0be3a3882951&quot;]]">
+  <div class="exo-head"><h3>Exercice 5.6 — Compter dans une table de valeurs</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Pour les entiers x de 0 à 20 inclusivement, combien vérifient x² − 10x + 16 &lt; 0?</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 5.6 — Compter dans une table de valeurs">compte = None
+# ta boucle ici
+print(compte)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-5-7" data-id="5.7" data-checks="[[&quot;nb_paires&quot;, &quot;accea939f2c9&quot;]]">
+  <div class="exo-head"><h3>Exercice 5.7 — Deux boucles imbriquées</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Combien y a-t-il de paires d'entiers (i, j) avec 1 ≤ i &lt; j ≤ 10? Compte-les avec deux boucles imbriquées.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 5.7 — Deux boucles imbriquées">nb_paires = None
+# tes boucles ici
+print(nb_paires)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-5-8" data-id="5.8" data-checks="[[&quot;population&quot;, &quot;0fdb7550fd0e&quot;]]">
+  <div class="exo-head"><h3>Exercice 5.8 — Une croissance annuelle</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Une population de 1000 individus croît de 3 % par année. Avec une boucle <code>for</code>, calcule la population après 25 ans, arrondie à deux décimales.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 5.8 — Une croissance annuelle">population = 1000.0
+# ta boucle ici
+population = None
+print(population)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-5-9" data-id="5.9" data-checks="[[&quot;nb_six&quot;, &quot;778cdf279329&quot;]]">
+  <div class="exo-head"><h3>Exercice 5.9 — Lancer un dé 1000 fois</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Avec <code>random.seed(42)</code>, lance un dé 1000 fois avec <code>random.randint(1, 6)</code> et compte combien de fois tu obtiens 6. Garde la ligne <code>random.seed(42)</code> <strong>au début</strong>, sinon le résultat change à chaque exécution.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 5.9 — Lancer un dé 1000 fois">import random
+random.seed(42)
+nb_six = None
+# ta boucle ici
+print(nb_six)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-5-10" data-id="5.10" data-checks="[[&quot;somme_carres&quot;, &quot;93c6d1d8fb1c&quot;]]">
+  <div class="exo-head"><h3>Exercice 5.10 — Un tour de trop, ou de moins?</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Ce programme doit calculer la somme des carrés de 1 à 10 (1 + 4 + 9 + … + 100), mais il donne 285. Trouve l'erreur et corrige-la.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 5.10 — Un tour de trop, ou de moins?">somme_carres = 0
+for k in range(1, 10):
+    somme_carres = somme_carres + k ** 2
+print(somme_carres)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+  <div class="enclasse"><p><strong>En classe : Labo 5.</strong> Quiz d'entrée, démonstration, atelier en équipe et labo individuel. Le code d'accès est donné au début de la séance.</p><a class="btn ghost" href="../labos/labo05.html">Page du labo 5</a></div>
+  <h2 id="remise">Remise sur LÉA</h2>
+  <div class="travail">
+    <label class="nom"><span>Ton nom (prénom et nom)</span><input id="nom-etudiant" type="text" autocomplete="name"></label>
+    <div><p class="progression"></p><div class="barre" aria-hidden="true"><span></span></div></div>
+    <ol>
+      <li>Clique sur <strong>Télécharger mon rapport</strong>. Le fichier contient ton code, tes fiches et le résultat de chaque vérification.</li>
+      <li>Dépose ce fichier dans le travail du chapitre 5 sur LÉA.</li>
+    </ol>
+    <div class="actions"><button class="btn telecharger" type="button">Télécharger mon rapport</button>
+      <label class="btn ghost">Importer un rapport<input class="importer" type="file" accept=".py,.txt" hidden></label></div>
+    <p id="msg-import" aria-live="polite"></p>
+    <p class="note">Ton travail est sauvegardé automatiquement, mais seulement dans <em>ce</em> navigateur, sur <em>cet</em> appareil. Pour continuer ailleurs, télécharge ton rapport et importe-le sur l'autre appareil.</p>
+  </div>
+  <nav class="pager" aria-label="Chapitres"><a class="btn ghost" href="ch04.html">← Chapitre 4</a><a class="btn ghost" href="ch06.html">Chapitre 6 →</a></nav>
+</article>
+<aside class="toc" aria-label="Dans ce chapitre">
+  <p>Dans ce chapitre</p>
+  <ol><li><a href="#objectifs">Objectifs</a></li><li><a href="#la-boucle-for-et-range">La boucle for et range()</a></li><li><a href="#for-ou-while">for ou while?</a></li><li><a href="#sommes-et-produits-avec-for">Sommes et produits avec for</a></li><li><a href="#boucles-imbriquees">Boucles imbriquées</a></li><li><a href="#le-hasard-le-module-random">Le hasard : le module random</a></li><li><a href="#exemple-complet-une-table-de-valeurs">Exemple complet : une table de valeurs</a></li><li><a href="#pieges-frequents">Pièges fréquents</a></li><li><a href="#autoquiz">Autoquiz</a></li><li><a href="#vocabulaire">Vocabulaire</a></li><li><a href="#exercices">Exercices préparatoires</a></li><li><a href="#remise">Remise sur LÉA</a></li></ol>
+  <div class="cta"><p class="progression"></p><div class="barre" aria-hidden="true"><span></span></div><a class="btn" href="#remise">Remise sur LÉA</a><a class="btn ghost" href="../#recettes">Recettes</a></div>
+</aside>
+</div>
+<script src="../assets/cours.js?v=ce0c5a90"></script>
+</body>
+</html>

@@ -40,9 +40,26 @@ def _indice(v, h):
 def _verifier(ns, checks):
     res = []
     for nom, h in checks:
-        v = ns.get(nom, None)
-        ok = None if v is None else _empreinte(v) == h
-        res.append([nom, ok, repr(v), "" if ok in (None, True) else _indice(v, h)])
+        if nom.isidentifier():
+            v = ns.get(nom, None)
+            ok = None if v is None else _empreinte(v) == h
+            res.append([nom, ok, repr(v), "" if ok in (None, True) else _indice(v, h)])
+            continue
+        # Une expression, comme un appel de fonction : aire_disque(2)
+        fonction = nom.split("(")[0]
+        if fonction not in ns:
+            res.append([nom, False, "(fonction introuvable)", f"Aucune fonction nommée {fonction} : vérifie le nom de ta fonction, puis exécute de nouveau."])
+            continue
+        try:
+            v = eval(nom, ns)
+        except Exception as e:
+            res.append([nom, False, f"{type(e).__name__}: {e}", "L'appel a provoqué une erreur. Vérifie les paramètres de ta fonction."])
+            continue
+        if v is None:
+            res.append([nom, False, "None", "Ta fonction ne retourne rien. As-tu utilisé print() au lieu de return?"])
+            continue
+        ok = _empreinte(v) == h
+        res.append([nom, ok, repr(v), "" if ok else _indice(v, h)])
     return json.dumps(res)
 `;
 const espaces = {};

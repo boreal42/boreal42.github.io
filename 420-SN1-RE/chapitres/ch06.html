@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="fr-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ch. 6 · Fonctions · 420-SN1-RE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/lecture.css?v=ce0c5a90">
+</head>
+<body data-chapitre="6">
+<header class="topbar"><div class="in">
+  <a class="home" href="../#chapitre-6"><span>420-SN1-RE</span>Programmation en sciences</a>
+  <span class="chap">Chapitre 6 · Semaine 6</span>
+</div></header>
+<div class="layout">
+<article>
+  <p class="eyebrow">Chapitre 6 · Semaine 6</p>
+  <h1>Fonctions</h1>
+  <div class="prep">
+    <div><h2>À faire avant le cours</h2><ol><li>Lis ce chapitre et exécute les exemples (environ 1 h).</li><li>Fais les exercices préparatoires 6.1 à 6.10, au bas de la page (environ 1 h 30).</li><li>Télécharge ton rapport et remets-le sur LÉA avant le cours.</li></ol></div>
+    <a class="btn" href="#exercices">Aller aux exercices</a>
+  </div>
+  <p class="aide">Tout le code de cette page s'exécute dans ton navigateur : clique sur <strong>▶ Exécuter</strong>. Tu peux modifier les exemples librement; <strong>Réinitialiser</strong> remet le code d'origine. Raccourci : Maj + Entrée.</p>
+<div class="admonition probleme">
+<p class="admonition-title">Problème d'ouverture</p>
+<p>Dans tes labos de physique, tu recalcules sans cesse les mêmes choses : une vitesse moyenne, une énergie cinétique, une conversion de km/h en m/s. Tu recopies la même formule dans chaque programme, et une erreur de copie se glisse parfois.</p>
+<p>Une <strong>fonction</strong> donne un nom à un calcul. On l'écrit une seule fois, on la teste une seule fois, puis on l'utilise partout. C'est aussi l'outil qui permet de <strong>décomposer</strong> un gros problème en petits morceaux.</p>
+</div>
+<h2 id="objectifs">Objectifs</h2>
+<ol>
+<li>Définir une fonction avec <code>def</code>, des paramètres et <code>return</code>.</li>
+<li>Appeler une fonction et utiliser sa valeur de retour.</li>
+<li>Distinguer <code>return</code> et <code>print()</code>.</li>
+<li>Comprendre la portée des variables : ce qui existe dans une fonction et ce qui existe en dehors.</li>
+<li>Documenter une fonction avec une docstring.</li>
+<li>Décomposer un problème en fonctions, et tester chaque fonction séparément.</li>
+</ol>
+<h2 id="definir-et-appeler-une-fonction">Définir et appeler une fonction</h2>
+<pre><code><span class="k">def</span><span class="w"> </span><span class="nf">nom_de_la_fonction</span><span class="p">(</span><span class="n">parametre1</span><span class="p">,</span> <span class="n">parametre2</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Ce que fait la fonction (docstring)."""</span>
+    <span class="n">instructions</span>
+    <span class="k">return</span> <span class="n">resultat</span>
+</code></pre>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">def vitesse_moyenne(distance, duree):
+    &quot;&quot;&quot;Retourne la vitesse moyenne (m/s) pour une distance (m) parcourue en une durée (s).&quot;&quot;&quot;
+    return distance / duree
+
+v = vitesse_moyenne(100, 9.58)
+print(v)
+print(vitesse_moyenne(42195, 7299))   # un marathon en 2 h 01 min 39 s</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<p>Le <code>def</code> seul n'exécute rien : il <strong>définit</strong> la fonction. Le calcul se fait à chaque <strong>appel</strong>, <code>vitesse_moyenne(100, 9.58)</code>. Lors de l'appel, les <strong>arguments</strong> 100 et 9.58 sont rangés dans les <strong>paramètres</strong> <code>distance</code> et <code>duree</code>, puis le bloc s'exécute jusqu'au <code>return</code>.</p>
+<h2 id="return-ou-print">return ou print()?</h2>
+<p><code>return</code> <strong>renvoie</strong> une valeur à l'endroit de l'appel : on peut la ranger dans une variable, la réutiliser dans un calcul ou la passer à une autre fonction. <code>print()</code> ne fait qu'<strong>afficher</strong> du texte à l'écran.</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">def double_affiche(x):
+    print(x * 2)
+
+def double_retourne(x):
+    return x * 2
+
+a = double_affiche(5)
+b = double_retourne(5)
+print(&quot;a =&quot;, a)
+print(&quot;b =&quot;, b)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<p>Une fonction sans <code>return</code> retourne <code>None</code>, qui veut dire « rien ». C'est pourquoi <code>a</code> vaut <code>None</code>.</p>
+<div class="admonition piege">
+<p class="admonition-title">Piège : print() au lieu de return</p>
+<p>Si ta fonction affiche le bon résultat mais que <code>None</code> apparaît quand tu l'utilises dans un calcul, tu as écrit <code>print()</code> là où il fallait <code>return</code>. Règle du cours : <strong>une fonction de calcul retourne son résultat; c'est le programme principal qui affiche.</strong></p>
+</div>
+<p><code>return</code> termine aussi la fonction immédiatement : les lignes qui le suivent dans le bloc ne s'exécutent pas.</p>
+<h2 id="plusieurs-parametres-valeurs-par-defaut">Plusieurs paramètres, valeurs par défaut</h2>
+<p>Un paramètre peut avoir une <strong>valeur par défaut</strong>, utilisée quand l'appel ne la fournit pas. Les paramètres avec une valeur par défaut viennent en dernier.</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">def poids(masse, g=9.81):
+    &quot;&quot;&quot;Retourne le poids (N) d&#x27;une masse (kg), sur Terre par défaut.&quot;&quot;&quot;
+    return masse * g
+
+print(poids(70))          # sur Terre
+print(poids(70, 1.62))    # sur la Lune
+print(poids(70, g=3.71))  # sur Mars, en nommant l&#x27;argument</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<h2 id="la-portee-des-variables">La portée des variables</h2>
+<p>Les variables créées <strong>dans</strong> une fonction, paramètres compris, sont <strong>locales</strong> : elles n'existent que pendant l'appel.</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">def aire_disque(rayon):
+    import math
+    aire = math.pi * rayon ** 2
+    return aire
+
+resultat = aire_disque(2)
+print(resultat)
+print(aire)   # erreur : aire n&#x27;existe que dans la fonction</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<p>C'est une bonne chose : chaque fonction travaille dans sa propre boîte, sans risque d'écraser les variables du reste du programme. Pour récupérer un résultat, on utilise <code>return</code>.</p>
+<h2 id="des-fonctions-qui-en-appellent-dautres">Des fonctions qui en appellent d'autres</h2>
+<p>Une fonction peut en appeler une autre. On construit ainsi des outils de plus en plus puissants à partir de petits outils bien testés.</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">import math
+
+def kmh_vers_ms(vitesse_kmh):
+    &quot;&quot;&quot;Convertit une vitesse de km/h en m/s.&quot;&quot;&quot;
+    return vitesse_kmh / 3.6
+
+def energie_cinetique(masse, vitesse):
+    &quot;&quot;&quot;Retourne l&#x27;énergie cinétique (J) d&#x27;une masse (kg) à une vitesse (m/s).&quot;&quot;&quot;
+    return 0.5 * masse * vitesse ** 2
+
+def energie_voiture(masse, vitesse_kmh):
+    &quot;&quot;&quot;Énergie cinétique (J) d&#x27;un véhicule dont la vitesse est donnée en km/h.&quot;&quot;&quot;
+    return energie_cinetique(masse, kmh_vers_ms(vitesse_kmh))
+
+print(f&quot;{energie_voiture(1500, 50):.0f} J&quot;)
+print(f&quot;{energie_voiture(1500, 100):.0f} J&quot;)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<div class="admonition essaie">
+<p class="admonition-title">Essaie-le</p>
+<p>À 100 km/h, l'énergie est-elle deux fois plus grande qu'à 50 km/h? Pourquoi pas? Que t'apprend ce résultat sur la distance de freinage?</p>
+</div>
+<h2 id="decomposer-un-probleme">Décomposer un problème</h2>
+<p>Planifier avec des fonctions, c'est découper le problème en <strong>sous-problèmes</strong>, chacun avec ses intrants, son extrant et son traitement. Chaque fonction devient une petite fiche de planification.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Fonction</th>
+<th>Intrants (paramètres)</th>
+<th>Extrant (return)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>kmh_vers_ms</code></td>
+<td>une vitesse en km/h</td>
+<td>la vitesse en m/s</td>
+</tr>
+<tr>
+<td><code>energie_cinetique</code></td>
+<td>masse (kg), vitesse (m/s)</td>
+<td>l'énergie (J)</td>
+</tr>
+<tr>
+<td><code>energie_voiture</code></td>
+<td>masse (kg), vitesse (km/h)</td>
+<td>l'énergie (J)</td>
+</tr>
+</tbody>
+</table></div>
+<p>On teste <strong>chaque fonction séparément</strong>, avec son propre jeu d'essais, avant de les assembler. Une erreur se trouve alors en quelques secondes, au lieu de chercher dans tout le programme.</p>
+<h2 id="exemple-complet-la-boite-a-outils-de-la-chute-libre">Exemple complet : la boîte à outils de la chute libre</h2>
+<h3 id="planifier">Planifier</h3>
+<p>On veut savoir, pour une chute de h mètres sans frottement : le temps de chute, la vitesse à l'impact en km/h, et si un œuf survit (vitesse d'impact de moins de 15 km/h, disons).</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Fonction</th>
+<th>Paramètres</th>
+<th>Retourne</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>temps_chute(h)</code></td>
+<td>hauteur (m)</td>
+<td>t = √(2h / g), en s</td>
+</tr>
+<tr>
+<td><code>vitesse_impact(h)</code></td>
+<td>hauteur (m)</td>
+<td>v = g × t, en m/s</td>
+</tr>
+<tr>
+<td><code>oeuf_survit(h)</code></td>
+<td>hauteur (m)</td>
+<td><code>True</code> si la vitesse est de moins de 15 km/h</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Jeu d'essais</strong> : <code>temps_chute(0)</code> vaut 0; <code>temps_chute(4.905)</code> vaut 1.0; <code>oeuf_survit(0.5)</code> est vrai (11.3 km/h); <code>oeuf_survit(1)</code> est faux (15.9 km/h).</p>
+<h3 id="coder">Coder</h3>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">import math
+G = 9.81
+
+def temps_chute(h):
+    &quot;&quot;&quot;Temps (s) pour tomber de h mètres, sans frottement.&quot;&quot;&quot;
+    return math.sqrt(2 * h / G)
+
+def vitesse_impact(h):
+    &quot;&quot;&quot;Vitesse d&#x27;impact (m/s) après une chute de h mètres.&quot;&quot;&quot;
+    return G * temps_chute(h)
+
+def oeuf_survit(h):
+    &quot;&quot;&quot;True si l&#x27;œuf touche le sol à moins de 15 km/h.&quot;&quot;&quot;
+    return vitesse_impact(h) * 3.6 &lt; 15
+
+for h in [0.5, 1, 2]:
+    print(f&quot;{h} m : {temps_chute(h):.2f} s, {vitesse_impact(h) * 3.6:.1f} km/h, survit : {oeuf_survit(h)}&quot;)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<h3 id="verifier">Vérifier</h3>
+<p>Teste d'abord chaque fonction seule, avec le jeu d'essais : <code>print(temps_chute(4.905))</code> doit donner 1.0. Ensuite seulement, teste l'ensemble.</p>
+<p>La boucle <code>for h in [0.5, 1, 2]</code> parcourt une <strong>liste</strong> de valeurs. On verra les listes en détail au chapitre 8.</p>
+<h2 id="pieges-frequents">Pièges fréquents</h2>
+<ul>
+<li>Utiliser <code>print()</code> au lieu de <code>return</code> dans une fonction de calcul.</li>
+<li>Oublier les parenthèses à l'appel : <code>temps_chute</code> sans parenthèses ne calcule rien.</li>
+<li>Utiliser une variable locale en dehors de sa fonction.</li>
+<li>Placer <code>return</code> trop tôt : le reste de la fonction ne s'exécute jamais.</li>
+<li>Donner les arguments dans le mauvais ordre : <code>vitesse_moyenne(9.58, 100)</code> ne donne pas la même chose que <code>vitesse_moyenne(100, 9.58)</code>.</li>
+</ul>
+<h2 id="autoquiz">Autoquiz</h2>
+<ol>
+<li>Quelle est la différence entre un paramètre et un argument?</li>
+<li>Que retourne une fonction qui n'a pas de <code>return</code>?</li>
+<li>Pourquoi ne peut-on pas utiliser, après l'appel, une variable créée dans une fonction?</li>
+<li>À quoi sert une docstring?</li>
+<li>Pourquoi tester chaque fonction séparément avant de les assembler?</li>
+</ol>
+<h2 id="vocabulaire">Vocabulaire</h2>
+<div class="vocab"><span>fonction</span><span>def</span><span>paramètre</span><span>argument</span><span>appel</span><span>return</span><span>valeur de retour</span><span>None</span><span>valeur par défaut</span><span>variable locale</span><span>portée</span><span>docstring</span><span>décomposition</span></div>
+<h2 id="exercices">Exercices préparatoires</h2><p>Écris ton code dans chaque exercice : remplace les <code>None</code> par ta réponse, puis clique sur <strong>Vérifier</strong>. La vérification te dit si ta réponse est bonne, sans la montrer. Ton travail est sauvegardé automatiquement dans ce navigateur.</p>
+<section class="exo" id="exo-6-1" data-id="6.1" data-checks="[[&quot;r&quot;, &quot;4e8d15c2fb61&quot;]]">
+  <div class="exo-head"><h3>Exercice 6.1 — Prédire un appel</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p><strong>Sans exécuter de code</strong>, donne la valeur de <code>r</code>.</p>
+<pre><code><span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+</code></pre></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 6.1 — Prédire un appel">r = None</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-6-2" data-id="6.2" data-checks="[[&quot;affichage&quot;, &quot;05045f1a8702&quot;]]">
+  <div class="exo-head"><h3>Exercice 6.2 — return ou print?</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p><strong>Sans exécuter de code</strong> : qu'affiche la dernière ligne de ce programme? Écris ta réponse entre guillemets, par exemple <code>"10"</code>.</p>
+<pre><code><span class="k">def</span><span class="w"> </span><span class="nf">g</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">g</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+</code></pre></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 6.2 — return ou print?">affichage = None</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-6-3" data-id="6.3" data-checks="[[&quot;aire_disque(1)&quot;, &quot;23741492d396&quot;], [&quot;aire_disque(2.5)&quot;, &quot;309904c95e1e&quot;], [&quot;aire_disque(0)&quot;, &quot;297d62f39fae&quot;]]">
+  <div class="exo-head"><h3>Exercice 6.3 — L&#x27;aire d&#x27;un disque</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Écris la fonction <code>aire_disque(rayon)</code> qui <strong>retourne</strong> l'aire d'un disque. La vérification appelle ta fonction avec plusieurs rayons.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 6.3 — L&#x27;aire d&#x27;un disque">import math
+
+def aire_disque(rayon):
+    pass   # remplace cette ligne</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-6-4" data-id="6.4" data-checks="[[&quot;celsius_vers_fahrenheit(0)&quot;, &quot;f0eff14dc3b5&quot;], [&quot;celsius_vers_fahrenheit(100)&quot;, &quot;0902bf92a6cf&quot;], [&quot;celsius_vers_fahrenheit(-40)&quot;, &quot;d2c4f7391698&quot;], [&quot;celsius_vers_fahrenheit(37)&quot;, &quot;6a0fc5e6b42a&quot;]]">
+  <div class="exo-head"><h3>Exercice 6.4 — Une conversion réutilisable</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Écris <code>celsius_vers_fahrenheit(c)</code>, qui retourne la température en °F.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 6.4 — Une conversion réutilisable">def celsius_vers_fahrenheit(c):
+    pass   # remplace cette ligne</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-6-5" data-id="6.5" data-checks="[[&quot;energie_cinetique(2, 3)&quot;, &quot;3c05d2794f40&quot;], [&quot;energie_cinetique(0.5, 10)&quot;, &quot;be5150467b60&quot;], [&quot;energie_cinetique(1500, 0)&quot;, &quot;297d62f39fae&quot;]]">
+  <div class="exo-head"><h3>Exercice 6.5 — Deux paramètres</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Écris <code>energie_cinetique(masse, vitesse)</code>, qui retourne ½ m v² (en J).</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 6.5 — Deux paramètres">def energie_cinetique(masse, vitesse):
+    pass   # remplace cette ligne</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-6-6" data-id="6.6" data-checks="[[&quot;est_pair(4)&quot;, &quot;3cbc87c7681f&quot;], [&quot;est_pair(7)&quot;, &quot;60a33e6cf515&quot;], [&quot;est_pair(0)&quot;, &quot;3cbc87c7681f&quot;], [&quot;est_pair(-3)&quot;, &quot;60a33e6cf515&quot;]]">
+  <div class="exo-head"><h3>Exercice 6.6 — Une fonction qui retourne un booléen</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Écris <code>est_pair(n)</code>, qui retourne <code>True</code> si l'entier <code>n</code> est pair, et <code>False</code> sinon. Une seule ligne suffit.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 6.6 — Une fonction qui retourne un booléen">def est_pair(n):
+    pass   # remplace cette ligne</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-6-7" data-id="6.7" data-checks="[[&quot;hypotenuse(3, 4)&quot;, &quot;0be3a3882951&quot;], [&quot;hypotenuse(5, 12)&quot;, &quot;f9399c01124d&quot;], [&quot;hypotenuse(1, 1)&quot;, &quot;d8b76c54cf79&quot;]]">
+  <div class="exo-head"><h3>Exercice 6.7 — Pythagore, en fonction</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Écris <code>hypotenuse(a, b)</code>, qui retourne la longueur de l'hypoténuse d'un triangle rectangle de côtés <code>a</code> et <code>b</code>.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 6.7 — Pythagore, en fonction">import math
+
+def hypotenuse(a, b):
+    pass   # remplace cette ligne</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-6-8" data-id="6.8" data-checks="[[&quot;poids(10)&quot;, &quot;c1f62a37dff5&quot;], [&quot;poids(10, 1.62)&quot;, &quot;ff8ec9d74f34&quot;], [&quot;poids(70, 3.71)&quot;, &quot;77210e29e1b5&quot;]]">
+  <div class="exo-head"><h3>Exercice 6.8 — Une valeur par défaut</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Écris <code>poids(masse, g=9.81)</code>, qui retourne le poids (N). Sans deuxième argument, on est sur Terre.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 6.8 — Une valeur par défaut">def poids(masse, g=9.81):
+    pass   # remplace cette ligne</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-6-9" data-id="6.9" data-checks="[[&quot;temps_parcours(100, 100)&quot;, &quot;927028a0169c&quot;], [&quot;temps_parcours(1, 60)&quot;, &quot;7c3437d2d94e&quot;], [&quot;temps_parcours(42.195, 20)&quot;, &quot;3046fb896ee0&quot;]]">
+  <div class="exo-head"><h3>Exercice 6.9 — Une fonction qui en utilise une autre</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>La fonction <code>kmh_vers_ms</code> est fournie. Écris <code>temps_parcours(distance_km, vitesse_kmh)</code>, qui retourne le temps de parcours <strong>en secondes</strong>, en utilisant <code>kmh_vers_ms</code>.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 6.9 — Une fonction qui en utilise une autre">def kmh_vers_ms(vitesse_kmh):
+    return vitesse_kmh / 3.6
+
+def temps_parcours(distance_km, vitesse_kmh):
+    pass   # remplace cette ligne</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-6-10" data-id="6.10" data-checks="[[&quot;classer_ph(3)&quot;, &quot;39ff51dfcdfa&quot;], [&quot;classer_ph(7)&quot;, &quot;4478c4c9b6fe&quot;], [&quot;classer_ph(11)&quot;, &quot;7df6f47711d9&quot;], [&quot;classer_ph(-1)&quot;, &quot;bc50babe29fd&quot;], [&quot;classer_ph(15)&quot;, &quot;bc50babe29fd&quot;], [&quot;classer_ph(0)&quot;, &quot;39ff51dfcdfa&quot;], [&quot;classer_ph(14)&quot;, &quot;7df6f47711d9&quot;]]">
+  <div class="exo-head"><h3>Exercice 6.10 — Classer le pH, en fonction</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Reprends la classification du chapitre 3 dans une fonction <code>classer_ph(ph)</code> qui <strong>retourne</strong> <code>"mesure invalide"</code>, <code>"acide"</code>, <code>"neutre"</code> ou <code>"basique"</code>. La vérification teste toutes les branches et les bornes.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 6.10 — Classer le pH, en fonction">def classer_ph(ph):
+    pass   # remplace cette ligne</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+  <div class="enclasse"><p><strong>En classe : Labo 6.</strong> Quiz d'entrée, démonstration, atelier en équipe et labo individuel. Le code d'accès est donné au début de la séance.</p><a class="btn ghost" href="../labos/labo06.html">Page du labo 6</a></div>
+  <h2 id="remise">Remise sur LÉA</h2>
+  <div class="travail">
+    <label class="nom"><span>Ton nom (prénom et nom)</span><input id="nom-etudiant" type="text" autocomplete="name"></label>
+    <div><p class="progression"></p><div class="barre" aria-hidden="true"><span></span></div></div>
+    <ol>
+      <li>Clique sur <strong>Télécharger mon rapport</strong>. Le fichier contient ton code, tes fiches et le résultat de chaque vérification.</li>
+      <li>Dépose ce fichier dans le travail du chapitre 6 sur LÉA.</li>
+    </ol>
+    <div class="actions"><button class="btn telecharger" type="button">Télécharger mon rapport</button>
+      <label class="btn ghost">Importer un rapport<input class="importer" type="file" accept=".py,.txt" hidden></label></div>
+    <p id="msg-import" aria-live="polite"></p>
+    <p class="note">Ton travail est sauvegardé automatiquement, mais seulement dans <em>ce</em> navigateur, sur <em>cet</em> appareil. Pour continuer ailleurs, télécharge ton rapport et importe-le sur l'autre appareil.</p>
+  </div>
+  <nav class="pager" aria-label="Chapitres"><a class="btn ghost" href="ch05.html">← Chapitre 5</a><a class="btn ghost" href="../#calendrier">Calendrier →</a></nav>
+</article>
+<aside class="toc" aria-label="Dans ce chapitre">
+  <p>Dans ce chapitre</p>
+  <ol><li><a href="#objectifs">Objectifs</a></li><li><a href="#definir-et-appeler-une-fonction">Définir et appeler une fonction</a></li><li><a href="#return-ou-print">return ou print()?</a></li><li><a href="#plusieurs-parametres-valeurs-par-defaut">Plusieurs paramètres, valeurs par défaut</a></li><li><a href="#la-portee-des-variables">La portée des variables</a></li><li><a href="#des-fonctions-qui-en-appellent-dautres">Des fonctions qui en appellent d'autres</a></li><li><a href="#decomposer-un-probleme">Décomposer un problème</a></li><li><a href="#exemple-complet-la-boite-a-outils-de-la-chute-libre">Exemple complet : la boîte à outils de la chute libre</a></li><li><a href="#pieges-frequents">Pièges fréquents</a></li><li><a href="#autoquiz">Autoquiz</a></li><li><a href="#vocabulaire">Vocabulaire</a></li><li><a href="#exercices">Exercices préparatoires</a></li><li><a href="#remise">Remise sur LÉA</a></li></ol>
+  <div class="cta"><p class="progression"></p><div class="barre" aria-hidden="true"><span></span></div><a class="btn" href="#remise">Remise sur LÉA</a><a class="btn ghost" href="../#recettes">Recettes</a></div>
+</aside>
+</div>
+<script src="../assets/cours.js?v=ce0c5a90"></script>
+</body>
+</html>
