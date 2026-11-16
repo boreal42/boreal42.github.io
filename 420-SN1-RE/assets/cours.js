@@ -1,11 +1,9 @@
 // 420-SN1-RE — Python dans la page : exemples, exercices vérifiés, sauvegarde et rapport.
 (function () {
   "use strict";
-  const PYODIDE = "https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js";
   const CHAPITRE = document.body.dataset.chapitre || "";
   const TYPE = document.body.dataset.type || "chapitre";
   const CLE = "420sn1re:";
-  let pyPromise = null;
 
   // ---------- Stockage local (peut être indisponible) ----------
   const stock = {
@@ -14,83 +12,41 @@
   };
 
   // ---------- Python ----------
-  const OUTILS = `
-import hashlib, json
-def _empreinte(v):
-    if isinstance(v, bool) or v is None:
-        texte = repr(v)
-    elif isinstance(v, (int, float)):
-        texte = f"{round(float(v), 4):.4f}"
-        if texte == "-0.0000":
-            texte = "0.0000"
-    else:
-        texte = repr(v)
-    return hashlib.sha256(texte.encode()).hexdigest()[:12]
-
-def _indice(v, h):
-    # Indices ciblés pour les erreurs de débutant les plus fréquentes.
-    if isinstance(v, tuple):
-        if len(v) == 2 and all(isinstance(x, int) for x in v):
-            try:
-                if _empreinte(float(f"{v[0]}.{v[1]}")) == h:
-                    return f"Ta valeur est bonne, mais tu as écrit une virgule. En Python, le séparateur décimal est le point : {v[0]}.{v[1]}"
-            except ValueError:
-                pass
-        return "C'est un tuple : plusieurs valeurs séparées par une virgule. As-tu écrit une virgule au lieu d'un point décimal?"
-    if isinstance(v, str):
-        try:
-            nombre = float(v.replace(",", "."))
-            if _empreinte(nombre) == h or _empreinte(int(nombre)) == h:
-                return "Ta valeur est bonne, mais c'est du texte : enlève les guillemets pour en faire un nombre."
-        except ValueError:
-            pass
-        if _empreinte(v.strip()) == h:
-            return "Presque : enlève les espaces au début ou à la fin du texte."
-        for cand in (True, False):
-            if v.strip().lower() in (repr(cand).lower(), "vrai" if cand else "faux") and _empreinte(cand) == h:
-                return f"Bonne idée, mais True et False s'écrivent sans guillemets : {cand}"
-    return ""
-
-def _verifier(ns, checks):
-    res = []
-    for nom, h in checks:
-        v = ns.get(nom, None)
-        ok = None if v is None else _empreinte(v) == h
-        res.append([nom, ok, repr(v), "" if ok in (None, True) else _indice(v, h)])
-    return json.dumps(res)
-`;
-
-  function chargerPython() {
-    if (!pyPromise) {
-      pyPromise = new Promise((resolve, reject) => {
-        const s = document.createElement("script");
-        s.src = PYODIDE;
-        s.onload = () => loadPyodide().then(async py => { await py.runPythonAsync(OUTILS); resolve(py); }, reject);
-        s.onerror = () => reject(new Error("Impossible de charger Python. Vérifie ta connexion Internet, puis réessaie."));
-        document.head.appendChild(s);
-      });
-    }
-    return pyPromise;
+  // ---------- Python, exécuté en arrière-plan (Web Worker) ----------
+  // Un programme qui dépasse LIMITE_MS (boucle infinie) est arrêté : on détruit le worker et on en recrée un.
+  const LIMITE_MS = 5000;
+  const SCRIPT = document.currentScript ? document.currentScript.src : "";
+  const URL_WORKER = SCRIPT.replace(/cours\.js/, "python-worker.js");
+  let worker = null, pretP = null, pyPret = false, seq = 0;
+  const attente = new Map();
+  function demarrer() {
+    worker = new Worker(URL_WORKER);
+    pyPret = false;
+    pretP = new Promise((resolve, reject) => {
+      worker.onmessage = e => {
+        const m = e.data;
+        if (m.type === "pret") { pyPret = true; resolve(); }
+        else if (m.type === "echec") reject(new Error("Impossible de charger Python. Vérifie ta connexion Internet, puis réessaie."));
+        else if (m.type === "resultat") { const r = attente.get(m.id); if (r) { attente.delete(m.id); clearTimeout(r.minuterie); r.resolve(m); } }
+      };
+      worker.onerror = () => reject(new Error("Impossible de charger Python. Vérifie ta connexion Internet, puis réessaie."));
+    });
   }
-
-  function nettoyerErreur(message) {
-    const lignes = String(message).trim().split("\n");
-    const debut = lignes.findIndex(l => l.includes('File "<exec>"'));
-    const utiles = debut >= 0 ? lignes.slice(debut) : lignes.slice(-1);
-    return utiles.map(l => l.replace('File "<exec>", ', "")).join("\n");
-  }
-
-  // Exécute du code dans un espace de noms. Retourne {sortie, erreur}.
-  async function executer(py, code, ns) {
-    let sortie = "";
-    py.setStdout({ batched: s => { sortie += s + "\n"; } });
-    py.setStderr({ batched: s => { sortie += s + "\n"; } });
-    try {
-      await py.runPythonAsync(code, { globals: ns });
-      return { sortie, erreur: null };
-    } catch (err) {
-      return { sortie, erreur: nettoyerErreur(err.message || err) };
-    }
+  function messageChargement() { return pyPret ? "Exécution…" : "Chargement de Python (quelques secondes)…"; }
+  async function executerPy(code, espace, checks) {
+    if (!worker) demarrer();
+    try { await pretP; } catch (e) { worker.terminate(); worker = null; return { sortie: "", erreur: e.message }; }
+    return new Promise(resolve => {
+      const id = ++seq;
+      const minuterie = setTimeout(() => {
+        attente.delete(id);
+        worker.terminate(); worker = null;
+        attente.forEach(r => r.resolve({ sortie: "", erreur: "Exécution interrompue." })); attente.clear();
+        resolve({ sortie: "", erreur: `⏱ Ton programme tourne depuis plus de ${LIMITE_MS / 1000} secondes : il a été arrêté.\nAs-tu une boucle infinie? Vérifie que la condition de ton while finit par devenir fausse.` });
+      }, LIMITE_MS);
+      attente.set(id, { resolve, minuterie });
+      worker.postMessage({ id, code, espace, checks });
+    });
   }
 
   function ajuster(t) { t.style.height = "auto"; t.style.height = t.scrollHeight + 4 + "px"; }
@@ -187,7 +143,6 @@ def _verifier(ns, checks):
   }
 
   // ---------- Exemples de la théorie (espace de noms partagé par la page) ----------
-  let nsExemples = null;
   document.querySelectorAll(".runner:not(.exo-runner)").forEach(bloc => {
     const zone = bloc.querySelector("textarea");
     const sortie = bloc.querySelector("output");
@@ -195,15 +150,11 @@ def _verifier(ns, checks):
     const original = zone.value;
     const lancer = async () => {
       sortie.className = ""; sortie.textContent = "";
-      etat.textContent = pyPromise ? "Exécution…" : "Chargement de Python (une seule fois, quelques secondes)…";
-      try {
-        const py = await chargerPython();
-        if (!nsExemples) nsExemples = py.globals.get("dict")();
-        const r = await executer(py, zone.value, nsExemples);
-        sortie.textContent = r.sortie + (r.erreur || "") || "(aucun affichage)";
-        sortie.className = r.erreur ? "err" : "";
-        etat.textContent = r.erreur ? "Erreur" : "";
-      } catch (e) { sortie.textContent = e.message; sortie.className = "err"; etat.textContent = ""; }
+      etat.textContent = messageChargement();
+      const r = await executerPy(zone.value, "exemples");
+      sortie.textContent = r.sortie + (r.erreur || "") || "(aucun affichage)";
+      sortie.className = r.erreur ? "err" : "";
+      etat.textContent = r.erreur ? "Erreur" : "";
     };
     brancherEditeur(zone, lancer);
     bloc.querySelector(".run").addEventListener("click", lancer);
@@ -236,7 +187,7 @@ def _verifier(ns, checks):
     const verdict = exo.querySelector(".verdict");
     const etat = exo.querySelector(".status");
     const depart = zone.value;
-    const checks = JSON.parse(exo.dataset.checks);
+    const checks = JSON.parse(exo.dataset.checks || "[]");
 
     const sauve = stock.lire(CHAPITRE + ":" + exo.dataset.id);
     if (sauve) {
@@ -255,21 +206,17 @@ def _verifier(ns, checks):
 
     async function lancer(avecVerif) {
       sortie.className = ""; sortie.textContent = ""; verdict.innerHTML = "";
-      etat.textContent = pyPromise ? "Exécution…" : "Chargement de Python (une seule fois, quelques secondes)…";
-      let py;
-      try { py = await chargerPython(); } catch (e) { sortie.textContent = e.message; sortie.className = "err"; etat.textContent = ""; return; }
-      const ns = py.globals.get("dict")();
-      const r = await executer(py, zone.value, ns);
+      etat.textContent = messageChargement();
+      const r = await executerPy(zone.value, null, avecVerif ? checks : null);
       sortie.textContent = r.sortie + (r.erreur || "");
       if (r.erreur) sortie.className = "err";
       etat.textContent = "";
-      if (!avecVerif) return;
+      if (!avecVerif) { sauver(exo); return; }
       if (r.erreur) {
         verdict.innerHTML = '<p class="v-non">Corrige d\'abord l\'erreur ci-dessus, puis vérifie de nouveau.</p>';
         marquer(exo, false); sauver(exo); return;
       }
-      const verifier = py.globals.get("_verifier");
-      const res = JSON.parse(verifier(ns, py.toPy(checks)));
+      const res = r.verifs || [];
       const esc = t => t.replace(/&/g, "&amp;").replace(/</g, "&lt;");
       const lignes = res.map(([nom, ok, valeur, indice]) => {
         if (ok === null) return `<li class="v-attente">⏳ <code>${nom}</code> : pas encore de réponse.</li>`;
@@ -285,7 +232,8 @@ def _verifier(ns, checks):
 
     brancherEditeur(zone, () => lancer(false));
     exo.querySelector(".run").addEventListener("click", () => lancer(false));
-    exo.querySelector(".check").addEventListener("click", () => lancer(true));
+    const boutonVerif = exo.querySelector(".check");
+    if (boutonVerif) boutonVerif.addEventListener("click", () => lancer(true));
     exo.querySelector(".reset").addEventListener("click", () => {
       if (zone.value !== depart && !window.confirm("Effacer ton code et revenir au code de départ?")) return;
       zone.value = depart; ajuster(zone); sortie.textContent = ""; verdict.innerHTML = "";
