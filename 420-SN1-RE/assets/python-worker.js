@@ -57,7 +57,7 @@ const pret = loadPyodide().then(async p => { await p.runPythonAsync(OUTILS); py 
   .catch(e => postMessage({ type: "echec", message: String(e) }));
 onmessage = async e => {
   await pret;
-  const { id, code, espace, checks } = e.data;
+  const { id, code, espace, checks, valeurs } = e.data;
   let sortie = "";
   py.setStdout({ batched: s => { sortie += s + "\n"; } });
   py.setStderr({ batched: s => { sortie += s + "\n"; } });
@@ -68,7 +68,13 @@ onmessage = async e => {
     postMessage({ type: "resultat", id, sortie, erreur: nettoyerErreur(err.message || err) });
     return;
   }
-  let verifs = null;
+  let verifs = null, vals = null;
   if (checks && checks.length) verifs = JSON.parse(py.globals.get("_verifier")(ns, py.toPy(checks)));
-  postMessage({ type: "resultat", id, sortie, erreur: null, verifs });
+  if (valeurs && valeurs.length) {
+    ns.set("__noms__", py.toPy(valeurs));
+    vals = JSON.parse(await py.runPythonAsync(
+      '__import__("json").dumps({n: (lambda v: v if v is None or isinstance(v, (int, float, str, bool)) else repr(v))(globals().get(n)) for n in __noms__})',
+      { globals: ns }));
+  }
+  postMessage({ type: "resultat", id, sortie, erreur: null, verifs, valeurs: vals });
 };

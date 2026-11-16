@@ -185,3 +185,18 @@ td.num{font-family:var(--font-mono);white-space:nowrap}
 .billet textarea{font-family:var(--font-body);font-size:1rem;color:var(--ink);background:var(--sheet);border:1px solid var(--rule);border-radius:6px;padding:.6rem .7rem;resize:vertical;overflow:hidden;min-height:5rem}
 .enclasse{border:1px solid var(--accent);background:var(--accent-soft);border-radius:10px;padding:1rem 1.2rem;margin-top:2rem;max-width:none;display:flex;justify-content:space-between;gap:1rem;align-items:center;flex-wrap:wrap}
 .enclasse p{margin:0}
+
+/* Évaluations et correction */
+body[data-type="evaluation"] .badge{display:none}
+.enonce-rappel{border-left:3px solid var(--rule);padding:.2rem 0 .2rem 1rem;margin:1rem 0;max-width:none}
+.quiz.eval .q-verdict{display:none}
+.layout.correction{grid-template-columns:1fr}
+.layout.correction article > *{max-width:none}
+table.notes td{vertical-align:top}
+table.notes tr.detail td{background:var(--paper);padding:.3rem .8rem}
+.detail-grille{display:grid;grid-template-columns:1fr 1fr 1.4fr;gap:1.2rem;padding:.6rem 0}
+.detail-grille h4{margin:.2rem 0 .4rem;font-family:var(--font-display)}
+.sans-puces{list-style:none;padding:0}
+.criteres{display:flex;flex-direction:column;gap:.3rem;margin-top:.6rem;padding:.6rem;border:1px dashed var(--accent);border-radius:6px}
+.critere{display:flex;gap:.4rem;align-items:flex-start;font-size:.9rem}
+@media (max-width:900px){.detail-grille{grid-template-columns:1fr}}

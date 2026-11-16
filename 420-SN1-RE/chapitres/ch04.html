@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="fr-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ch. 4 · La boucle while et la trace d&#x27;exécution · 420-SN1-RE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/lecture.css?v=e5fbe94a">
+</head>
+<body data-chapitre="4">
+<header class="topbar"><div class="in">
+  <a class="home" href="../#chapitre-4"><span>420-SN1-RE</span>Programmation en sciences</a>
+  <span class="chap">Chapitre 4 · Semaine 4</span>
+</div></header>
+<div class="layout">
+<article>
+  <p class="eyebrow">Chapitre 4 · Semaine 4</p>
+  <h1>La boucle while et la trace d&#x27;exécution</h1>
+  <div class="prep">
+    <div><h2>À faire avant le cours</h2><ol><li>Lis ce chapitre et exécute les exemples (environ 1 h).</li><li>Fais les 5 exercices préparatoires 4.1 à 4.5, au bas de la page (environ 45 min).</li><li>Révise les chapitres 1 à 3 : l'évaluation 1 a lieu pendant le cours.</li><li>Télécharge ton rapport et remets-le sur LÉA avant le cours.</li></ol></div>
+    <a class="btn" href="#exercices">Aller aux exercices</a>
+  </div>
+  <p class="aide">Tout le code de cette page s'exécute dans ton navigateur : clique sur <strong>▶ Exécuter</strong>. Tu peux modifier les exemples librement; <strong>Réinitialiser</strong> remet le code d'origine. Raccourci : Maj + Entrée.</p>
+<div class="admonition probleme">
+<p class="admonition-title">Problème d'ouverture</p>
+<p>Un échantillon de cobalt 60 de 80 g perd la moitié de sa masse tous les 5.27 ans. Combien de temps faut-il attendre pour qu'il en reste moins de 1 g?</p>
+<p>Tu ne sais pas d'avance combien de fois il faudra diviser par deux. Le programme doit donc <strong>répéter</strong> un calcul <strong>tant que</strong> le seuil n'est pas atteint. C'est le rôle de la boucle <code>while</code>.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Semaine d'évaluation</p>
+<p>L'<strong>évaluation 1</strong> (chapitres 1 à 3) a lieu pendant le cours de cette semaine. Pour te laisser du temps pour réviser, ce chapitre n'a que <strong>5 exercices préparatoires</strong>.</p>
+</div>
+<h2 id="objectifs">Objectifs</h2>
+<ol>
+<li>Écrire une boucle <code>while</code> qui s'arrête au bon moment.</li>
+<li>Utiliser un <strong>compteur</strong> et un <strong>accumulateur</strong>.</li>
+<li>Faire la <strong>trace d'exécution</strong> d'une boucle, tour par tour.</li>
+<li>Reconnaître et corriger une <strong>boucle infinie</strong>.</li>
+<li>Choisir un jeu d'essais qui teste les cas limites d'une boucle : zéro tour, un tour, la borne.</li>
+</ol>
+<h2 id="la-boucle-while">La boucle while</h2>
+<pre><code><span class="k">while</span> <span class="n">condition</span><span class="p">:</span>
+    <span class="n">instructions</span> <span class="n">répétées</span> <span class="n">tant</span> <span class="n">que</span> <span class="n">la</span> <span class="n">condition</span> <span class="n">est</span> <span class="n">vraie</span>
+<span class="n">suite</span> <span class="n">du</span> <span class="n">programme</span>
+</code></pre>
+<p>À chaque <strong>tour</strong> (on dit aussi <strong>itération</strong>), Python vérifie la condition. Si elle est vraie, il exécute le bloc, puis revient au <code>while</code>. Dès qu'elle est fausse, il passe à la suite.</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">compte = 3
+while compte &gt; 0:
+    print(&quot;Mise à feu dans&quot;, compte)
+    compte = compte - 1
+print(&quot;Décollage!&quot;)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<p>Trois questions à se poser pour <strong>chaque</strong> boucle :</p>
+<ol>
+<li><strong>Avant :</strong> quelles variables faut-il préparer?</li>
+<li><strong>Pendant :</strong> qu'est-ce qui change à chaque tour, et qui finira par rendre la condition fausse?</li>
+<li><strong>Après :</strong> que vaut chaque variable à la sortie?</li>
+</ol>
+<h2 id="compteurs-et-accumulateurs">Compteurs et accumulateurs</h2>
+<p>Un <strong>compteur</strong> compte les tours : il part de 0 et augmente de 1 à chaque tour. Un <strong>accumulateur</strong> additionne des valeurs au fil des tours : il part de 0 pour une somme, ou de 1 pour un produit.</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable"># Somme des carrés de 1 à 5
+i = 1           # compteur
+total = 0       # accumulateur
+while i &lt;= 5:
+    total = total + i ** 2
+    i = i + 1
+print(&quot;Somme :&quot;, total)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<div class="admonition piege">
+<p class="admonition-title">Piège : l'initialisation</p>
+<p>Un accumulateur créé <strong>dans</strong> la boucle repart de zéro à chaque tour. Prépare toujours tes compteurs et tes accumulateurs <strong>avant</strong> le <code>while</code>.</p>
+</div>
+<h2 id="la-trace-dexecution">La trace d'exécution</h2>
+<p>Faire la <strong>trace</strong> d'un programme, c'est l'exécuter à la main, une ligne à la fois, en notant la valeur de chaque variable. C'est la meilleure façon de comprendre une boucle, et c'est une compétence évaluée dans ce cours.</p>
+<p>On fait un tableau : une colonne par variable, une colonne pour la condition, une ligne par tour. Voici la trace de la somme des carrés ci-dessus, avec la limite réduite à 3 :</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Moment</th>
+<th><code>i</code></th>
+<th><code>total</code></th>
+<th><code>i &lt;= 3</code>?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Avant la boucle</td>
+<td>1</td>
+<td>0</td>
+<td>vrai</td>
+</tr>
+<tr>
+<td>Après le tour 1</td>
+<td>2</td>
+<td>1</td>
+<td>vrai</td>
+</tr>
+<tr>
+<td>Après le tour 2</td>
+<td>3</td>
+<td>5</td>
+<td>vrai</td>
+</tr>
+<tr>
+<td>Après le tour 3</td>
+<td>4</td>
+<td>14</td>
+<td><strong>faux</strong> : on sort</td>
+</tr>
+</tbody>
+</table></div>
+<p>À la sortie, <code>i</code> vaut 4, et non 3. C'est la valeur qui a rendu la condition fausse.</p>
+<div class="admonition essaie">
+<p class="admonition-title">Essaie-le</p>
+<p>Vérifie ta trace en ajoutant <code>print(i, total)</code> à la fin du bloc de la boucle, puis exécute. Les lignes affichées doivent correspondre à ton tableau.</p>
+</div>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">i = 1
+total = 0
+while i &lt;= 3:
+    total = total + i ** 2
+    i = i + 1
+    print(i, total)
+print(&quot;À la sortie :&quot;, i, total)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<h2 id="la-boucle-infinie">La boucle infinie</h2>
+<p>Si la condition ne devient jamais fausse, la boucle tourne sans fin. Sur le site, un programme qui dépasse 5 secondes est arrêté automatiquement, avec un message.</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">k = 1
+while k &lt;= 3:
+    print(&quot;tour&quot;, k)
+    # Oubli : k n&#x27;augmente jamais</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<div class="admonition piege">
+<p class="admonition-title">Trouver une boucle infinie</p>
+<p>Fais la trace des deux premiers tours. Si la variable de la condition ne change pas d'un tour à l'autre, tu as trouvé le problème. Ajoute ensuite la ligne qui la fait évoluer, ici <code>k = k + 1</code>.</p>
+</div>
+<h2 id="exemple-complet-la-decroissance-radioactive">Exemple complet : la décroissance radioactive</h2>
+<h3 id="planifier">Planifier</h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Réponse</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Intrants</td>
+<td>masse initiale (g), demi-vie (années), seuil (g)</td>
+</tr>
+<tr>
+<td>Extrants</td>
+<td>nombre de demi-vies, durée (années), masse restante (g)</td>
+</tr>
+<tr>
+<td>Traitements</td>
+<td>tant que la masse est au moins égale au seuil : diviser la masse par 2, compter une demi-vie</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="le-jeu-dessais-dune-boucle">Le jeu d'essais d'une boucle</h3>
+<p>Une boucle se teste avec trois sortes de cas : un cas normal, un cas où la boucle ne tourne <strong>jamais</strong>, et un cas à la <strong>borne</strong>.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Masse initiale (g)</th>
+<th>Seuil (g)</th>
+<th>Demi-vies attendues</th>
+<th>Ce que ce cas teste</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>80</td>
+<td>1</td>
+<td>7</td>
+<td>cas normal (80, 40, 20, 10, 5, 2.5, 1.25, 0.625)</td>
+</tr>
+<tr>
+<td>0.5</td>
+<td>1</td>
+<td>0</td>
+<td>la boucle ne tourne jamais</td>
+</tr>
+<tr>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>la borne : après un tour, il reste exactement 1 g, qui n'est pas « moins de 1 g »</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="coder">Coder</h3>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">masse = 80.0        # g
+demi_vie = 5.27     # années
+seuil = 1.0         # g
+
+nb_demi_vies = 0
+while masse &gt;= seuil:
+    masse = masse / 2
+    nb_demi_vies = nb_demi_vies + 1
+
+duree = nb_demi_vies * demi_vie
+print(f&quot;{nb_demi_vies} demi-vies, soit {duree:.2f} ans; il reste {masse} g&quot;)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<h3 id="verifier">Vérifier</h3>
+<p>Exécute les trois cas du jeu d'essais. Le cas de la borne est le plus instructif : remplace <code>&gt;=</code> par <code>&gt;</code> et observe la différence. Les deux versions se défendent, mais une seule correspond à l'énoncé : « moins de 1 g ».</p>
+<h2 id="pieges-frequents">Pièges fréquents</h2>
+<ul>
+<li>Oublier de modifier, dans la boucle, la variable de la condition : boucle infinie.</li>
+<li>Initialiser un compteur ou un accumulateur dans la boucle au lieu d'avant.</li>
+<li>Se tromper d'un tour : <code>&lt;</code> au lieu de <code>&lt;=</code>, ou l'inverse. La trace et le cas de la borne le révèlent.</li>
+<li>Oublier l'indentation : une instruction qui devait se répéter ne s'exécute qu'une fois, après la boucle.</li>
+</ul>
+<h2 id="autoquiz">Autoquiz</h2>
+<ol>
+<li>Combien de fois s'exécute le bloc de <code>while x &lt; 0:</code> si <code>x</code> vaut 5 au départ?</li>
+<li>Que vaut <code>i</code> à la sortie de <code>i = 0</code> suivi de <code>while i &lt; 10: i = i + 3</code>?</li>
+<li>Quelle est la différence entre un compteur et un accumulateur?</li>
+<li>Quels trois cas faut-il mettre dans le jeu d'essais d'une boucle?</li>
+<li>Comment repère-t-on une boucle infinie avec une trace?</li>
+</ol>
+<h2 id="vocabulaire">Vocabulaire</h2>
+<div class="vocab"><span>boucle</span><span>while</span><span>itération</span><span>tour</span><span>condition d'arrêt</span><span>compteur</span><span>accumulateur</span><span>initialisation</span><span>trace d'exécution</span><span>boucle infinie</span><span>borne</span></div>
+<h2 id="exercices">Exercices préparatoires</h2><p>Écris ton code dans chaque exercice : remplace les <code>None</code> par ta réponse, puis clique sur <strong>Vérifier</strong>. La vérification te dit si ta réponse est bonne, sans la montrer. Ton travail est sauvegardé automatiquement dans ce navigateur.</p>
+<section class="exo" id="exo-4-1" data-id="4.1" data-checks="[[&quot;i_final&quot;, &quot;0be3a3882951&quot;], [&quot;total_final&quot;, &quot;ca99a3712615&quot;]]">
+  <div class="exo-head"><h3>Exercice 4.1 — Trace d&#x27;une boucle</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p><strong>Sans exécuter de code</strong>, fais la trace de ce programme sur papier, avec un tableau. Donne ensuite la valeur finale de <code>i</code> et de <code>total</code>.</p>
+<pre><code><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">while</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="mi">4</span><span class="p">:</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="n">total</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">i</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+</code></pre></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 4.1 — Trace d&#x27;une boucle">i_final = None
+total_final = None</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-4-2" data-id="4.2" data-checks="[[&quot;nb_tours&quot;, &quot;7eee9525c86f&quot;], [&quot;n_final&quot;, &quot;64e4b892473f&quot;]]">
+  <div class="exo-head"><h3>Exercice 4.2 — Combien de tours?</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p><strong>Sans exécuter de code</strong>, détermine combien de tours fait la boucle, et ce que vaut <code>n</code> à la sortie. Rappel : <code>//</code> est la division entière.</p>
+<pre><code><span class="n">n</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">tours</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">while</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">n</span> <span class="o">//</span> <span class="mi">3</span>
+    <span class="n">tours</span> <span class="o">=</span> <span class="n">tours</span> <span class="o">+</span> <span class="mi">1</span>
+</code></pre></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 4.2 — Combien de tours?">nb_tours = None
+n_final = None</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-4-3" data-id="4.3" data-checks="[[&quot;somme&quot;, &quot;ba0834152583&quot;]]">
+  <div class="exo-head"><h3>Exercice 4.3 — Une somme avec un accumulateur</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Calcule la somme des entiers de 1 à 100 avec une boucle <code>while</code>. N'utilise pas la formule de Gauss : le but est de pratiquer le compteur et l'accumulateur.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 4.3 — Une somme avec un accumulateur">somme = None
+# ta boucle ici
+print(somme)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-4-4" data-id="4.4" data-checks="[[&quot;nb_demi_vies&quot;, &quot;c0202b321689&quot;], [&quot;masse&quot;, &quot;98cbf41335cf&quot;]]">
+  <div class="exo-head"><h3>Exercice 4.4 — Combien de demi-vies?</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Un échantillon de 100 g perd la moitié de sa masse à chaque demi-vie. Combien de demi-vies faut-il pour qu'il en reste <strong>moins de 1 g</strong>? Quelle masse reste-t-il alors?</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 4.4 — Combien de demi-vies?">masse = 100.0   # g
+nb_demi_vies = None
+# ta boucle ici
+print(nb_demi_vies, masse)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-4-5" data-id="4.5" data-checks="[[&quot;fact&quot;, &quot;d4769480dc41&quot;]]">
+  <div class="exo-head"><h3>Exercice 4.5 — Une boucle qui ne s&#x27;arrête pas</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Ce programme doit calculer 6! = 1 × 2 × 3 × 4 × 5 × 6. Exécute-le : il tourne sans fin, et le site l'arrête après 5 secondes.</p>
+<p>Fais la trace des <strong>deux premiers tours</strong> sur papier pour comprendre pourquoi, puis corrige le programme.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 4.5 — Une boucle qui ne s&#x27;arrête pas">n = 6
+fact = 1
+k = 1
+while k &lt;= n:
+    fact = fact * k
+print(fact)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+  <div class="enclasse"><p><strong>En classe : évaluation 1, puis Labo 4.</strong> L'évaluation (60 min, chapitres 1 à 3) ouvre la séance; suivent la démonstration et un labo court. Les codes d'accès sont donnés en classe.</p><a class="btn ghost" href="../labos/labo04.html">Page du labo 4</a></div>
+  <h2 id="remise">Remise sur LÉA</h2>
+  <div class="travail">
+    <label class="nom"><span>Ton nom (prénom et nom)</span><input id="nom-etudiant" type="text" autocomplete="name"></label>
+    <div><p class="progression"></p><div class="barre" aria-hidden="true"><span></span></div></div>
+    <ol>
+      <li>Clique sur <strong>Télécharger mon rapport</strong>. Le fichier contient ton code, tes fiches et le résultat de chaque vérification.</li>
+      <li>Dépose ce fichier dans le travail du chapitre 4 sur LÉA.</li>
+    </ol>
+    <div class="actions"><button class="btn telecharger" type="button">Télécharger mon rapport</button>
+      <label class="btn ghost">Importer un rapport<input class="importer" type="file" accept=".py,.txt" hidden></label></div>
+    <p id="msg-import" aria-live="polite"></p>
+    <p class="note">Ton travail est sauvegardé automatiquement, mais seulement dans <em>ce</em> navigateur, sur <em>cet</em> appareil. Pour continuer ailleurs, télécharge ton rapport et importe-le sur l'autre appareil.</p>
+  </div>
+  <nav class="pager" aria-label="Chapitres"><a class="btn ghost" href="ch03.html">← Chapitre 3</a><a class="btn ghost" href="../#calendrier">Calendrier →</a></nav>
+</article>
+<aside class="toc" aria-label="Dans ce chapitre">
+  <p>Dans ce chapitre</p>
+  <ol><li><a href="#objectifs">Objectifs</a></li><li><a href="#la-boucle-while">La boucle while</a></li><li><a href="#compteurs-et-accumulateurs">Compteurs et accumulateurs</a></li><li><a href="#la-trace-dexecution">La trace d'exécution</a></li><li><a href="#la-boucle-infinie">La boucle infinie</a></li><li><a href="#exemple-complet-la-decroissance-radioactive">Exemple complet : la décroissance radioactive</a></li><li><a href="#pieges-frequents">Pièges fréquents</a></li><li><a href="#autoquiz">Autoquiz</a></li><li><a href="#vocabulaire">Vocabulaire</a></li><li><a href="#exercices">Exercices préparatoires</a></li><li><a href="#remise">Remise sur LÉA</a></li></ol>
+  <div class="cta"><p class="progression"></p><div class="barre" aria-hidden="true"><span></span></div><a class="btn" href="#remise">Remise sur LÉA</a><a class="btn ghost" href="../#recettes">Recettes</a></div>
+</aside>
+</div>
+<script src="../assets/cours.js?v=e5fbe94a"></script>
+</body>
+</html>

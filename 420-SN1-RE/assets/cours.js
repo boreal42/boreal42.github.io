@@ -33,7 +33,7 @@
     });
   }
   function messageChargement() { return pyPret ? "Exécution…" : "Chargement de Python (quelques secondes)…"; }
-  async function executerPy(code, espace, checks) {
+  async function executerPy(code, espace, checks, valeurs) {
     if (!worker) demarrer();
     try { await pretP; } catch (e) { worker.terminate(); worker = null; return { sortie: "", erreur: e.message }; }
     return new Promise(resolve => {
@@ -45,9 +45,11 @@
         resolve({ sortie: "", erreur: `⏱ Ton programme tourne depuis plus de ${LIMITE_MS / 1000} secondes : il a été arrêté.\nAs-tu une boucle infinie? Vérifie que la condition de ton while finit par devenir fausse.` });
       }, LIMITE_MS);
       attente.set(id, { resolve, minuterie });
-      worker.postMessage({ id, code, espace, checks });
+      worker.postMessage({ id, code, espace, checks, valeurs });
     });
   }
+
+  window.Cours = { executerPy, messageChargement: () => messageChargement() };
 
   function ajuster(t) { t.style.height = "auto"; t.style.height = t.scrollHeight + 4 + "px"; }
 
@@ -109,7 +111,7 @@
     });
     if (e.valide) {
       quiz.querySelectorAll("input").forEach(i => { i.disabled = true; });
-      quiz.querySelector(".valider-quiz").disabled = true;
+      const bv = quiz.querySelector(".valider-quiz"); if (bv) bv.disabled = true;
       quiz.querySelector(".score").textContent = `Résultat : ${e.score} / ${e.total}. Les réponses seront revues en classe.`;
     }
   }
@@ -128,7 +130,8 @@
       afficherQuiz();
     }
     quiz.addEventListener("input", () => { if (quiz.dataset.valide !== "1") stock.ecrire(CHAPITRE + ":quiz", etatQuiz()); });
-    quiz.querySelector(".valider-quiz").addEventListener("click", async () => {
+    const boutonQuiz = quiz.querySelector(".valider-quiz");
+    if (boutonQuiz) boutonQuiz.addEventListener("click", async () => {
       const qs = [...quiz.querySelectorAll(".q")];
       if (qs.some(q => !valeurQuestion(q).trim()) && !window.confirm("Certaines questions sont sans réponse. Valider quand même? Tu ne pourras plus modifier tes réponses.")) return;
       if (!qs.some(q => !valeurQuestion(q).trim()) && !window.confirm("Valider tes réponses? Tu ne pourras plus les modifier.")) return;
@@ -256,6 +259,7 @@
   majProgression();
 
   function rapport() {
+    const enEval = TYPE === "evaluation";
     const nom = (champNom && champNom.value.trim()) || "";
     const date = new Date();
     const donnees = { cours: "420-SN1-RE", chapitre: CHAPITRE, nom, date: date.toISOString(), exercices: {} };
@@ -263,7 +267,7 @@
     exercices.forEach(exo => {
       const e = etatExo(exo);
       donnees.exercices[exo.dataset.id] = e;
-      let bloc = `# ${"=".repeat(60)}\n# Exercice ${exo.dataset.id} — ${e.reussi ? "RÉUSSI" : "non réussi"}\n# ${"=".repeat(60)}\n`;
+      let bloc = `# ${"=".repeat(60)}\n# ${enEval ? "Problème " + exo.dataset.id : "Exercice " + exo.dataset.id + " — " + (e.reussi ? "RÉUSSI" : "non réussi")}\n# ${"=".repeat(60)}\n`;
       const f = Object.entries(e.fiche).filter(([, v]) => v.trim());
       if (f.length) bloc += "# Fiche de planification\n" + f.map(([k, v]) => `#   ${k} : ` + v.trim().replace(/\n/g, "\n#     ")).join("\n") + "\n#\n";
       parties.push(bloc + e.code + "\n");
@@ -273,14 +277,14 @@
     donnees.quiz = etatQuiz();
     const n = exercices.filter(e => e.dataset.reussi === "1").length;
     const lignesExtras = Object.entries(extras).filter(([, v]) => v.trim()).map(([k, v]) => `# ${k} : ` + v.trim().replace(/\n/g, "\n#   "));
-    const lignesQuiz = donnees.quiz ? [`# Quiz d'entrée : ${donnees.quiz.score} / ${donnees.quiz.total}` + (donnees.quiz.valide ? "" : " (non validé)"),
-      ...donnees.quiz.reponses.map((r, i) => `#   Q${i + 1} ${r.ok === true ? "✓" : r.ok === false ? "✗" : "·"} ${r.valeur}`)] : [];
+    const lignesQuiz = donnees.quiz ? [enEval ? "# Partie A — Traces et prédictions" : `# Quiz d'entrée : ${donnees.quiz.score} / ${donnees.quiz.total}` + (donnees.quiz.valide ? "" : " (non validé)"),
+      ...donnees.quiz.reponses.map((r, i) => `#   ${enEval ? "A" : "Q"}${i + 1} ${enEval ? "" : (r.ok === true ? "✓" : r.ok === false ? "✗" : "·") + " "}${r.valeur}`)] : [];
     const entete = [
       `# 420-SN1-RE · Programmation en sciences`,
-      `# Rapport ${TYPE === "labo" ? "du labo " + CHAPITRE.replace("L", "") : "du chapitre " + CHAPITRE}`,
+      `# Rapport ${TYPE === "labo" ? "du labo " + CHAPITRE.replace("L", "") : TYPE === "evaluation" ? "de l'évaluation " + CHAPITRE.replace("E", "") : "du chapitre " + CHAPITRE}`,
       `# Étudiant : ${nom || "(nom non indiqué)"}`,
       `# Généré le : ${date.toLocaleString("fr-CA")}`,
-      `# Résultat : ${n} / ${exercices.length} exercices réussis`,
+      ...(enEval ? [] : [`# Résultat : ${n} / ${exercices.length} exercices réussis`]),
       ...lignesQuiz,
       ...lignesExtras,
       ``,
@@ -294,7 +298,8 @@
     const blob = new Blob([rapport()], { type: "text/x-python;charset=utf-8" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
-    a.download = `420-SN1-RE_${TYPE === "labo" ? "labo" + CHAPITRE.replace("L", "") : "ch" + CHAPITRE}_${nom}.py`;
+    const prefixe = TYPE === "labo" ? "labo" + CHAPITRE.replace("L", "") : TYPE === "evaluation" ? "eval" + CHAPITRE.replace("E", "") : "ch" + CHAPITRE;
+    a.download = `420-SN1-RE_${prefixe}_${nom}.py`;
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(a.href), 2000);
   }
@@ -367,6 +372,7 @@
         document.querySelectorAll(".apres-verrou").forEach(e => { e.hidden = false; });
         stock.ecrire(CHAPITRE + ":code", normaliserCode(code));
         init();
+        document.dispatchEvent(new Event("contenu-ouvert"));
         if (location.hash) { const cible = document.getElementById(location.hash.slice(1)); if (cible) cible.scrollIntoView(); }
       } catch (e) {
         if (!silencieux) { msg.textContent = "Ce code ne fonctionne pas. Vérifie-le avec ton enseignant."; champ.select(); }
