@@ -393,16 +393,20 @@ def _verifier(ns, checks):
   }
 
   // ---------- Verrou des laboratoires : le contenu est chiffré avec le code d'accès ----------
+  // Le code tapé peut contenir des espaces, des majuscules ou des guillemets copiés : on les ignore.
+  function normaliserCode(c) { return String(c).toLowerCase().replace(/[\s`'"«»“”‘’]/g, ""); }
   function b64(s) { return Uint8Array.from(atob(s), c => c.charCodeAt(0)); }
   async function dechiffrer(code, paquet) {
-    const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(code.trim().toLowerCase()), "PBKDF2", false, ["deriveKey"]);
+    const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(normaliserCode(code)), "PBKDF2", false, ["deriveKey"]);
     const cle = await crypto.subtle.deriveKey({ name: "PBKDF2", salt: b64(paquet.sel), iterations: paquet.iterations, hash: "SHA-256" },
       base, { name: "AES-GCM", length: 256 }, false, ["decrypt"]);
     const clair = await crypto.subtle.decrypt({ name: "AES-GCM", iv: b64(paquet.iv) }, cle, b64(paquet.donnees));
     return new TextDecoder().decode(clair);
   }
   const verrou = document.getElementById("verrou");
-  if (verrou) {
+  if (verrou && !(window.crypto && crypto.subtle)) {
+    verrou.querySelector(".msg").textContent = "Ce navigateur ne peut pas ouvrir le labo. Utilise une version récente de Chrome, Firefox, Edge ou Safari.";
+  } else if (verrou) {
     const paquet = JSON.parse(document.getElementById("labo-chiffre").textContent);
     const form = verrou.querySelector("form");
     const champ = verrou.querySelector("input");
@@ -413,7 +417,7 @@ def _verifier(ns, checks):
         document.getElementById("contenu-labo").innerHTML = html;
         verrou.hidden = true;
         document.querySelectorAll(".apres-verrou").forEach(e => { e.hidden = false; });
-        stock.ecrire(CHAPITRE + ":code", code.trim().toLowerCase());
+        stock.ecrire(CHAPITRE + ":code", normaliserCode(code));
         init();
         if (location.hash) { const cible = document.getElementById(location.hash.slice(1)); if (cible) cible.scrollIntoView(); }
       } catch (e) {
