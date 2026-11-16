@@ -26,11 +26,36 @@ def _empreinte(v):
         texte = repr(v)
     return hashlib.sha256(texte.encode()).hexdigest()[:12]
 
+def _indice(v, h):
+    # Indices ciblés pour les erreurs de débutant les plus fréquentes.
+    if isinstance(v, tuple):
+        if len(v) == 2 and all(isinstance(x, int) for x in v):
+            try:
+                if _empreinte(float(f"{v[0]}.{v[1]}")) == h:
+                    return f"Ta valeur est bonne, mais tu as écrit une virgule. En Python, le séparateur décimal est le point : {v[0]}.{v[1]}"
+            except ValueError:
+                pass
+        return "C'est un tuple : plusieurs valeurs séparées par une virgule. As-tu écrit une virgule au lieu d'un point décimal?"
+    if isinstance(v, str):
+        try:
+            nombre = float(v.replace(",", "."))
+            if _empreinte(nombre) == h or _empreinte(int(nombre)) == h:
+                return "Ta valeur est bonne, mais c'est du texte : enlève les guillemets pour en faire un nombre."
+        except ValueError:
+            pass
+        if _empreinte(v.strip()) == h:
+            return "Presque : enlève les espaces au début ou à la fin du texte."
+        for cand in (True, False):
+            if v.strip().lower() in (repr(cand).lower(), "vrai" if cand else "faux") and _empreinte(cand) == h:
+                return f"Bonne idée, mais True et False s'écrivent sans guillemets : {cand}"
+    return ""
+
 def _verifier(ns, checks):
     res = []
     for nom, h in checks:
         v = ns.get(nom, None)
-        res.append([nom, None if v is None else _empreinte(v) == h, repr(v)])
+        ok = None if v is None else _empreinte(v) == h
+        res.append([nom, ok, repr(v), "" if ok in (None, True) else _indice(v, h)])
     return json.dumps(res)
 `;
 
@@ -168,11 +193,13 @@ def _verifier(ns, checks):
       }
       const verifier = py.globals.get("_verifier");
       const res = JSON.parse(verifier(ns, py.toPy(checks)));
-      const lignes = res.map(([nom, ok, valeur]) => {
+      const esc = t => t.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+      const lignes = res.map(([nom, ok, valeur, indice]) => {
         if (ok === null) return `<li class="v-attente">⏳ <code>${nom}</code> : pas encore de réponse.</li>`;
         if (ok) return `<li class="v-oui">✅ <code>${nom}</code> : correct.</li>`;
         const v = valeur.length > 60 ? valeur.slice(0, 57) + "…" : valeur;
-        return `<li class="v-non">❌ <code>${nom}</code> : pas encore. Tu as obtenu <code>${v.replace(/</g, "&lt;")}</code>.</li>`;
+        return `<li class="v-non">❌ <code>${nom}</code> : pas encore. Tu as obtenu <code>${esc(v)}</code>.`
+          + (indice ? `<br><span class="indice">💡 ${esc(indice)}</span>` : "") + `</li>`;
       });
       const tout = res.every(x => x[1] === true);
       verdict.innerHTML = `<ul>${lignes.join("")}</ul>` + (tout ? '<p class="v-oui"><strong>Exercice réussi.</strong></p>' : "");
