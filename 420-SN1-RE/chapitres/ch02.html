@@ -370,7 +370,7 @@ print(&quot;Masse : &quot; + masse + &quot; kg&quot;)</textarea><div class="bar"
 </ol>
 <h2 id="vocabulaire">Vocabulaire</h2>
 <div class="vocab"><span>affectation</span><span>variable</span><span>constante</span><span>type</span><span>int</span><span>float</span><span>str</span><span>bool</span><span>conversion</span><span>expression</span><span>opérateur</span><span>module</span><span>import</span><span>f-string</span><span>notation scientifique</span></div>
-<h2 id="exercices">Exercices préparatoires</h2><p>Écris ton code dans chaque exercice : remplace les <code>None</code> par ta réponse, puis clique sur <strong>Vérifier</strong>. La vérification te dit si ta réponse est bonne, sans la montrer. Ton travail est sauvegardé automatiquement dans ce navigateur.</p>
+<h2 id="exercices">Exercices préparatoires</h2><p>Écris ton code dans chaque exercice : remplace les <code>None</code> par ta réponse, puis clique sur <strong>Vérifier</strong>. La vérification te dit si ta réponse est bonne, sans la montrer. Ton travail est sauvegardé automatiquement dans ce navigateur.</p><div class="admonition piege"><p class="admonition-title">Les nombres dans les énoncés</p><p>Les énoncés écrivent les nombres à la française, avec une virgule : 273,15. Dans ton code, écris <strong>toujours un point</strong> : <code>273.15</code>. Avec une virgule, Python crée deux valeurs séparées, et ta réponse sera refusée.</p></div>
 <section class="exo" id="exo-2-1" data-id="2.1" data-checks="[[&quot;t1&quot;, &quot;d741a2314def&quot;], [&quot;t2&quot;, &quot;4af3d990269c&quot;], [&quot;t3&quot;, &quot;7996f13e6481&quot;], [&quot;t4&quot;, &quot;afd812c43000&quot;]]">
   <div class="exo-head"><h3>Exercice 2.1 — Quel type?</h3><span class="badge">À faire</span></div>
   <div class="enonce"><p>Sans exécuter de code, indique le type du résultat de chaque expression. Écris <code>"int"</code>, <code>"float"</code>, <code>"str"</code> ou <code>"bool"</code>, avec les guillemets.</p>
@@ -509,7 +509,7 @@ print(energie)</textarea>
 </section>
 <section class="exo" id="exo-2-10" data-id="2.10" data-checks="[[&quot;masse_lb&quot;, &quot;4d2f03f47387&quot;]]">
   <div class="exo-head"><h3>Exercice 2.10 — Convertir une saisie</h3><span class="badge">À faire</span></div>
-  <div class="enonce"><p>La variable <code>texte</code> contient ce qu'un utilisateur aurait tapé avec <code>input()</code>. Convertis-la en nombre, puis calcule la masse en livres (1 kg = 2,20462 lb), arrondie à une décimale avec <code>round()</code>.</p></div>
+  <div class="enonce"><p>La variable <code>texte</code> contient ce qu'un utilisateur aurait tapé avec <code>input()</code>. Convertis-la en nombre, puis calcule la masse en livres (1 kg = 2,20462 lb, à écrire <code>2.20462</code> dans ton code), arrondie à une décimale avec <code>round()</code>.</p></div>
   
   <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 2.10 — Convertir une saisie">texte = &quot;72.5&quot;     # ce que input() aurait retourné
 masse_kg = None
@@ -522,7 +522,7 @@ print(masse_lb)</textarea>
 <section class="exo" id="exo-L2-1" data-id="L2.1" data-checks="[[&quot;pression_kpa&quot;, &quot;235d6eb6b3b7&quot;]]">
   <div class="exo-head"><h3>Labo 2.1 (essentiel) — Gaz parfaits, avec les unités du labo</h3><span class="badge">À faire</span></div>
   <div class="enonce"><p>Au labo, on mesure la quantité de gaz en mol, la température en °C et le volume en litres. Calcule la pression en <strong>kPa</strong>.</p>
-<p>Attention aux unités : la loi des gaz parfaits demande des kelvins et des m³ (1 L = 0,001 m³), et donne des pascals.</p>
+<p>Attention aux unités : la loi des gaz parfaits demande des kelvins et des m³ (1 L = 0,001 m³, à écrire <code>0.001</code> dans ton code), et donne des pascals.</p>
 <p>La vérification teste le cas 1 mol, 0 °C, 22,4 L, qui donne environ la pression atmosphérique.</p>
 <p><strong>Bonus :</strong> remplace les trois valeurs par des <code>input()</code> convertis en <code>float</code>, et affiche le résultat avec deux décimales grâce à une f-string.</p></div>
   <div class="fiche"><p class="fiche-titre">Fiche de planification</p><label><span>Intrants</span><textarea data-champ="intrants" rows="2" spellcheck="true"></textarea></label><label><span>Extrants</span><textarea data-champ="extrants" rows="2" spellcheck="true"></textarea></label><label><span>Traitements</span><textarea data-champ="traitements" rows="2" spellcheck="true"></textarea></label><label><span>Jeu d'essais (calculé avant de coder)</span><textarea data-champ="jeu_essais" rows="2" spellcheck="true"></textarea></label></div>
