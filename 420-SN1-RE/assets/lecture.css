@@ -160,3 +160,28 @@ tr:last-child td{border-bottom:0}
 .progression{margin:0}
 @media (max-width:700px){.fiche{grid-template-columns:1fr}}
 .verdict .indice{display:inline-block;margin-top:.2rem;color:var(--ink)}
+
+/* Laboratoires */
+.verrou{border:1px solid var(--signal);background:var(--signal-soft);border-radius:10px;padding:1.2rem;margin-top:1.5rem;max-width:none}
+.verrou h2{border:0;margin:0 0 .4rem;padding:0}
+.verrou .ligne{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.4rem}
+.verrou input,.equipe input,.q input[type=text]{font-family:var(--font-mono);font-size:1rem;color:var(--ink);background:var(--sheet);border:1px solid var(--rule);border-radius:6px;padding:.5rem .7rem;min-width:220px}
+.verrou label{font-weight:600}
+.verrou .msg{color:var(--signal);margin:.5rem 0 0;min-height:1.2em}
+tr.pause td{color:var(--muted);font-style:italic;background:var(--paper)}
+td.num{font-family:var(--font-mono);white-space:nowrap}
+.quiz{border:1px solid var(--rule);border-radius:10px;padding:1rem 1.2rem;background:var(--sheet);max-width:none}
+.quiz ol{padding-left:1.4rem;margin:0}
+.q{margin:0 0 1.1rem;padding-bottom:1rem;border-bottom:1px solid var(--rule)}
+.q:last-child{border-bottom:0}
+.q-texte p{margin:.2rem 0 .5rem}
+.choix{display:flex;flex-direction:column;gap:.35rem}
+.choix label{display:flex;gap:.5rem;align-items:center;cursor:pointer}
+.q-verdict{margin-left:.6rem;font-size:1.1rem}
+.quiz-bas{display:flex;gap:1rem;align-items:center;flex-wrap:wrap}
+.quiz .score{font-weight:600;margin:0}
+.quiz .note{font-size:.88rem;color:var(--muted)}
+.equipe,.billet{display:flex;flex-direction:column;gap:.3rem;margin:1rem 0;font-weight:600;max-width:70ch}
+.billet textarea{font-family:var(--font-body);font-size:1rem;color:var(--ink);background:var(--sheet);border:1px solid var(--rule);border-radius:6px;padding:.6rem .7rem;resize:vertical;overflow:hidden;min-height:5rem}
+.enclasse{border:1px solid var(--accent);background:var(--accent-soft);border-radius:10px;padding:1rem 1.2rem;margin-top:2rem;max-width:none;display:flex;justify-content:space-between;gap:1rem;align-items:center;flex-wrap:wrap}
+.enclasse p{margin:0}

@@ -518,55 +518,7 @@ print(masse_lb)</textarea>
     <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
     <output></output><div class="verdict" aria-live="polite"></div></div>
 </section>
-<h2 id="laboratoire">Laboratoire (en classe)</h2><p>Pour chaque exercice : remplis la fiche de planification <strong>avant</strong> de coder, puis code, puis clique sur <strong>Vérifier</strong>.</p>
-<section class="exo" id="exo-L2-1" data-id="L2.1" data-checks="[[&quot;pression_kpa&quot;, &quot;235d6eb6b3b7&quot;]]">
-  <div class="exo-head"><h3>Labo 2.1 (essentiel) — Gaz parfaits, avec les unités du labo</h3><span class="badge">À faire</span></div>
-  <div class="enonce"><p>Au labo, on mesure la quantité de gaz en mol, la température en °C et le volume en litres. Calcule la pression en <strong>kPa</strong>.</p>
-<p>Attention aux unités : la loi des gaz parfaits demande des kelvins et des m³ (1 L = 0.001 m³), et donne des pascals.</p>
-<p>La vérification teste le cas 1 mol, 0 °C, 22.4 L, qui donne environ la pression atmosphérique.</p>
-<p><strong>Bonus :</strong> remplace les trois valeurs par des <code>input()</code> convertis en <code>float</code>, et affiche le résultat avec deux décimales grâce à une f-string.</p></div>
-  <div class="fiche"><p class="fiche-titre">Fiche de planification</p><label><span>Intrants</span><textarea data-champ="intrants" rows="2" spellcheck="true"></textarea></label><label><span>Extrants</span><textarea data-champ="extrants" rows="2" spellcheck="true"></textarea></label><label><span>Traitements</span><textarea data-champ="traitements" rows="2" spellcheck="true"></textarea></label><label><span>Jeu d'essais (calculé avant de coder)</span><textarea data-champ="jeu_essais" rows="2" spellcheck="true"></textarea></label></div>
-  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Labo 2.1 (essentiel) — Gaz parfaits, avec les unités du labo">R = 8.314             # J/(mol·K)
-quantite = 1          # mol
-temperature_c = 0     # °C
-volume_l = 22.4       # L
-pression_kpa = None
-print(pression_kpa)</textarea>
-    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
-    <output></output><div class="verdict" aria-live="polite"></div></div>
-</section>
-<section class="exo" id="exo-L2-2" data-id="L2.2" data-checks="[[&quot;portee&quot;, &quot;89ebfd8b4096&quot;], [&quot;hauteur_max&quot;, &quot;6553395677af&quot;]]">
-  <div class="exo-head"><h3>Labo 2.2 (intermédiaire) — Le tir d&#x27;un projectile</h3><span class="badge">À faire</span></div>
-  <div class="enonce"><p>Un projectile est lancé à 20 m/s, à 45° au-dessus de l'horizontale, sur un sol plat. Calcule :</p>
-<ul>
-<li>sa portée : R = v² sin(2θ) / g;</li>
-<li>sa hauteur maximale : H = v² sin²(θ) / (2g).</li>
-</ul>
-<p>Avant de coder, estime les deux réponses. Une portée de 4 000 m serait-elle plausible?</p></div>
-  <div class="fiche"><p class="fiche-titre">Fiche de planification</p><label><span>Intrants</span><textarea data-champ="intrants" rows="2" spellcheck="true"></textarea></label><label><span>Extrants</span><textarea data-champ="extrants" rows="2" spellcheck="true"></textarea></label><label><span>Traitements</span><textarea data-champ="traitements" rows="2" spellcheck="true"></textarea></label><label><span>Jeu d'essais (calculé avant de coder)</span><textarea data-champ="jeu_essais" rows="2" spellcheck="true"></textarea></label></div>
-  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Labo 2.2 (intermédiaire) — Le tir d&#x27;un projectile">import math
-g = 9.81          # m/s²
-v = 20            # m/s
-angle = 45        # degrés
-portee = None     # m
-hauteur_max = None  # m
-print(f&quot;Portée : {portee} m, hauteur maximale : {hauteur_max} m&quot;)</textarea>
-    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
-    <output></output><div class="verdict" aria-live="polite"></div></div>
-</section>
-<section class="exo" id="exo-L2-3" data-id="L2.3" data-checks="[[&quot;minutes&quot;, &quot;594bca8d3977&quot;], [&quot;secondes&quot;, &quot;68719882aed6&quot;]]">
-  <div class="exo-head"><h3>Labo 2.3 (défi) — La lumière du Soleil</h3><span class="badge">À faire</span></div>
-  <div class="enonce"><p>La Terre est à <code>1.496e11</code> m du Soleil, et la lumière voyage à <code>2.998e8</code> m/s. Combien de temps la lumière met-elle pour nous atteindre? Donne le résultat en minutes et en secondes <strong>entières</strong>, par exemple <code>8 min 19 s</code>.</p>
-<p><em>Indice :</em> arrondis le temps total à la seconde avec <code>round()</code> avant de le découper.</p></div>
-  <div class="fiche"><p class="fiche-titre">Fiche de planification</p><label><span>Intrants</span><textarea data-champ="intrants" rows="2" spellcheck="true"></textarea></label><label><span>Extrants</span><textarea data-champ="extrants" rows="2" spellcheck="true"></textarea></label><label><span>Traitements</span><textarea data-champ="traitements" rows="2" spellcheck="true"></textarea></label><label><span>Jeu d'essais (calculé avant de coder)</span><textarea data-champ="jeu_essais" rows="2" spellcheck="true"></textarea></label></div>
-  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Labo 2.3 (défi) — La lumière du Soleil">distance = 1.496e11   # m
-c = 2.998e8           # m/s
-minutes = None
-secondes = None
-print(f&quot;{minutes} min {secondes} s&quot;)</textarea>
-    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
-    <output></output><div class="verdict" aria-live="polite"></div></div>
-</section>
+  <div class="enclasse"><p><strong>En classe : Labo 2.</strong> Quiz d'entrée, démonstration, atelier en équipe et labo individuel. Le code d'accès est donné au début de la séance.</p><a class="btn ghost" href="../labos/labo02.html">Page du labo 2</a></div>
   <h2 id="remise">Remise sur LÉA</h2>
   <div class="travail">
     <label class="nom"><span>Ton nom (prénom et nom)</span><input id="nom-etudiant" type="text" autocomplete="name"></label>
@@ -584,7 +536,7 @@ print(f&quot;{minutes} min {secondes} s&quot;)</textarea>
 </article>
 <aside class="toc" aria-label="Dans ce chapitre">
   <p>Dans ce chapitre</p>
-  <ol><li><a href="#objectifs">Objectifs</a></li><li><a href="#les-variables">Les variables</a></li><li><a href="#les-types-de-donnees">Les types de données</a></li><li><a href="#les-expressions">Les expressions</a></li><li><a href="#le-module-math">Le module math</a></li><li><a href="#lire-et-afficher">Lire et afficher</a></li><li><a href="#exemple-complet-lenergie-mecanique">Exemple complet : l'énergie mécanique</a></li><li><a href="#trois-erreurs-a-reconnaitre">Trois erreurs à reconnaître</a></li><li><a href="#pieges-frequents">Pièges fréquents</a></li><li><a href="#autoquiz">Autoquiz</a></li><li><a href="#vocabulaire">Vocabulaire</a></li><li><a href="#exercices">Exercices préparatoires</a></li><li><a href="#laboratoire">Laboratoire (en classe)</a></li><li><a href="#remise">Remise sur LÉA</a></li></ol>
+  <ol><li><a href="#objectifs">Objectifs</a></li><li><a href="#les-variables">Les variables</a></li><li><a href="#les-types-de-donnees">Les types de données</a></li><li><a href="#les-expressions">Les expressions</a></li><li><a href="#le-module-math">Le module math</a></li><li><a href="#lire-et-afficher">Lire et afficher</a></li><li><a href="#exemple-complet-lenergie-mecanique">Exemple complet : l'énergie mécanique</a></li><li><a href="#trois-erreurs-a-reconnaitre">Trois erreurs à reconnaître</a></li><li><a href="#pieges-frequents">Pièges fréquents</a></li><li><a href="#autoquiz">Autoquiz</a></li><li><a href="#vocabulaire">Vocabulaire</a></li><li><a href="#exercices">Exercices préparatoires</a></li><li><a href="#remise">Remise sur LÉA</a></li></ol>
   <div class="cta"><p class="progression"></p><div class="barre" aria-hidden="true"><span></span></div><a class="btn" href="#remise">Remise sur LÉA</a><a class="btn ghost" href="../#recettes">Recettes</a></div>
 </aside>
 </div>

@@ -441,58 +441,7 @@ print(domaine)</textarea>
     <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
     <output></output><div class="verdict" aria-live="polite"></div></div>
 </section>
-<h2 id="laboratoire">Laboratoire (en classe)</h2><p>Pour chaque exercice : remplis la fiche de planification <strong>avant</strong> de coder, puis code, puis clique sur <strong>Vérifier</strong>.</p>
-<section class="exo" id="exo-L3-1" data-id="L3.1" data-checks="[[&quot;nb_racines&quot;, &quot;7a284f128e61&quot;], [&quot;r1&quot;, &quot;7a284f128e61&quot;], [&quot;r2&quot;, &quot;64e4b892473f&quot;]]">
-  <div class="exo-head"><h3>Labo 3.1 (essentiel) — Les racines d&#x27;une équation du second degré</h3><span class="badge">À faire</span></div>
-  <div class="enonce"><p>Écris un programme complet pour ax² + bx + c = 0 :</p>
-<ul>
-<li>si a = 0, l'équation n'est pas du second degré : afficher un message;</li>
-<li>si Δ &gt; 0 : deux racines, r1 = (−b + √Δ) / 2a et r2 = (−b − √Δ) / 2a;</li>
-<li>si Δ = 0 : une racine;</li>
-<li>si Δ &lt; 0 : aucune racine réelle.</li>
-</ul>
-<p><strong>Jeu d'essais à compléter avant de coder :</strong> au moins un cas par branche. La vérification ci-dessous teste le cas a = 1, b = −3, c = 2.</p></div>
-  <div class="fiche"><p class="fiche-titre">Fiche de planification</p><label><span>Intrants</span><textarea data-champ="intrants" rows="2" spellcheck="true"></textarea></label><label><span>Extrants</span><textarea data-champ="extrants" rows="2" spellcheck="true"></textarea></label><label><span>Traitements</span><textarea data-champ="traitements" rows="2" spellcheck="true"></textarea></label><label><span>Jeu d'essais (calculé avant de coder)</span><textarea data-champ="jeu_essais" rows="2" spellcheck="true"></textarea></label></div>
-  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Labo 3.1 (essentiel) — Les racines d&#x27;une équation du second degré">import math
-a = 1
-b = -3
-c = 2
-nb_racines = None
-r1 = None
-r2 = None
-# ton programme ici
-print(nb_racines, r1, r2)</textarea>
-    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
-    <output></output><div class="verdict" aria-live="polite"></div></div>
-</section>
-<section class="exo" id="exo-L3-2" data-id="L3.2" data-checks="[[&quot;type_triangle&quot;, &quot;4096d17f8c81&quot;]]">
-  <div class="exo-head"><h3>Labo 3.2 (intermédiaire) — Quel triangle?</h3><span class="badge">À faire</span></div>
-  <div class="enonce"><p>Avec trois longueurs, un triangle n'existe que si chaque côté est plus petit que la somme des deux autres (inégalité triangulaire). Donne à <code>type_triangle</code> la valeur <code>"invalide"</code>, <code>"équilatéral"</code>, <code>"isocèle"</code> ou <code>"scalène"</code>.</p>
-<p><strong>Jeu d'essais :</strong> prévois au moins un cas par résultat. La vérification teste 5, 5, 8.</p></div>
-  <div class="fiche"><p class="fiche-titre">Fiche de planification</p><label><span>Intrants</span><textarea data-champ="intrants" rows="2" spellcheck="true"></textarea></label><label><span>Extrants</span><textarea data-champ="extrants" rows="2" spellcheck="true"></textarea></label><label><span>Traitements</span><textarea data-champ="traitements" rows="2" spellcheck="true"></textarea></label><label><span>Jeu d'essais (calculé avant de coder)</span><textarea data-champ="jeu_essais" rows="2" spellcheck="true"></textarea></label></div>
-  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Labo 3.2 (intermédiaire) — Quel triangle?">a = 5
-b = 5
-c = 8
-type_triangle = None
-# ton programme ici
-print(type_triangle)</textarea>
-    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
-    <output></output><div class="verdict" aria-live="polite"></div></div>
-</section>
-<section class="exo" id="exo-L3-3" data-id="L3.3" data-checks="[[&quot;rectangle&quot;, &quot;3cbc87c7681f&quot;]]">
-  <div class="exo-head"><h3>Labo 3.3 (défi) — Est-il rectangle?</h3><span class="badge">À faire</span></div>
-  <div class="enonce"><p>Ajoute à ton programme un test qui indique si le triangle est <strong>rectangle</strong> (Pythagore). Les côtés peuvent être des réels issus de mesures : utilise une tolérance relative de 10⁻⁶, et pense que l'hypoténuse n'est pas forcément <code>c</code>.</p>
-<p>La vérification teste les côtés 0.6, 0.8 et 1.0, en désordre.</p></div>
-  <div class="fiche"><p class="fiche-titre">Fiche de planification</p><label><span>Intrants</span><textarea data-champ="intrants" rows="2" spellcheck="true"></textarea></label><label><span>Extrants</span><textarea data-champ="extrants" rows="2" spellcheck="true"></textarea></label><label><span>Traitements</span><textarea data-champ="traitements" rows="2" spellcheck="true"></textarea></label><label><span>Jeu d'essais (calculé avant de coder)</span><textarea data-champ="jeu_essais" rows="2" spellcheck="true"></textarea></label></div>
-  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Labo 3.3 (défi) — Est-il rectangle?">a = 1.0
-b = 0.6
-c = 0.8
-rectangle = None
-# ton programme ici
-print(rectangle)</textarea>
-    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
-    <output></output><div class="verdict" aria-live="polite"></div></div>
-</section>
+  <div class="enclasse"><p><strong>En classe : Labo 3.</strong> Quiz d'entrée, démonstration, atelier en équipe et labo individuel. Le code d'accès est donné au début de la séance.</p><a class="btn ghost" href="../labos/labo03.html">Page du labo 3</a></div>
   <h2 id="remise">Remise sur LÉA</h2>
   <div class="travail">
     <label class="nom"><span>Ton nom (prénom et nom)</span><input id="nom-etudiant" type="text" autocomplete="name"></label>
@@ -510,7 +459,7 @@ print(rectangle)</textarea>
 </article>
 <aside class="toc" aria-label="Dans ce chapitre">
   <p>Dans ce chapitre</p>
-  <ol><li><a href="#objectifs">Objectifs</a></li><li><a href="#les-expressions-logiques">Les expressions logiques</a></li><li><a href="#if-executer-seulement-si">if : exécuter seulement si</a></li><li><a href="#if-else-deux-chemins">if / else : deux chemins</a></li><li><a href="#if-elif-else-plusieurs-chemins">if / elif / else : plusieurs chemins</a></li><li><a href="#comparer-des-nombres-reels">Comparer des nombres réels</a></li><li><a href="#exemple-complet-classer-une-solution-selon-son-ph">Exemple complet : classer une solution selon son pH</a></li><li><a href="#pieges-frequents">Pièges fréquents</a></li><li><a href="#autoquiz">Autoquiz</a></li><li><a href="#vocabulaire">Vocabulaire</a></li><li><a href="#exercices">Exercices préparatoires</a></li><li><a href="#laboratoire">Laboratoire (en classe)</a></li><li><a href="#remise">Remise sur LÉA</a></li></ol>
+  <ol><li><a href="#objectifs">Objectifs</a></li><li><a href="#les-expressions-logiques">Les expressions logiques</a></li><li><a href="#if-executer-seulement-si">if : exécuter seulement si</a></li><li><a href="#if-else-deux-chemins">if / else : deux chemins</a></li><li><a href="#if-elif-else-plusieurs-chemins">if / elif / else : plusieurs chemins</a></li><li><a href="#comparer-des-nombres-reels">Comparer des nombres réels</a></li><li><a href="#exemple-complet-classer-une-solution-selon-son-ph">Exemple complet : classer une solution selon son pH</a></li><li><a href="#pieges-frequents">Pièges fréquents</a></li><li><a href="#autoquiz">Autoquiz</a></li><li><a href="#vocabulaire">Vocabulaire</a></li><li><a href="#exercices">Exercices préparatoires</a></li><li><a href="#remise">Remise sur LÉA</a></li></ol>
   <div class="cta"><p class="progression"></p><div class="barre" aria-hidden="true"><span></span></div><a class="btn" href="#remise">Remise sur LÉA</a><a class="btn ghost" href="../#recettes">Recettes</a></div>
 </aside>
 </div>

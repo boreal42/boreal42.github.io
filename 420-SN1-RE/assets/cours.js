@@ -3,6 +3,7 @@
   "use strict";
   const PYODIDE = "https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js";
   const CHAPITRE = document.body.dataset.chapitre || "";
+  const TYPE = document.body.dataset.type || "chapitre";
   const CLE = "420sn1re:";
   let pyPromise = null;
 
@@ -106,6 +107,82 @@ def _verifier(ns, checks):
         zone.dispatchEvent(new Event("input"));
       }
       if (e.key === "Enter" && e.shiftKey) { e.preventDefault(); lancer(); }
+    });
+  }
+
+  function init() {
+  // ---------- Champs libres inclus au rapport (coéquipier, billet de sortie) ----------
+  const champsExtras = [...document.querySelectorAll("[data-rapport]")];
+  function lireExtras() { return Object.fromEntries(champsExtras.map(c => [c.dataset.rapport, c.value])); }
+  function ecrireExtras(d) {
+    champsExtras.forEach(c => { if (d[c.dataset.rapport] !== undefined) { c.value = d[c.dataset.rapport]; if (c.tagName === "TEXTAREA") ajuster(c); } });
+    stock.ecrire(CHAPITRE + ":extras", lireExtras());
+  }
+  const extrasSauves = stock.lire(CHAPITRE + ":extras");
+  if (extrasSauves) ecrireExtras(extrasSauves);
+  champsExtras.forEach(c => {
+    if (c.tagName === "TEXTAREA") { ajuster(c); c.addEventListener("input", () => ajuster(c)); }
+    c.addEventListener("input", () => stock.ecrire(CHAPITRE + ":extras", lireExtras()));
+  });
+
+  // ---------- Quiz d'entrée (une seule validation) ----------
+  const quiz = document.querySelector(".quiz");
+  function normaliser(t) {
+    return String(t).trim().toLowerCase().replace(/^["'`]+|["'`]+$/g, "").replace(/,/g, ".").replace(/\s+/g, " ");
+  }
+  async function empreinteTexte(t) {
+    const h = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(normaliser(t)));
+    return [...new Uint8Array(h)].map(b => b.toString(16).padStart(2, "0")).join("").slice(0, 12);
+  }
+  function valeurQuestion(q) {
+    const choix = q.querySelector("input[type=radio]:checked");
+    if (q.querySelector("input[type=radio]")) return choix ? choix.value : "";
+    return q.querySelector("input[type=text]").value;
+  }
+  function etatQuiz() {
+    if (!quiz) return null;
+    const qs = [...quiz.querySelectorAll(".q")];
+    const reponses = qs.map(q => ({ valeur: valeurQuestion(q), ok: q.dataset.ok === "1" ? true : q.dataset.ok === "0" ? false : null }));
+    return { valide: quiz.dataset.valide === "1", score: reponses.filter(r => r.ok === true).length, total: qs.length, reponses };
+  }
+  function afficherQuiz() {
+    const e = etatQuiz();
+    quiz.querySelectorAll(".q").forEach(q => {
+      const m = q.querySelector(".q-verdict");
+      m.textContent = q.dataset.ok === "1" ? "✅" : q.dataset.ok === "0" ? "❌" : "";
+    });
+    if (e.valide) {
+      quiz.querySelectorAll("input").forEach(i => { i.disabled = true; });
+      quiz.querySelector(".valider-quiz").disabled = true;
+      quiz.querySelector(".score").textContent = `Résultat : ${e.score} / ${e.total}. Les réponses seront revues en classe.`;
+    }
+  }
+  if (quiz) {
+    const sauve = stock.lire(CHAPITRE + ":quiz");
+    if (sauve) {
+      const qs = [...quiz.querySelectorAll(".q")];
+      sauve.reponses.forEach((r, i) => {
+        const q = qs[i]; if (!q) return;
+        const radio = [...q.querySelectorAll("input[type=radio]")].find(x => x.value === r.valeur);
+        if (radio) radio.checked = true;
+        const txt = q.querySelector("input[type=text]"); if (txt) txt.value = r.valeur;
+        if (r.ok !== null) q.dataset.ok = r.ok ? "1" : "0";
+      });
+      if (sauve.valide) quiz.dataset.valide = "1";
+      afficherQuiz();
+    }
+    quiz.addEventListener("input", () => { if (quiz.dataset.valide !== "1") stock.ecrire(CHAPITRE + ":quiz", etatQuiz()); });
+    quiz.querySelector(".valider-quiz").addEventListener("click", async () => {
+      const qs = [...quiz.querySelectorAll(".q")];
+      if (qs.some(q => !valeurQuestion(q).trim()) && !window.confirm("Certaines questions sont sans réponse. Valider quand même? Tu ne pourras plus modifier tes réponses.")) return;
+      if (!qs.some(q => !valeurQuestion(q).trim()) && !window.confirm("Valider tes réponses? Tu ne pourras plus les modifier.")) return;
+      for (const q of qs) {
+        const attendues = JSON.parse(q.dataset.h);
+        q.dataset.ok = attendues.includes(await empreinteTexte(valeurQuestion(q))) ? "1" : "0";
+      }
+      quiz.dataset.valide = "1";
+      stock.ecrire(CHAPITRE + ":quiz", etatQuiz());
+      afficherQuiz();
     });
   }
 
@@ -243,13 +320,21 @@ def _verifier(ns, checks):
       if (f.length) bloc += "# Fiche de planification\n" + f.map(([k, v]) => `#   ${k} : ` + v.trim().replace(/\n/g, "\n#     ")).join("\n") + "\n#\n";
       parties.push(bloc + e.code + "\n");
     });
+    const extras = lireExtras();
+    donnees.extras = extras;
+    donnees.quiz = etatQuiz();
     const n = exercices.filter(e => e.dataset.reussi === "1").length;
+    const lignesExtras = Object.entries(extras).filter(([, v]) => v.trim()).map(([k, v]) => `# ${k} : ` + v.trim().replace(/\n/g, "\n#   "));
+    const lignesQuiz = donnees.quiz ? [`# Quiz d'entrée : ${donnees.quiz.score} / ${donnees.quiz.total}` + (donnees.quiz.valide ? "" : " (non validé)"),
+      ...donnees.quiz.reponses.map((r, i) => `#   Q${i + 1} ${r.ok === true ? "✓" : r.ok === false ? "✗" : "·"} ${r.valeur}`)] : [];
     const entete = [
       `# 420-SN1-RE · Programmation en sciences`,
-      `# Rapport du chapitre ${CHAPITRE}`,
+      `# Rapport ${TYPE === "labo" ? "du labo " + CHAPITRE.replace("L", "") : "du chapitre " + CHAPITRE}`,
       `# Étudiant : ${nom || "(nom non indiqué)"}`,
       `# Généré le : ${date.toLocaleString("fr-CA")}`,
       `# Résultat : ${n} / ${exercices.length} exercices réussis`,
+      ...lignesQuiz,
+      ...lignesExtras,
       ``,
     ].join("\n");
     const b64 = btoa(unescape(encodeURIComponent(JSON.stringify(donnees))));
@@ -261,7 +346,7 @@ def _verifier(ns, checks):
     const blob = new Blob([rapport()], { type: "text/x-python;charset=utf-8" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
-    a.download = `420-SN1-RE_ch${CHAPITRE}_${nom}.py`;
+    a.download = `420-SN1-RE_${TYPE === "labo" ? "labo" + CHAPITRE.replace("L", "") : "ch" + CHAPITRE}_${nom}.py`;
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(a.href), 2000);
   }
@@ -283,6 +368,7 @@ def _verifier(ns, checks):
         marquer(exo, !!e.reussi); sauver(exo);
       });
       if (d.nom && champNom && !champNom.value) { champNom.value = d.nom; stock.ecrire("nom", d.nom); }
+      if (d.extras) ecrireExtras(d.extras);
       message.textContent = "Travail importé.";
     };
     lecteur.readAsText(fichier);
@@ -303,5 +389,41 @@ def _verifier(ns, checks):
       });
     }, { rootMargin: "-20% 0px -70% 0px" });
     liens.forEach(a => { const h = document.getElementById(a.getAttribute("href").slice(1)); if (h) obs.observe(h); });
+  }
+  }
+
+  // ---------- Verrou des laboratoires : le contenu est chiffré avec le code d'accès ----------
+  function b64(s) { return Uint8Array.from(atob(s), c => c.charCodeAt(0)); }
+  async function dechiffrer(code, paquet) {
+    const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(code.trim().toLowerCase()), "PBKDF2", false, ["deriveKey"]);
+    const cle = await crypto.subtle.deriveKey({ name: "PBKDF2", salt: b64(paquet.sel), iterations: paquet.iterations, hash: "SHA-256" },
+      base, { name: "AES-GCM", length: 256 }, false, ["decrypt"]);
+    const clair = await crypto.subtle.decrypt({ name: "AES-GCM", iv: b64(paquet.iv) }, cle, b64(paquet.donnees));
+    return new TextDecoder().decode(clair);
+  }
+  const verrou = document.getElementById("verrou");
+  if (verrou) {
+    const paquet = JSON.parse(document.getElementById("labo-chiffre").textContent);
+    const form = verrou.querySelector("form");
+    const champ = verrou.querySelector("input");
+    const msg = verrou.querySelector(".msg");
+    const ouvrir = async (code, silencieux) => {
+      try {
+        const html = await dechiffrer(code, paquet);
+        document.getElementById("contenu-labo").innerHTML = html;
+        verrou.hidden = true;
+        document.querySelectorAll(".apres-verrou").forEach(e => { e.hidden = false; });
+        stock.ecrire(CHAPITRE + ":code", code.trim().toLowerCase());
+        init();
+        if (location.hash) { const cible = document.getElementById(location.hash.slice(1)); if (cible) cible.scrollIntoView(); }
+      } catch (e) {
+        if (!silencieux) { msg.textContent = "Ce code ne fonctionne pas. Vérifie-le avec ton enseignant."; champ.select(); }
+      }
+    };
+    form.addEventListener("submit", e => { e.preventDefault(); msg.textContent = "Ouverture…"; ouvrir(champ.value, false); });
+    const connu = stock.lire(CHAPITRE + ":code");
+    if (connu) ouvrir(connu, true);
+  } else {
+    init();
   }
 })();

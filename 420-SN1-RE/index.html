@@ -192,14 +192,14 @@ footer{margin-top:2rem;font-size:.82rem;color:var(--muted)}
             <p>Lis le chapitre de la semaine et fais ses exercices préparatoires, directement sur ce site. Le code s'exécute dans la page.</p>
           </div>
           <div class="step">
-            <span class="when">En classe · 1 h</span>
+            <span class="when">En classe · 40 min</span>
             <h3>Clarifier</h3>
-            <p>Quiz d'entrée, retour sur les difficultés, démonstration d'un problème complet.</p>
+            <p>Quiz d'entrée, retour sur les exercices préparatoires, démonstration d'un problème complet.</p>
           </div>
           <div class="step">
-            <span class="when">En classe · 2 h</span>
+            <span class="when">En classe · 1 h 50</span>
             <h3>Pratiquer</h3>
-            <p>Laboratoire en équipe puis seul, sur le site. Remise du rapport du chapitre sur LÉA.</p>
+            <p>Atelier en équipe, puis labo individuel, sur la page du labo. Remise du rapport de séance sur LÉA.</p>
           </div>
         </div>
 
@@ -458,6 +458,7 @@ function renderChapitre(c){
     <div class="actions">
       <a class="btn" href="chapitres/ch${String(c.n).padStart(2,"0")}.html">Lire le chapitre</a>
       <a class="btn ghost" href="chapitres/ch${String(c.n).padStart(2,"0")}.html#exercices">Aller aux exercices</a>
+      <a class="btn ghost" href="labos/labo${String(c.n).padStart(2,"0")}.html">Labo ${c.n} (en classe)</a>
     </div>
     <div class="grid2">
       <div class="card"><h3>Avant le cours</h3><ul class="check">${c.avant.map(x => `<li>${x}</li>`).join("")}</ul></div>
