@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="fr-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ch. 8 · Les listes · 420-SN1-RE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/lecture.css?v=f1fbedaa">
+</head>
+<body data-chapitre="8">
+<header class="topbar"><div class="in">
+  <a class="home" href="../#chapitre-8"><span>420-SN1-RE</span>Programmation en sciences</a>
+  <span class="chap">Chapitre 8 · Semaine 8</span>
+</div></header>
+<div class="layout">
+<article>
+  <p class="eyebrow">Chapitre 8 · Semaine 8</p>
+  <h1>Les listes</h1>
+  <div class="prep">
+    <div><h2>À faire avant le cours</h2><ol><li>Lis ce chapitre et exécute les exemples (environ 1 h).</li><li>Fais les exercices préparatoires 8.1 à 8.10, au bas de la page (environ 1 h 30).</li><li>Télécharge ton rapport et remets-le sur LÉA avant le cours.</li></ol></div>
+    <a class="btn" href="#exercices">Aller aux exercices</a>
+  </div>
+  <p class="aide">Tout le code de cette page s'exécute dans ton navigateur : clique sur <strong>▶ Exécuter</strong>. Tu peux modifier les exemples librement; <strong>Réinitialiser</strong> remet le code d'origine. Raccourci : Maj + Entrée.</p>
+<div class="admonition probleme">
+<p class="admonition-title">Problème d'ouverture</p>
+<p>Dix équipes ont mesuré l'accélération gravitationnelle g au laboratoire. Tu dois calculer la moyenne et l'écart type des mesures, repérer les mesures aberrantes, et refaire la moyenne sans elles.</p>
+<p>Avec une variable par mesure, il faudrait <code>g1</code>, <code>g2</code>, …, <code>g10</code>, et tout réécrire pour 30 équipes. Une <strong>liste</strong> range toutes les mesures sous un seul nom, et une boucle les parcourt, qu'il y en ait 10 ou 10000.</p>
+</div>
+<h2 id="objectifs">Objectifs</h2>
+<ol>
+<li>Créer une liste, accéder à ses éléments par leur indice et la modifier.</li>
+<li>Parcourir une liste avec <code>for</code>, avec ou sans indice.</li>
+<li>Construire une liste avec <code>append()</code>.</li>
+<li>Calculer des statistiques sur une liste : somme, moyenne, minimum, maximum, écart type.</li>
+<li>Rechercher des éléments et filtrer une liste selon une condition.</li>
+</ol>
+<h2 id="creer-une-liste-et-acceder-aux-elements">Créer une liste et accéder aux éléments</h2>
+<p>Une <strong>liste</strong> est une suite ordonnée de valeurs, entre crochets, séparées par des virgules. C'est ce qu'on appelle aussi un <strong>tableau</strong> à une dimension.</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">mesures_g = [9.79, 9.83, 9.81, 9.62, 9.85]   # m/s²
+print(mesures_g)
+print(len(mesures_g))   # nombre d&#x27;éléments
+print(mesures_g[0])     # premier élément
+print(mesures_g[4])     # dernier élément
+print(mesures_g[-1])    # dernier élément, en comptant à partir de la fin</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<p>Chaque élément a un <strong>indice</strong>, sa position, qui commence à <strong>0</strong>. Une liste de 5 éléments a donc les indices 0 à 4.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Indice</th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Valeur</td>
+<td>9.79</td>
+<td>9.83</td>
+<td>9.81</td>
+<td>9.62</td>
+<td>9.85</td>
+</tr>
+<tr>
+<td>Indice négatif</td>
+<td>−5</td>
+<td>−4</td>
+<td>−3</td>
+<td>−2</td>
+<td>−1</td>
+</tr>
+</tbody>
+</table></div>
+<div class="admonition piege">
+<p class="admonition-title">Piège : l'indice hors limites</p>
+<p><code>mesures_g[5]</code> provoque une <code>IndexError</code> : il n'y a pas de sixième élément. Le dernier indice est toujours <code>len(liste) - 1</code>.</p>
+</div>
+<h3 id="modifier-une-liste">Modifier une liste</h3>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">mesures_g = [9.79, 9.83, 9.81, 9.62, 9.85]
+mesures_g[3] = 9.80          # corriger une mesure
+mesures_g.append(9.78)       # ajouter une mesure à la fin
+print(mesures_g, len(mesures_g))</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<p>Une <strong>tranche</strong> extrait une partie de la liste : <code>mesures_g[1:4]</code> donne les éléments d'indices 1, 2 et 3. Comme pour <code>range()</code>, la fin est exclue.</p>
+<h2 id="parcourir-une-liste">Parcourir une liste</h2>
+<p>Deux façons, selon qu'on a besoin de l'indice ou non :</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">temperatures = [21.5, 22.0, 23.4, 22.8]   # °C, une mesure par heure
+
+# 1. Parcourir les valeurs
+for t in temperatures:
+    print(t, &quot;°C&quot;)
+
+# 2. Parcourir les indices, quand la position compte
+for i in range(len(temperatures)):
+    print(&quot;Heure&quot;, i, &quot;:&quot;, temperatures[i], &quot;°C&quot;)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<h2 id="construire-une-liste">Construire une liste</h2>
+<p>On part souvent d'une liste vide, qu'on remplit avec <code>append()</code> dans une boucle :</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">carres = []
+for n in range(1, 11):
+    carres.append(n ** 2)
+print(carres)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<h2 id="statistiques-sur-une-liste">Statistiques sur une liste</h2>
+<p>Python fournit <code>sum()</code>, <code>min()</code> et <code>max()</code>. On peut aussi les écrire soi-même avec une boucle : c'est ce qu'on fera pour comprendre ce qui se passe, et pour des calculs que Python ne fournit pas.</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">import math
+mesures = [9.79, 9.83, 9.81, 9.62, 9.85]
+
+# Moyenne
+moyenne = sum(mesures) / len(mesures)
+
+# Écart type (d&#x27;échantillon) : racine de la somme des carrés des écarts, divisée par n - 1
+somme_carres = 0
+for x in mesures:
+    somme_carres = somme_carres + (x - moyenne) ** 2
+ecart_type = math.sqrt(somme_carres / (len(mesures) - 1))
+
+print(f&quot;moyenne = {moyenne:.3f}, écart type = {ecart_type:.3f}&quot;)
+print(&quot;min :&quot;, min(mesures), &quot; max :&quot;, max(mesures))</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<h3 id="trouver-la-position-du-maximum">Trouver la position du maximum</h3>
+<p><code>max()</code> donne la plus grande valeur, mais pas sa position. Pour savoir <strong>quelle équipe</strong> a la plus grande mesure, on parcourt les indices et on garde le meilleur trouvé jusqu'ici :</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">mesures = [9.79, 9.83, 9.81, 9.62, 9.85]
+indice_max = 0
+for i in range(1, len(mesures)):
+    if mesures[i] &gt; mesures[indice_max]:
+        indice_max = i
+print(&quot;La plus grande mesure est celle de l&#x27;équipe&quot;, indice_max, &quot;:&quot;, mesures[indice_max])</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<h2 id="filtrer-une-liste">Filtrer une liste</h2>
+<p>Filtrer, c'est construire une nouvelle liste avec seulement les éléments qui respectent une condition :</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">mesures = [9.79, 9.83, 9.81, 9.62, 9.85]
+proches = []
+for x in mesures:
+    if abs(x - 9.81) &lt;= 0.05:
+        proches.append(x)
+print(proches)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<p>Pour savoir si une valeur est dans une liste, on utilise <code>in</code> : <code>9.62 in mesures</code> vaut <code>True</code>.</p>
+<h2 id="exemple-complet-les-mesures-aberrantes">Exemple complet : les mesures aberrantes</h2>
+<h3 id="planifier">Planifier</h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Réponse</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Intrant</td>
+<td>une liste de mesures de g (m/s²)</td>
+</tr>
+<tr>
+<td>Extrants</td>
+<td>moyenne et écart type; la liste des mesures retenues; la moyenne corrigée</td>
+</tr>
+<tr>
+<td>Traitements</td>
+<td>une mesure est aberrante si elle s'écarte de la moyenne de plus de 2 écarts types; on retire les aberrantes et on refait la moyenne</td>
+</tr>
+</tbody>
+</table></div>
+<p>Le critère « 2 écarts types » est une règle simple, souvent utilisée en laboratoire au cégep.</p>
+<h3 id="coder">Coder</h3>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">import math
+
+def moyenne(valeurs):
+    return sum(valeurs) / len(valeurs)
+
+def ecart_type(valeurs):
+    m = moyenne(valeurs)
+    s = 0
+    for x in valeurs:
+        s = s + (x - m) ** 2
+    return math.sqrt(s / (len(valeurs) - 1))
+
+mesures = [9.79, 9.83, 9.81, 9.62, 9.85, 9.80, 9.78, 9.84, 9.82, 9.81]
+m = moyenne(mesures)
+s = ecart_type(mesures)
+
+retenues = []
+for x in mesures:
+    if abs(x - m) &lt;= 2 * s:
+        retenues.append(x)
+
+print(f&quot;Toutes : moyenne {m:.3f}, écart type {s:.3f}&quot;)
+print(&quot;Retenues :&quot;, retenues)
+print(f&quot;Moyenne corrigée : {moyenne(retenues):.3f}&quot;)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<h3 id="verifier">Vérifier</h3>
+<p>La mesure 9.62 est la seule rejetée, et la moyenne corrigée se rapproche de la valeur de référence, 9.81. Teste aussi deux cas limites : une liste où toutes les mesures sont égales (écart type nul, rien n'est rejeté), et une liste d'un seul élément. Que se passe-t-il, et pourquoi?</p>
+<h2 id="pieges-frequents">Pièges fréquents</h2>
+<ul>
+<li>Oublier que le premier indice est 0, et que le dernier est <code>len(liste) - 1</code>.</li>
+<li>Écrire <code>liste.append(x)</code> sous la forme <code>liste = liste.append(x)</code> : <code>append()</code> modifie la liste et retourne <code>None</code>.</li>
+<li>Modifier une liste pendant qu'on la parcourt avec <code>for x in liste</code> : on construit plutôt une nouvelle liste.</li>
+<li>Diviser par <code>len(liste)</code> quand la liste est vide.</li>
+</ul>
+<h2 id="autoquiz">Autoquiz</h2>
+<ol>
+<li>Que vaut <code>[3, 8, 1][1]</code>?</li>
+<li>Que vaut <code>len([])</code>?</li>
+<li>Comment ajoute-t-on 5 à la fin de la liste <code>notes</code>?</li>
+<li>Quelle est la différence entre <code>for x in liste</code> et <code>for i in range(len(liste))</code>?</li>
+<li>Comment trouve-t-on la position du maximum d'une liste?</li>
+</ol>
+<h2 id="vocabulaire">Vocabulaire</h2>
+<div class="vocab"><span>liste</span><span>tableau</span><span>élément</span><span>indice</span><span>len</span><span>append</span><span>tranche</span><span>parcourir</span><span>filtrer</span><span>moyenne</span><span>écart type</span><span>valeur aberrante</span><span>IndexError</span></div>
+<h2 id="exercices">Exercices préparatoires</h2><p>Écris ton code dans chaque exercice : remplace les <code>None</code> par ta réponse, puis clique sur <strong>Vérifier</strong>. La vérification te dit si ta réponse est bonne, sans la montrer. Ton travail est sauvegardé automatiquement dans ce navigateur.</p>
+<section class="exo" id="exo-8-1" data-id="8.1" data-checks="[[&quot;v1&quot;, &quot;c0202b321689&quot;], [&quot;v2&quot;, &quot;207cd6d1a9c3&quot;], [&quot;v3&quot;, &quot;0be3a3882951&quot;]]">
+  <div class="exo-head"><h3>Exercice 8.1 — Indices</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p><strong>Sans exécuter de code</strong>, avec <code>L = [4, 7, 1, 9, 3]</code>, donne la valeur de <code>L[1]</code>, de <code>L[-1]</code> et de <code>len(L)</code>.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 8.1 — Indices">v1 = None    # L[1]
+v2 = None    # L[-1]
+v3 = None    # len(L)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-8-2" data-id="8.2" data-checks="[[&quot;L_finale&quot;, &quot;361072a59825&quot;]]">
+  <div class="exo-head"><h3>Exercice 8.2 — Suivre une liste</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p><strong>Sans exécuter de code</strong>, donne le contenu final de <code>L</code>, sous la forme d'une liste.</p>
+<pre><code><span class="n">L</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">]</span>
+<span class="n">L</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">L</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">L</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">L</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+</code></pre></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 8.2 — Suivre une liste">L_finale = None</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-8-3" data-id="8.3" data-checks="[[&quot;multiples&quot;, &quot;d259eb941a5e&quot;]]">
+  <div class="exo-head"><h3>Exercice 8.3 — Construire une liste</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Avec une boucle et <code>append()</code>, construis la liste des 10 premiers multiples de 7 : 7, 14, …, 70.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 8.3 — Construire une liste">multiples = []
+# ta boucle ici
+print(multiples)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-8-4" data-id="8.4" data-checks="[[&quot;moyenne&quot;, &quot;51f8862a22cd&quot;]]">
+  <div class="exo-head"><h3>Exercice 8.4 — Une moyenne, à la main</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Calcule la moyenne des températures de la semaine <strong>sans</strong> utiliser <code>sum()</code> : parcours la liste avec un accumulateur.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 8.4 — Une moyenne, à la main">temperatures = [-3.5, -1.0, 2.5, 4.0, 1.5, -2.0, -6.5]   # °C
+moyenne = None
+print(moyenne)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-8-5" data-id="8.5" data-checks="[[&quot;indice_max&quot;, &quot;207cd6d1a9c3&quot;], [&quot;t_max&quot;, &quot;7eee9525c86f&quot;]]">
+  <div class="exo-head"><h3>Exercice 8.5 — Le jour le plus chaud</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Trouve la <strong>position</strong> (l'indice) de la température la plus élevée, <strong>sans</strong> utiliser <code>max()</code>. Donne aussi cette température.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 8.5 — Le jour le plus chaud">temperatures = [-3.5, -1.0, 2.5, 4.0, 1.5, -2.0, -6.5]   # °C
+indice_max = None
+t_max = None
+print(indice_max, t_max)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-8-6" data-id="8.6" data-checks="[[&quot;jours_gel&quot;, &quot;0be3a3882951&quot;]]">
+  <div class="exo-head"><h3>Exercice 8.6 — Compter les jours de gel</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Combien de jours ont une température <strong>sous</strong> 0 °C?</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 8.6 — Compter les jours de gel">temperatures = [-3.5, -1.0, 2.5, 4.0, 1.5, -2.0, -6.5, 0.0, 3.0, -0.5]   # °C
+jours_gel = None
+print(jours_gel)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-8-7" data-id="8.7" data-checks="[[&quot;valides&quot;, &quot;1c773c910adc&quot;]]">
+  <div class="exo-head"><h3>Exercice 8.7 — Filtrer</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Construis la liste <code>valides</code>, qui contient seulement les mesures de pH valides (entre 0 et 14 inclusivement), dans le même ordre.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 8.7 — Filtrer">mesures_ph = [7.2, -1, 3.4, 14, 15.2, 0, 9.9]
+valides = []
+# ta boucle ici
+print(valides)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-8-8" data-id="8.8" data-checks="[[&quot;ecart_type([2, 4, 4, 4, 5, 5, 7, 9])&quot;, &quot;5d9efc4b321d&quot;], [&quot;ecart_type([9.79, 9.83, 9.81, 9.62, 9.85])&quot;, &quot;1ba8e5d806ba&quot;], [&quot;ecart_type([1, 1, 1])&quot;, &quot;297d62f39fae&quot;]]">
+  <div class="exo-head"><h3>Exercice 8.8 — Une fonction d&#x27;écart type</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Écris <code>ecart_type(valeurs)</code>, qui retourne l'écart type d'échantillon : la racine de la somme des carrés des écarts à la moyenne, divisée par n − 1.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 8.8 — Une fonction d&#x27;écart type">import math
+
+def ecart_type(valeurs):
+    pass   # remplace cette ligne</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-8-9" data-id="8.9" data-checks="[[&quot;len(fahrenheit)&quot;, &quot;0be3a3882951&quot;], [&quot;sum(fahrenheit)&quot;, &quot;af154ce0f155&quot;], [&quot;fahrenheit[2]&quot;, &quot;d2c4f7391698&quot;]]">
+  <div class="exo-head"><h3>Exercice 8.9 — Convertir toute une liste</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Construis la liste <code>fahrenheit</code>, qui contient la conversion de chaque température de <code>celsius</code>, dans le même ordre.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 8.9 — Convertir toute une liste">celsius = [0, 100, -40, 37, 21.5]
+fahrenheit = []
+# ta boucle ici
+print(fahrenheit)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-8-10" data-id="8.10" data-checks="[[&quot;variations&quot;, &quot;6b5c497339d2&quot;]]">
+  <div class="exo-head"><h3>Exercice 8.10 — Un indice de trop</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Ce programme doit calculer la variation entre chaque mesure et la suivante, mais il provoque une <code>IndexError</code>. Lis le message, fais la trace du dernier tour, puis corrige.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 8.10 — Un indice de trop">positions = [0, 3, 8, 15, 24]   # m, une mesure par seconde
+variations = []
+for i in range(len(positions)):
+    variations.append(positions[i + 1] - positions[i])
+print(variations)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+  <div class="enclasse"><p><strong>En classe : Labo 8.</strong> Quiz d'entrée, démonstration, atelier en équipe et labo individuel. Le code d'accès est donné au début de la séance.</p><a class="btn ghost" href="../labos/labo08.html">Page du labo 8</a></div>
+  <h2 id="remise">Remise sur LÉA</h2>
+  <div class="travail">
+    <label class="nom"><span>Ton nom (prénom et nom)</span><input id="nom-etudiant" type="text" autocomplete="name"></label>
+    <div><p class="progression"></p><div class="barre" aria-hidden="true"><span></span></div></div>
+    <ol>
+      <li>Clique sur <strong>Télécharger mon rapport</strong>. Le fichier contient ton code, tes fiches et le résultat de chaque vérification.</li>
+      <li>Dépose ce fichier dans le travail du chapitre 8 sur LÉA.</li>
+    </ol>
+    <div class="actions"><button class="btn telecharger" type="button">Télécharger mon rapport</button>
+      <label class="btn ghost">Importer un rapport<input class="importer" type="file" accept=".py,.txt" hidden></label></div>
+    <p id="msg-import" aria-live="polite"></p>
+    <p class="note">Ton travail est sauvegardé automatiquement, mais seulement dans <em>ce</em> navigateur, sur <em>cet</em> appareil. Pour continuer ailleurs, télécharge ton rapport et importe-le sur l'autre appareil.</p>
+  </div>
+  <nav class="pager" aria-label="Chapitres"><a class="btn ghost" href="ch07.html">← Chapitre 7</a><a class="btn ghost" href="ch09.html">Chapitre 9 →</a></nav>
+</article>
+<aside class="toc" aria-label="Dans ce chapitre">
+  <p>Dans ce chapitre</p>
+  <ol><li><a href="#objectifs">Objectifs</a></li><li><a href="#creer-une-liste-et-acceder-aux-elements">Créer une liste et accéder aux éléments</a></li><li><a href="#parcourir-une-liste">Parcourir une liste</a></li><li><a href="#construire-une-liste">Construire une liste</a></li><li><a href="#statistiques-sur-une-liste">Statistiques sur une liste</a></li><li><a href="#filtrer-une-liste">Filtrer une liste</a></li><li><a href="#exemple-complet-les-mesures-aberrantes">Exemple complet : les mesures aberrantes</a></li><li><a href="#pieges-frequents">Pièges fréquents</a></li><li><a href="#autoquiz">Autoquiz</a></li><li><a href="#vocabulaire">Vocabulaire</a></li><li><a href="#exercices">Exercices préparatoires</a></li><li><a href="#remise">Remise sur LÉA</a></li></ol>
+  <div class="cta"><p class="progression"></p><div class="barre" aria-hidden="true"><span></span></div><a class="btn" href="#remise">Remise sur LÉA</a><a class="btn ghost" href="../#recettes">Recettes</a></div>
+</aside>
+</div>
+<script src="../assets/cours.js?v=f1fbedaa"></script>
+</body>
+</html>

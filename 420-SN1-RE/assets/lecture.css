@@ -200,3 +200,8 @@ table.notes tr.detail td{background:var(--paper);padding:.3rem .8rem}
 .criteres{display:flex;flex-direction:column;gap:.3rem;margin-top:.6rem;padding:.6rem;border:1px dashed var(--accent);border-radius:6px}
 .critere{display:flex;gap:.4rem;align-items:flex-start;font-size:.9rem}
 @media (max-width:900px){.detail-grille{grid-template-columns:1fr}}
+
+/* Graphiques produits par le code */
+.runner .figures:empty{display:none}
+.runner .figures{display:flex;flex-wrap:wrap;gap:.8rem;padding:.7rem 1.1rem;border-top:1px solid var(--rule);background:#fff}
+.runner .figures img{max-width:100%;height:auto;border-radius:4px}

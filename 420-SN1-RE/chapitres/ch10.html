@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="fr-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ch. 10 · Débogage et NumPy · 420-SN1-RE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/lecture.css?v=f1fbedaa">
+</head>
+<body data-chapitre="10">
+<header class="topbar"><div class="in">
+  <a class="home" href="../#chapitre-10"><span>420-SN1-RE</span>Programmation en sciences</a>
+  <span class="chap">Chapitre 10 · Semaine 10</span>
+</div></header>
+<div class="layout">
+<article>
+  <p class="eyebrow">Chapitre 10 · Semaine 10</p>
+  <h1>Débogage et NumPy</h1>
+  <div class="prep">
+    <div><h2>À faire avant le cours</h2><ol><li>Lis ce chapitre et exécute les exemples (environ 1 h).</li><li>Fais les exercices préparatoires 10.1 à 10.10, au bas de la page (environ 1 h 30).</li><li>Télécharge ton rapport et remets-le sur LÉA avant le cours.</li></ol></div>
+    <a class="btn" href="#exercices">Aller aux exercices</a>
+  </div>
+  <p class="aide">Tout le code de cette page s'exécute dans ton navigateur : clique sur <strong>▶ Exécuter</strong>. Tu peux modifier les exemples librement; <strong>Réinitialiser</strong> remet le code d'origine. Raccourci : Maj + Entrée.</p>
+<div class="admonition probleme">
+<p class="admonition-title">Problème d'ouverture</p>
+<p>Ta simulation de la trajectoire d'une sonde donne une altitude de −3000 m au lieu de 3000 m. Aucun message d'erreur : Python a fait exactement ce que le code lui demandait. Comment trouver l'erreur dans 60 lignes de code, sans tout réécrire au hasard?</p>
+<p>Ce chapitre présente une <strong>méthode de débogage</strong>, puis <strong>NumPy</strong>, la bibliothèque de calcul scientifique de Python. NumPy fait en une ligne ce qu'une boucle fait en cinq, ce qui laisse aussi moins de place aux erreurs.</p>
+</div>
+<h2 id="objectifs">Objectifs</h2>
+<ol>
+<li>Distinguer les erreurs de syntaxe, d'exécution et de logique.</li>
+<li>Lire un message d'erreur qui traverse plusieurs fonctions.</li>
+<li>Appliquer une méthode de débogage en cinq étapes.</li>
+<li>Créer des tableaux NumPy et faire des calculs sur tous leurs éléments à la fois.</li>
+<li>Utiliser <code>linspace</code>, les fonctions statistiques et les masques de NumPy.</li>
+</ol>
+<h2 id="trois-familles-derreurs">Trois familles d'erreurs</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Famille</th>
+<th>Quand on la voit</th>
+<th>Exemple</th>
+<th>Message</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Syntaxe</td>
+<td>avant l'exécution</td>
+<td><code>if x &gt; 0</code> sans deux-points</td>
+<td><code>SyntaxError</code></td>
+</tr>
+<tr>
+<td>Exécution</td>
+<td>pendant l'exécution</td>
+<td><code>liste[10]</code> dans une liste de 5 éléments</td>
+<td><code>IndexError</code>, <code>TypeError</code>, <code>NameError</code>…</td>
+</tr>
+<tr>
+<td>Logique</td>
+<td>jamais : le programme se termine</td>
+<td><code>(a + b) / 2</code> écrit <code>a + b / 2</code></td>
+<td>aucun</td>
+</tr>
+</tbody>
+</table></div>
+<p>Les erreurs de logique sont les plus difficiles, parce que rien ne les signale. Seul ton <strong>jeu d'essais</strong> les révèle.</p>
+<h2 id="lire-un-message-derreur">Lire un message d'erreur</h2>
+<p>Quand l'erreur se produit dans une fonction appelée par une autre, le message, appelé <em>traceback</em>, montre toute la chaîne des appels. <strong>Lis-le de bas en haut</strong> : la dernière ligne donne l'erreur, et la ligne juste au-dessus dit où elle s'est produite.</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">def moyenne(valeurs):
+    return sum(valeurs) / len(valeurs)
+
+def ecart_relatif(mesures, reference):
+    m = moyenne(mesures)
+    return abs(m - reference) / reference * 100
+
+print(ecart_relatif([9.79, 9.83], 9.81))
+print(ecart_relatif([], 9.81))</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<p>Le message pointe la ligne de <code>moyenne</code>, mais la vraie cause est l'appel avec une liste vide, deux niveaux plus haut. Le traceback donne le chemin; c'est à toi de remonter jusqu'à la cause.</p>
+<h2 id="une-methode-en-cinq-etapes">Une méthode en cinq étapes</h2>
+<ol>
+<li><strong>Reproduire.</strong> Trouve un cas précis qui donne un mauvais résultat, et note le résultat attendu.</li>
+<li><strong>Lire.</strong> S'il y a un message, lis la dernière ligne, puis la ligne de ton code qui est en cause.</li>
+<li><strong>Localiser.</strong> Ajoute des <code>print()</code> aux endroits clés, ou fais la trace à la main, pour trouver la <strong>première</strong> ligne où une valeur devient fausse.</li>
+<li><strong>Corriger une seule chose.</strong> Formule une hypothèse (« l'accumulateur repart de zéro à chaque tour »), corrige, puis réexécute.</li>
+<li><strong>Retester tout le jeu d'essais</strong>, pour t'assurer que la correction n'a rien brisé ailleurs.</li>
+</ol>
+<div class="admonition essaie">
+<p class="admonition-title">Un truc pratique : afficher le nom et la valeur</p>
+<p>Dans une f-string, <code>{x=}</code> affiche le nom de la variable <strong>et</strong> sa valeur : <code>print(f"{i=} {total=}")</code> affiche <code>i=3 total=14</code>. C'est idéal pour suivre une boucle.</p>
+</div>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable"># Ce programme doit calculer la somme des carrés de 1 à 4 (30), mais il affiche 16.
+for i in range(1, 5):
+    total = 0
+    total = total + i ** 2
+    print(f&quot;{i=} {total=}&quot;)
+print(&quot;Résultat :&quot;, total)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<p>Les <code>print()</code> montrent tout de suite que <code>total</code> repart de 0 à chaque tour : l'initialisation est dans la boucle. Déplace-la avant la boucle, puis enlève les <code>print()</code> de débogage.</p>
+<div class="admonition note">
+<p class="admonition-title">La méthode du canard</p>
+<p>Explique ton code, ligne par ligne et à voix haute, à quelqu'un, ou même à un canard en caoutchouc. Très souvent, on trouve l'erreur en plein milieu de son explication.</p>
+</div>
+<h2 id="les-erreurs-classiques-a-soupconner">Les erreurs classiques à soupçonner</h2>
+<ul>
+<li>Un tour de trop ou de moins : <code>range(n)</code> contre <code>range(n + 1)</code>, <code>&lt;</code> contre <code>&lt;=</code>.</li>
+<li>Une initialisation placée dans la boucle.</li>
+<li>Un <code>return</code> placé dans la boucle : la fonction s'arrête au premier tour.</li>
+<li>Les priorités des opérations : <code>a + b / 2</code>.</li>
+<li>Un <code>elif</code> dans le mauvais ordre.</li>
+<li>Un nombre lu au clavier ou dans un fichier qui est resté du texte.</li>
+</ul>
+<h2 id="numpy-calculer-sur-des-tableaux-entiers">NumPy : calculer sur des tableaux entiers</h2>
+<p><strong>NumPy</strong> fournit un nouveau type de tableau, <code>ndarray</code>, fait pour le calcul. Une opération sur un tableau s'applique à <strong>tous</strong> ses éléments à la fois, sans boucle.</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">import numpy as np
+
+temperatures_c = np.array([-12.5, 0.0, 21.3, 37.0, 100.0])
+temperatures_f = temperatures_c * 9 / 5 + 32
+print(temperatures_f)
+
+masses = np.array([1.0, 2.0, 3.0])
+vitesses = np.array([4.0, 3.0, 2.0])
+energies = 0.5 * masses * vitesses ** 2    # élément par élément
+print(energies)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<div class="admonition piege">
+<p class="admonition-title">Piège : une liste n'est pas un tableau NumPy</p>
+<p>Avec des listes, <code>[1, 2] + [3, 4]</code> donne <code>[1, 2, 3, 4]</code> (on les met bout à bout) et <code>[1, 2] * 2</code> donne <code>[1, 2, 1, 2]</code>. Avec des tableaux NumPy, <code>+</code> et <code>*</code> agissent élément par élément. Convertis tes listes avec <code>np.array()</code> avant de calculer.</p>
+</div>
+<h3 id="creer-des-tableaux">Créer des tableaux</h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Fonction</th>
+<th>Résultat</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>np.array([1, 2, 3])</code></td>
+<td>à partir d'une liste</td>
+</tr>
+<tr>
+<td><code>np.linspace(0, 2, 5)</code></td>
+<td>5 valeurs régulièrement espacées de 0 à 2, <strong>fin incluse</strong> : 0, 0.5, 1, 1.5, 2</td>
+</tr>
+<tr>
+<td><code>np.arange(0, 1, 0.25)</code></td>
+<td>de 0 à 1 par pas de 0.25, <strong>fin exclue</strong> : 0, 0.25, 0.5, 0.75</td>
+</tr>
+<tr>
+<td><code>np.zeros(4)</code></td>
+<td>quatre zéros</td>
+</tr>
+</tbody>
+</table></div>
+<p><code>np.linspace</code> règle le problème du pas réel du chapitre 5 :</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">import numpy as np
+t = np.linspace(0, 3, 31)          # 31 instants, de 0 à 3 s
+y = 0.5 * 9.81 * t ** 2
+print(t[:5])
+print(y[-1])</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<h3 id="fonctions-et-statistiques">Fonctions et statistiques</h3>
+<p>NumPy a ses propres versions des fonctions mathématiques, qui acceptent des tableaux : <code>np.sqrt</code>, <code>np.sin</code>, <code>np.cos</code>, <code>np.exp</code>, <code>np.log</code>. Et ses statistiques :</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">import numpy as np
+g = np.array([9.79, 9.83, 9.81, 9.62, 9.85])
+print(&quot;moyenne :&quot;, g.mean())
+print(&quot;écart type :&quot;, g.std(ddof=1))     # ddof=1 : écart type d&#x27;échantillon (n - 1)
+print(&quot;max :&quot;, g.max(), &quot;à l&#x27;indice&quot;, g.argmax())</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<div class="admonition piege">
+<p class="admonition-title">Piège : ddof=1</p>
+<p>Par défaut, <code>std()</code> divise par n, et non par n − 1. Pour l'écart type d'échantillon utilisé en laboratoire, écris <code>std(ddof=1)</code>.</p>
+</div>
+<h3 id="les-masques-filtrer-sans-boucle">Les masques : filtrer sans boucle</h3>
+<p>Une comparaison sur un tableau donne un tableau de booléens, un <strong>masque</strong>. On s'en sert pour compter ou pour filtrer :</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">import numpy as np
+temperatures = np.array([-3.5, -1.0, 2.5, 4.0, 1.5, -2.0, -6.5])
+gel = temperatures &lt; 0
+print(gel)
+print(&quot;Jours de gel :&quot;, gel.sum())                    # True compte pour 1
+print(&quot;Températures positives :&quot;, temperatures[temperatures &gt; 0])</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<h2 id="exemple-complet-deboguer-puis-vectoriser">Exemple complet : déboguer, puis vectoriser</h2>
+<h3 id="le-programme-a-corriger">Le programme à corriger</h3>
+<p>On veut l'énergie mécanique d'une balle lancée vers le haut à 15 m/s, toutes les 0.5 s, de 0 à 3 s. L'énergie devrait rester constante, à 112.5 J, pour une masse de 1 kg. Le programme ci-dessous contient <strong>deux</strong> erreurs : applique la méthode pour les trouver.</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">g = 9.81
+m = 1.0
+v0 = 15.0
+for i in range(6):
+    t = i * 0.5
+    v = v0 - g * t
+    y = v0 * t - 0.5 * g * t ** 2
+    em = 0.5 * m * v ** 2 + m * g + y
+    print(f&quot;t = {t} s, Em = {em:.1f} J&quot;)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<p><strong>Étape 1, reproduire</strong> : à t = 0, l'énergie devrait être ½ × 1 × 15² = 112.5 J, mais le programme affiche 122.3 J. <strong>Étapes 2 et 3</strong> : à t = 0, y vaut 0; l'erreur est donc dans la formule de l'énergie potentielle, écrite <code>m * g + y</code> au lieu de <code>m * g * y</code>. <strong>Après correction</strong>, une deuxième erreur reste : la table s'arrête à 2.5 s. <code>range(6)</code> donne 6 instants; il en faut 7 pour aller jusqu'à 3 s.</p>
+<h3 id="la-version-numpy">La version NumPy</h3>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">import numpy as np
+g = 9.81
+m = 1.0
+v0 = 15.0
+t = np.linspace(0, 3, 7)
+v = v0 - g * t
+y = v0 * t - 0.5 * g * t ** 2
+em = 0.5 * m * v ** 2 + m * g * y
+print(t)
+print(em)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<p>Plus court, sans indice ni <code>range()</code> à gérer : deux sources d'erreur de moins. L'énergie reste à 112.5 J à chaque instant, comme prévu.</p>
+<h2 id="pieges-frequents">Pièges fréquents</h2>
+<ul>
+<li>Corriger plusieurs choses à la fois : on ne sait plus laquelle a réglé le problème.</li>
+<li>Oublier d'enlever les <code>print()</code> de débogage.</li>
+<li>Mélanger listes et tableaux NumPy dans un calcul.</li>
+<li>Oublier <code>ddof=1</code> pour l'écart type d'échantillon.</li>
+<li>Confondre <code>np.linspace</code> (fin incluse, nombre de points) et <code>np.arange</code> (fin exclue, pas).</li>
+</ul>
+<h2 id="autoquiz">Autoquiz</h2>
+<ol>
+<li>Quelle famille d'erreurs ne produit aucun message?</li>
+<li>Dans un traceback, quelle ligne lit-on en premier?</li>
+<li>Pourquoi corriger une seule chose à la fois?</li>
+<li>Que vaut <code>np.array([1, 2]) * 3</code>? Et <code>[1, 2] * 3</code>?</li>
+<li>Combien de valeurs produit <code>np.linspace(0, 1, 11)</code>, et quel est le pas?</li>
+</ol>
+<h2 id="vocabulaire">Vocabulaire</h2>
+<div class="vocab"><span>erreur de syntaxe</span><span>erreur d'exécution</span><span>erreur de logique</span><span>traceback</span><span>débogage</span><span>hypothèse</span><span>NumPy</span><span>ndarray</span><span>vectoriser</span><span>linspace</span><span>arange</span><span>masque</span><span>ddof</span></div>
+<h2 id="exercices">Exercices préparatoires</h2><p>Écris ton code dans chaque exercice : remplace les <code>None</code> par ta réponse, puis clique sur <strong>Vérifier</strong>. La vérification te dit si ta réponse est bonne, sans la montrer. Ton travail est sauvegardé automatiquement dans ce navigateur.</p>
+<section class="exo" id="exo-10-1" data-id="10.1" data-checks="[[&quot;famille_1&quot;, &quot;76ea656cc629&quot;], [&quot;famille_2&quot;, &quot;5988fcfafe3b&quot;], [&quot;famille_3&quot;, &quot;50469688e3c9&quot;]]">
+  <div class="exo-head"><h3>Exercice 10.1 — Quelle famille d&#x27;erreur?</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p><strong>Sans exécuter de code</strong>, classe chaque programme : écris <code>"syntaxe"</code>, <code>"exécution"</code> ou <code>"logique"</code>.</p>
+<pre><code><span class="c1"># Programme 1 : doit afficher la moyenne de 4 et 6</span>
+<span class="nb">print</span><span class="p">(</span><span class="mi">4</span> <span class="o">+</span> <span class="mi">6</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Programme 2</span>
+<span class="n">valeurs</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">valeurs</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+
+<span class="c1"># Programme 3</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</code></pre></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 10.1 — Quelle famille d&#x27;erreur?">famille_1 = None
+famille_2 = None
+famille_3 = None</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-10-2" data-id="10.2" data-checks="[[&quot;fonction&quot;, &quot;5a87115d816d&quot;], [&quot;type_erreur&quot;, &quot;90e4dc48bef5&quot;]]">
+  <div class="exo-head"><h3>Exercice 10.2 — Lire un traceback</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Voici un message d'erreur. Dans quelle <strong>fonction</strong> l'erreur s'est-elle produite, et de quel <strong>type</strong> est-elle?</p>
+<p><code>Traceback (most recent call last):
+  File "labo.py", line 12, in &lt;module&gt;
+    print(rapport(donnees))
+  File "labo.py", line 8, in rapport
+    m = moyenne(liste)
+  File "labo.py", line 3, in moyenne
+    return sum(valeurs) / len(valeurs)
+ZeroDivisionError: division by zero</code></p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 10.2 — Lire un traceback">fonction = None       # le nom de la fonction, entre guillemets
+type_erreur = None    # le type d&#x27;erreur, entre guillemets</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-10-3" data-id="10.3" data-checks="[[&quot;somme_carres(4)&quot;, &quot;ca99a3712615&quot;], [&quot;somme_carres(1)&quot;, &quot;64e4b892473f&quot;], [&quot;somme_carres(10)&quot;, &quot;93c6d1d8fb1c&quot;]]">
+  <div class="exo-head"><h3>Exercice 10.3 — Un return trop pressé</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p><code>somme_carres(n)</code> doit retourner 1² + 2² + … + n², mais <code>somme_carres(4)</code> donne 1 au lieu de 30. Trouve et corrige l'erreur.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 10.3 — Un return trop pressé">def somme_carres(n):
+    total = 0
+    for k in range(1, n + 1):
+        total = total + k ** 2
+        return total</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-10-4" data-id="10.4" data-checks="[[&quot;classer_temperature(-5)&quot;, &quot;7f353a912b4d&quot;], [&quot;classer_temperature(0)&quot;, &quot;0a70e9983a4c&quot;], [&quot;classer_temperature(9.9)&quot;, &quot;0a70e9983a4c&quot;], [&quot;classer_temperature(10)&quot;, &quot;062406631e8f&quot;]]">
+  <div class="exo-head"><h3>Exercice 10.4 — Une branche jamais atteinte</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p><code>classer_temperature(t)</code> doit retourner <code>"gel"</code> sous 0 °C, <code>"froid"</code> de 0 à moins de 10, et <code>"doux"</code> à partir de 10. Pourtant, elle ne retourne jamais <code>"gel"</code>. Fais la trace avec t = −5, puis corrige.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 10.4 — Une branche jamais atteinte">def classer_temperature(t):
+    if t &lt; 10:
+        return &quot;froid&quot;
+    elif t &lt; 0:
+        return &quot;gel&quot;
+    else:
+        return &quot;doux&quot;</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-10-5" data-id="10.5" data-checks="[[&quot;vitesse_moyenne(100, 10, 100, 30)&quot;, &quot;0be3a3882951&quot;], [&quot;vitesse_moyenne(50, 5, 0, 5)&quot;, &quot;0be3a3882951&quot;], [&quot;vitesse_moyenne(3, 1, 3, 2)&quot;, &quot;7a284f128e61&quot;]]">
+  <div class="exo-head"><h3>Exercice 10.5 — Une erreur de priorité</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p><code>vitesse_moyenne(d1, t1, d2, t2)</code> doit retourner la vitesse moyenne (m/s) sur deux trajets : la distance totale divisée par le temps total. Un test montre que <code>vitesse_moyenne(100, 10, 100, 30)</code> donne 140.0 au lieu de 5.0. Corrige.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 10.5 — Une erreur de priorité">def vitesse_moyenne(d1, t1, d2, t2):
+    return d1 + d2 / t1 + t2</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-10-6" data-id="10.6" data-checks="[[&quot;b.tolist()&quot;, &quot;086750321a99&quot;]]">
+  <div class="exo-head"><h3>Exercice 10.6 — Premiers calculs NumPy</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Avec NumPy, construis le tableau <code>b</code>, qui contient 2 × a + 1 pour chaque élément de <code>a</code>, <strong>sans boucle</strong>. La vérification convertit le tableau en liste avec <code>tolist()</code>.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 10.6 — Premiers calculs NumPy">import numpy as np
+a = np.array([1, 2, 3, 4, 5])
+b = None
+print(b)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-10-7" data-id="10.7" data-checks="[[&quot;len(t)&quot;, &quot;d836f3739f45&quot;], [&quot;float(t[1])&quot;, &quot;31076a5234a0&quot;], [&quot;float(y[-1])&quot;, &quot;36434a93e2e3&quot;], [&quot;float(y.sum())&quot;, &quot;310c5b34f060&quot;]]">
+  <div class="exo-head"><h3>Exercice 10.7 — Une table de valeurs avec linspace</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Avec <code>np.linspace</code>, crée <code>t</code> : 21 instants régulièrement espacés de 0 à 2 s. Calcule ensuite les positions y = ½ g t² d'un objet en chute libre (g = 9.81 m/s²), sans boucle.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 10.7 — Une table de valeurs avec linspace">import numpy as np
+g = 9.81
+t = None
+y = None
+print(t, y)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-10-8" data-id="10.8" data-checks="[[&quot;float(moyenne)&quot;, &quot;d3e08620baf1&quot;], [&quot;float(ecart_type)&quot;, &quot;4abe7675ea29&quot;], [&quot;int(indice_max)&quot;, &quot;7eee9525c86f&quot;]]">
+  <div class="exo-head"><h3>Exercice 10.8 — Les statistiques de NumPy</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Avec les méthodes de NumPy, calcule la moyenne, l'écart type <strong>d'échantillon</strong> et l'indice de la plus grande mesure.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 10.8 — Les statistiques de NumPy">import numpy as np
+mesures = np.array([2.01, 1.99, 2.02, 2.00, 2.31, 1.98, 2.01, 2.03])
+moyenne = None
+ecart_type = None
+indice_max = None
+print(moyenne, ecart_type, indice_max)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-10-9" data-id="10.9" data-checks="[[&quot;int(jours_gel)&quot;, &quot;7eee9525c86f&quot;], [&quot;float(moyenne_positives)&quot;, &quot;6ce59af83edd&quot;]]">
+  <div class="exo-head"><h3>Exercice 10.9 — Un masque</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Avec un masque, compte les jours de gel (température sous 0 °C) et calcule la moyenne des températures <strong>positives</strong> (plus grandes que 0), sans boucle.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 10.9 — Un masque">import numpy as np
+temperatures = np.array([-3.5, -1.0, 2.5, 4.0, 1.5, -2.0, -6.5, 0.0, 3.0])
+jours_gel = None
+moyenne_positives = None
+print(jours_gel, moyenne_positives)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-10-10" data-id="10.10" data-checks="[[&quot;energies_np.tolist()&quot;, &quot;3dfa6193d937&quot;], [&quot;float(energies_np.sum())&quot;, &quot;c2f37376f800&quot;]]">
+  <div class="exo-head"><h3>Exercice 10.10 — Remplacer une boucle par NumPy</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>La boucle ci-dessous calcule l'énergie cinétique de cinq chariots. Réécris le calcul avec des tableaux NumPy, <strong>sans boucle</strong>, dans la variable <code>energies_np</code>.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 10.10 — Remplacer une boucle par NumPy">import numpy as np
+masses = [0.5, 1.0, 1.5, 2.0, 2.5]      # kg
+vitesses = [4.0, 3.5, 3.0, 2.5, 2.0]    # m/s
+
+energies = []
+for i in range(len(masses)):
+    energies.append(0.5 * masses[i] * vitesses[i] ** 2)
+print(energies)
+
+energies_np = None
+print(energies_np)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+  <div class="enclasse"><p><strong>En classe : Labo 10.</strong> Quiz d'entrée, démonstration, atelier en équipe et labo individuel. Le code d'accès est donné au début de la séance.</p><a class="btn ghost" href="../labos/labo10.html">Page du labo 10</a></div>
+  <h2 id="remise">Remise sur LÉA</h2>
+  <div class="travail">
+    <label class="nom"><span>Ton nom (prénom et nom)</span><input id="nom-etudiant" type="text" autocomplete="name"></label>
+    <div><p class="progression"></p><div class="barre" aria-hidden="true"><span></span></div></div>
+    <ol>
+      <li>Clique sur <strong>Télécharger mon rapport</strong>. Le fichier contient ton code, tes fiches et le résultat de chaque vérification.</li>
+      <li>Dépose ce fichier dans le travail du chapitre 10 sur LÉA.</li>
+    </ol>
+    <div class="actions"><button class="btn telecharger" type="button">Télécharger mon rapport</button>
+      <label class="btn ghost">Importer un rapport<input class="importer" type="file" accept=".py,.txt" hidden></label></div>
+    <p id="msg-import" aria-live="polite"></p>
+    <p class="note">Ton travail est sauvegardé automatiquement, mais seulement dans <em>ce</em> navigateur, sur <em>cet</em> appareil. Pour continuer ailleurs, télécharge ton rapport et importe-le sur l'autre appareil.</p>
+  </div>
+  <nav class="pager" aria-label="Chapitres"><a class="btn ghost" href="ch09.html">← Chapitre 9</a><a class="btn ghost" href="ch11.html">Chapitre 11 →</a></nav>
+</article>
+<aside class="toc" aria-label="Dans ce chapitre">
+  <p>Dans ce chapitre</p>
+  <ol><li><a href="#objectifs">Objectifs</a></li><li><a href="#trois-familles-derreurs">Trois familles d'erreurs</a></li><li><a href="#lire-un-message-derreur">Lire un message d'erreur</a></li><li><a href="#une-methode-en-cinq-etapes">Une méthode en cinq étapes</a></li><li><a href="#les-erreurs-classiques-a-soupconner">Les erreurs classiques à soupçonner</a></li><li><a href="#numpy-calculer-sur-des-tableaux-entiers">NumPy : calculer sur des tableaux entiers</a></li><li><a href="#exemple-complet-deboguer-puis-vectoriser">Exemple complet : déboguer, puis vectoriser</a></li><li><a href="#pieges-frequents">Pièges fréquents</a></li><li><a href="#autoquiz">Autoquiz</a></li><li><a href="#vocabulaire">Vocabulaire</a></li><li><a href="#exercices">Exercices préparatoires</a></li><li><a href="#remise">Remise sur LÉA</a></li></ol>
+  <div class="cta"><p class="progression"></p><div class="barre" aria-hidden="true"><span></span></div><a class="btn" href="#remise">Remise sur LÉA</a><a class="btn ghost" href="../#recettes">Recettes</a></div>
+</aside>
+</div>
+<script src="../assets/cours.js?v=f1fbedaa"></script>
+</body>
+</html>

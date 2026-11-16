@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="fr-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ch. 9 · Tableaux 2D et fichiers · 420-SN1-RE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/lecture.css?v=f1fbedaa">
+</head>
+<body data-chapitre="9">
+<header class="topbar"><div class="in">
+  <a class="home" href="../#chapitre-9"><span>420-SN1-RE</span>Programmation en sciences</a>
+  <span class="chap">Chapitre 9 · Semaine 9</span>
+</div></header>
+<div class="layout">
+<article>
+  <p class="eyebrow">Chapitre 9 · Semaine 9</p>
+  <h1>Tableaux 2D et fichiers</h1>
+  <div class="prep">
+    <div><h2>À faire avant le cours</h2><ol><li>Lis ce chapitre et exécute les exemples (environ 1 h).</li><li>Fais les exercices préparatoires 9.1 à 9.10, au bas de la page (environ 1 h 30).</li><li>Télécharge ton rapport et remets-le sur LÉA avant le cours.</li></ol></div>
+    <a class="btn" href="#exercices">Aller aux exercices</a>
+  </div>
+  <p class="aide">Tout le code de cette page s'exécute dans ton navigateur : clique sur <strong>▶ Exécuter</strong>. Tu peux modifier les exemples librement; <strong>Réinitialiser</strong> remet le code d'origine. Raccourci : Maj + Entrée.</p>
+<div class="admonition probleme">
+<p class="admonition-title">Problème d'ouverture</p>
+<p>Ton titrage acide-base a produit 41 mesures de pH, enregistrées par le logiciel du labo dans un fichier <code>titrage.csv</code>. La station météo du cégep produit un fichier semblable chaque jour. Recopier ces nombres à la main dans un programme? Hors de question.</p>
+<p>Ce chapitre montre comment <strong>lire un fichier de données</strong>, ranger ses valeurs dans un <strong>tableau à deux dimensions</strong> (lignes et colonnes) et <strong>écrire</strong> un rapport dans un nouveau fichier.</p>
+</div>
+<h2 id="objectifs">Objectifs</h2>
+<ol>
+<li>Créer un tableau à deux dimensions (une liste de listes) et accéder à une case avec deux indices.</li>
+<li>Parcourir un tableau 2D ligne par ligne et colonne par colonne.</li>
+<li>Lire un fichier texte et un fichier CSV, et convertir ses valeurs en nombres.</li>
+<li>Écrire des résultats dans un fichier.</li>
+<li>Analyser des données réelles : maximum, moyenne d'une colonne, détection d'un point particulier.</li>
+</ol>
+<h2 id="les-tableaux-a-deux-dimensions">Les tableaux à deux dimensions</h2>
+<p>Un tableau 2D est une <strong>liste de listes</strong> : chaque élément est une ligne, et chaque ligne contient les valeurs des colonnes.</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable"># Températures (°C) de 3 villes (lignes) à 4 heures de la journée (colonnes)
+temperatures = [
+    [-2.0, 1.5, 4.0, 0.5],    # Québec
+    [-1.0, 3.0, 5.5, 2.0],    # Montréal
+    [-6.5, -3.0, -1.0, -4.0], # Chicoutimi
+]
+print(temperatures[1])       # la ligne de Montréal
+print(temperatures[1][2])    # Montréal, 3e heure
+print(len(temperatures), &quot;lignes,&quot;, len(temperatures[0]), &quot;colonnes&quot;)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<p><code>temperatures[i][j]</code> se lit : ligne <code>i</code>, puis colonne <code>j</code>. Les deux indices commencent à 0.</p>
+<h3 id="parcourir-un-tableau-2d">Parcourir un tableau 2D</h3>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">temperatures = [[-2.0, 1.5, 4.0, 0.5], [-1.0, 3.0, 5.5, 2.0], [-6.5, -3.0, -1.0, -4.0]]
+villes = [&quot;Québec&quot;, &quot;Montréal&quot;, &quot;Chicoutimi&quot;]
+
+# Ligne par ligne : la moyenne de chaque ville
+for i in range(len(temperatures)):
+    ligne = temperatures[i]
+    print(villes[i], &quot;:&quot;, sum(ligne) / len(ligne))
+
+# Colonne par colonne : la moyenne de chaque heure
+for j in range(len(temperatures[0])):
+    total = 0
+    for i in range(len(temperatures)):
+        total = total + temperatures[i][j]
+    print(&quot;Heure&quot;, j, &quot;:&quot;, total / len(temperatures))</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<p>Pour une colonne, l'indice de colonne <code>j</code> reste fixe pendant que l'indice de ligne <code>i</code> varie : c'est la boucle intérieure.</p>
+<h2 id="lire-un-fichier-texte">Lire un fichier texte</h2>
+<p>Un fichier se lit en trois temps : l'ouvrir, lire ses lignes, et le fermer. L'instruction <code>with</code> ferme le fichier automatiquement.</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">with open(&quot;mesures.txt&quot;) as fichier:
+    lignes = fichier.readlines()
+
+print(lignes)          # du texte, avec un retour à la ligne \n à la fin de chaque ligne
+
+valeurs = []
+for ligne in lignes:
+    valeurs.append(float(ligne.strip()))
+print(valeurs)
+print(&quot;moyenne :&quot;, sum(valeurs) / len(valeurs))</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<p>Trois étapes à retenir pour chaque ligne lue :</p>
+<ol>
+<li><code>strip()</code> enlève les espaces et le retour à la ligne aux extrémités;</li>
+<li><code>split(",")</code> découpe une ligne en morceaux, là où il y a une virgule;</li>
+<li><code>float()</code> ou <code>int()</code> convertit chaque morceau en nombre.</li>
+</ol>
+<div class="admonition piege">
+<p class="admonition-title">Piège : tout ce qu'on lit est du texte</p>
+<p>Comme <code>input()</code>, un fichier donne toujours des <strong>chaînes de caractères</strong>. <code>"9.79" + "9.83"</code> donne <code>"9.799.83"</code>, pas 19.62. Convertis chaque valeur avant de calculer.</p>
+</div>
+<h2 id="lire-un-fichier-csv">Lire un fichier CSV</h2>
+<p>Un fichier <strong>CSV</strong> (<em>comma-separated values</em>) contient un tableau : une ligne par enregistrement, des virgules entre les colonnes, et souvent une première ligne d'<strong>en-tête</strong> avec le nom des colonnes. Le module <code>csv</code> le découpe pour nous.</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">import csv
+
+with open(&quot;meteo.csv&quot;) as fichier:
+    lecteur = csv.reader(fichier)
+    entete = next(lecteur)      # la première ligne : les noms des colonnes
+    donnees = []
+    for ligne in lecteur:
+        donnees.append([ligne[0], float(ligne[1]), float(ligne[2]), float(ligne[3])])
+
+print(entete)
+print(donnees[0])
+print(len(donnees), &quot;jours&quot;)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<p><code>next(lecteur)</code> lit une seule ligne : on s'en sert pour mettre l'en-tête de côté. Le résultat, <code>donnees</code>, est un tableau 2D : une ligne par jour, avec la date et trois nombres.</p>
+<h2 id="ecrire-un-fichier">Écrire un fichier</h2>
+<p>On ouvre le fichier en mode écriture, <code>"w"</code>, puis on y écrit du texte avec <code>write()</code>. Attention : <code>"w"</code> <strong>remplace</strong> le fichier s'il existe déjà.</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">resultats = [(&quot;Québec&quot;, 1.0), (&quot;Montréal&quot;, 2.375), (&quot;Chicoutimi&quot;, -3.625)]
+with open(&quot;rapport.txt&quot;, &quot;w&quot;) as fichier:
+    fichier.write(&quot;Ville,moyenne_C\n&quot;)
+    for ville, moyenne in resultats:
+        fichier.write(f&quot;{ville},{moyenne:.2f}\n&quot;)
+
+# Relire le fichier pour vérifier
+with open(&quot;rapport.txt&quot;) as fichier:
+    print(fichier.read())</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<p><code>write()</code> n'ajoute pas de retour à la ligne : il faut écrire <code>\n</code> soi-même.</p>
+<h2 id="exemple-complet-le-point-dequivalence-dun-titrage">Exemple complet : le point d'équivalence d'un titrage</h2>
+<h3 id="planifier">Planifier</h3>
+<p>On titre 25.0 mL d'acide chlorhydrique par de l'hydroxyde de sodium. Au point d'équivalence, le pH monte brusquement : c'est là que la <strong>pente</strong> ΔpH / ΔV est la plus grande.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Réponse</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Intrant</td>
+<td>le fichier <code>titrage.csv</code> (volume en mL, pH)</td>
+</tr>
+<tr>
+<td>Extrants</td>
+<td>le volume à l'équivalence (mL); le pH à ce point</td>
+</tr>
+<tr>
+<td>Traitements</td>
+<td>lire le fichier; pour chaque paire de points consécutifs, calculer la pente; garder le plus grand saut; prendre le milieu de l'intervalle</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Jeu d'essais</strong> : la concentration de l'acide (0.100 mol/L) et de la base (0.200 mol/L) donne une équivalence théorique à 12.5 mL. Le programme doit trouver une valeur proche.</p>
+<h3 id="coder">Coder</h3>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">import csv
+
+volumes = []
+phs = []
+with open(&quot;titrage.csv&quot;) as fichier:
+    lecteur = csv.reader(fichier)
+    next(lecteur)
+    for ligne in lecteur:
+        volumes.append(float(ligne[0]))
+        phs.append(float(ligne[1]))
+
+meilleure_pente = 0
+i_saut = 0
+for i in range(len(volumes) - 1):
+    pente = (phs[i + 1] - phs[i]) / (volumes[i + 1] - volumes[i])
+    if pente &gt; meilleure_pente:
+        meilleure_pente = pente
+        i_saut = i
+
+v_equivalence = (volumes[i_saut] + volumes[i_saut + 1]) / 2
+print(f&quot;{len(volumes)} mesures lues&quot;)
+print(f&quot;Plus grand saut entre {volumes[i_saut]} et {volumes[i_saut + 1]} mL : {meilleure_pente:.1f} unités de pH par mL&quot;)
+print(f&quot;Volume à l&#x27;équivalence ≈ {v_equivalence} mL&quot;)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<h3 id="verifier">Vérifier</h3>
+<p>Le programme trouve un saut entre 12.0 et 12.5 mL, soit environ 12.25 mL, près de la valeur théorique de 12.5 mL. L'écart vient du pas de mesure de 0.5 mL : avec un pas plus fin près de l'équivalence, l'estimation serait meilleure. Au chapitre 11, on tracera cette courbe.</p>
+<h2 id="pieges-frequents">Pièges fréquents</h2>
+<ul>
+<li>Inverser les indices : <code>tableau[colonne][ligne]</code> au lieu de <code>tableau[ligne][colonne]</code>.</li>
+<li>Oublier de convertir le texte lu en nombre.</li>
+<li>Oublier de sauter la ligne d'en-tête : <code>float("volume_ml")</code> provoque une <code>ValueError</code>.</li>
+<li>Oublier <code>\n</code> en écrivant : tout se retrouve sur une seule ligne.</li>
+<li>Ouvrir en mode <code>"w"</code> un fichier qu'on voulait seulement lire : il est effacé.</li>
+</ul>
+<h2 id="autoquiz">Autoquiz</h2>
+<ol>
+<li>Avec <code>m = [[1, 2], [3, 4], [5, 6]]</code>, que vaut <code>m[2][0]</code>? Et <code>len(m)</code>?</li>
+<li>Quelle boucle est à l'intérieur pour parcourir une colonne?</li>
+<li>Que donne <code>"20.5,3.1\n".strip().split(",")</code>?</li>
+<li>Pourquoi utiliser <code>with</code> pour ouvrir un fichier?</li>
+<li>Comment ignore-t-on la ligne d'en-tête d'un CSV?</li>
+</ol>
+<h2 id="vocabulaire">Vocabulaire</h2>
+<div class="vocab"><span>tableau 2D</span><span>liste de listes</span><span>ligne</span><span>colonne</span><span>fichier</span><span>open</span><span>with</span><span>readlines</span><span>strip</span><span>split</span><span>CSV</span><span>en-tête</span><span>write</span></div>
+<h2 id="exercices">Exercices préparatoires</h2><p>Écris ton code dans chaque exercice : remplace les <code>None</code> par ta réponse, puis clique sur <strong>Vérifier</strong>. La vérification te dit si ta réponse est bonne, sans la montrer. Ton travail est sauvegardé automatiquement dans ce navigateur.</p>
+<section class="exo" id="exo-9-1" data-id="9.1" data-checks="[[&quot;v1&quot;, &quot;5592eacdc0c4&quot;], [&quot;v2&quot;, &quot;7a284f128e61&quot;], [&quot;v3&quot;, &quot;207cd6d1a9c3&quot;]]">
+  <div class="exo-head"><h3>Exercice 9.1 — Deux indices</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p><strong>Sans exécuter de code</strong>, avec <code>m = [[1, 2, 3], [4, 5, 6]]</code>, donne la valeur de <code>m[1][2]</code>, de <code>len(m)</code> et de <code>len(m[0])</code>.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 9.1 — Deux indices">v1 = None    # m[1][2]
+v2 = None    # len(m)
+v3 = None    # len(m[0])</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-9-2" data-id="9.2" data-checks="[[&quot;total&quot;, &quot;38c566e3f448&quot;]]">
+  <div class="exo-head"><h3>Exercice 9.2 — La somme d&#x27;une grille</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Calcule la somme de <strong>toutes</strong> les valeurs de la grille, avec deux boucles imbriquées.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 9.2 — La somme d&#x27;une grille">grille = [
+    [3, 8, 1, 4],
+    [7, 2, 9, 5],
+    [6, 0, 4, 2],
+]
+total = None
+print(total)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-9-3" data-id="9.3" data-checks="[[&quot;sommes_lignes&quot;, &quot;9f519f507771&quot;]]">
+  <div class="exo-head"><h3>Exercice 9.3 — La somme de chaque ligne</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Construis la liste <code>sommes_lignes</code>, qui contient la somme de chaque ligne de la grille, dans l'ordre.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 9.3 — La somme de chaque ligne">grille = [
+    [3, 8, 1, 4],
+    [7, 2, 9, 5],
+    [6, 0, 4, 2],
+]
+sommes_lignes = []
+print(sommes_lignes)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-9-4" data-id="9.4" data-checks="[[&quot;moyenne_volume&quot;, &quot;d7c81ed94afd&quot;]]">
+  <div class="exo-head"><h3>Exercice 9.4 — La moyenne d&#x27;une colonne</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Chaque ligne contient les résultats d'une équipe : masse (g), volume (mL), température (°C). Calcule la moyenne de la colonne des <strong>volumes</strong>.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 9.4 — La moyenne d&#x27;une colonne">resultats = [
+    [12.4, 50.2, 21.0],
+    [12.1, 49.8, 21.5],
+    [12.6, 50.5, 20.8],
+    [12.3, 50.1, 21.2],
+]
+moyenne_volume = None
+print(moyenne_volume)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-9-5" data-id="9.5" data-checks="[[&quot;len(valeurs)&quot;, &quot;5592eacdc0c4&quot;], [&quot;moyenne&quot;, &quot;9572298f42d7&quot;]]">
+  <div class="exo-head"><h3>Exercice 9.5 — Lire un fichier texte</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Le fichier <code>mesures.txt</code> contient une mesure de g par ligne. Lis-le, construis la liste <code>valeurs</code> (des nombres réels) et calcule leur moyenne.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 9.5 — Lire un fichier texte">valeurs = []
+# lis le fichier ici
+moyenne = None
+print(valeurs, moyenne)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-9-6" data-id="9.6" data-checks="[[&quot;jours_precipitations&quot;, &quot;c0202b321689&quot;]]">
+  <div class="exo-head"><h3>Exercice 9.6 — Les jours de pluie ou de neige</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Avec le module <code>csv</code>, lis <code>meteo.csv</code> (colonnes : date, température minimale, maximale, précipitations en mm) et compte les jours où il y a eu des précipitations.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 9.6 — Les jours de pluie ou de neige">import csv
+jours_precipitations = None
+print(jours_precipitations)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-9-7" data-id="9.7" data-checks="[[&quot;t_record&quot;, &quot;502147371e08&quot;], [&quot;date_record&quot;, &quot;48b73cc1e6b7&quot;]]">
+  <div class="exo-head"><h3>Exercice 9.7 — Le jour le plus chaud</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Toujours avec <code>meteo.csv</code> : trouve la plus haute température <strong>maximale</strong> de la période, et la date où elle a été mesurée.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 9.7 — Le jour le plus chaud">import csv
+t_record = None
+date_record = None
+print(date_record, t_record)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-9-8" data-id="9.8" data-checks="[[&quot;transposee&quot;, &quot;3821d19d25b6&quot;]]">
+  <div class="exo-head"><h3>Exercice 9.8 — Transposer un tableau</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>La <strong>transposée</strong> d'un tableau échange ses lignes et ses colonnes : la colonne j devient la ligne j. Construis la transposée de <code>m</code> (2 lignes, 3 colonnes), qui aura 3 lignes et 2 colonnes.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 9.8 — Transposer un tableau">m = [[1, 2, 3],
+     [4, 5, 6]]
+transposee = []
+print(transposee)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-9-9" data-id="9.9" data-checks="[[&quot;nb_lignes&quot;, &quot;0be3a3882951&quot;], [&quot;premiere_ligne&quot;, &quot;9a7622b24ae7&quot;]]">
+  <div class="exo-head"><h3>Exercice 9.9 — Écrire puis relire</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Écris dans le fichier <code>carres.txt</code> les carrés des entiers de 1 à 5, un par ligne. Relis ensuite le fichier et compte ses lignes, pour vérifier.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 9.9 — Écrire puis relire"># écris le fichier ici
+
+nb_lignes = None
+premiere_ligne = None    # le texte de la première ligne, sans le retour à la ligne
+print(nb_lignes, premiere_ligne)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-9-10" data-id="9.10" data-checks="[[&quot;total_precipitations&quot;, &quot;810a42ea59f3&quot;]]">
+  <div class="exo-head"><h3>Exercice 9.10 — Du texte, pas des nombres</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Ce programme doit calculer le total des précipitations de <code>meteo.csv</code>, mais il plante. Lis le message, trouve la cause et corrige.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 9.10 — Du texte, pas des nombres">import csv
+total_precipitations = 0
+with open(&quot;meteo.csv&quot;) as fichier:
+    lecteur = csv.reader(fichier)
+    next(lecteur)
+    for ligne in lecteur:
+        total_precipitations = total_precipitations + ligne[3]
+print(total_precipitations)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+  <div class="enclasse"><p><strong>En classe : Labo 9.</strong> Quiz d'entrée, démonstration, atelier en équipe et labo individuel. Le code d'accès est donné au début de la séance.</p><a class="btn ghost" href="../labos/labo09.html">Page du labo 9</a></div>
+  <h2 id="remise">Remise sur LÉA</h2>
+  <div class="travail">
+    <label class="nom"><span>Ton nom (prénom et nom)</span><input id="nom-etudiant" type="text" autocomplete="name"></label>
+    <div><p class="progression"></p><div class="barre" aria-hidden="true"><span></span></div></div>
+    <ol>
+      <li>Clique sur <strong>Télécharger mon rapport</strong>. Le fichier contient ton code, tes fiches et le résultat de chaque vérification.</li>
+      <li>Dépose ce fichier dans le travail du chapitre 9 sur LÉA.</li>
+    </ol>
+    <div class="actions"><button class="btn telecharger" type="button">Télécharger mon rapport</button>
+      <label class="btn ghost">Importer un rapport<input class="importer" type="file" accept=".py,.txt" hidden></label></div>
+    <p id="msg-import" aria-live="polite"></p>
+    <p class="note">Ton travail est sauvegardé automatiquement, mais seulement dans <em>ce</em> navigateur, sur <em>cet</em> appareil. Pour continuer ailleurs, télécharge ton rapport et importe-le sur l'autre appareil.</p>
+  </div>
+  <nav class="pager" aria-label="Chapitres"><a class="btn ghost" href="ch08.html">← Chapitre 8</a><a class="btn ghost" href="ch10.html">Chapitre 10 →</a></nav>
+</article>
+<aside class="toc" aria-label="Dans ce chapitre">
+  <p>Dans ce chapitre</p>
+  <ol><li><a href="#objectifs">Objectifs</a></li><li><a href="#les-tableaux-a-deux-dimensions">Les tableaux à deux dimensions</a></li><li><a href="#lire-un-fichier-texte">Lire un fichier texte</a></li><li><a href="#lire-un-fichier-csv">Lire un fichier CSV</a></li><li><a href="#ecrire-un-fichier">Écrire un fichier</a></li><li><a href="#exemple-complet-le-point-dequivalence-dun-titrage">Exemple complet : le point d'équivalence d'un titrage</a></li><li><a href="#pieges-frequents">Pièges fréquents</a></li><li><a href="#autoquiz">Autoquiz</a></li><li><a href="#vocabulaire">Vocabulaire</a></li><li><a href="#exercices">Exercices préparatoires</a></li><li><a href="#remise">Remise sur LÉA</a></li></ol>
+  <div class="cta"><p class="progression"></p><div class="barre" aria-hidden="true"><span></span></div><a class="btn" href="#remise">Remise sur LÉA</a><a class="btn ghost" href="../#recettes">Recettes</a></div>
+</aside>
+</div>
+<script type="application/json" id="fichiers-donnees">{"mesures.txt": "9.79\n9.83\n9.81\n9.62\n9.85\n9.80\n", "meteo.csv": "date,temp_min,temp_max,precipitations_mm\n2026-11-01,-2.1,4.5,0.0\n2026-11-02,-4.5,1.2,2.4\n2026-11-03,0.3,6.8,0.0\n2026-11-04,1.2,7.4,5.6\n2026-11-05,-1.0,3.3,12.2\n2026-11-06,-6.8,-1.5,0.0\n2026-11-07,-8.2,-2.0,0.0\n2026-11-08,-3.4,2.6,1.0\n2026-11-09,0.8,6.1,0.0\n2026-11-10,2.1,8.3,3.8\n2026-11-11,-0.5,4.0,0.0\n2026-11-12,-5.3,-0.2,7.4\n2026-11-13,-9.1,-3.8,0.0\n2026-11-14,-7.6,-1.1,0.6\n", "titrage.csv": "volume_ml,ph\n0.0,1.00\n0.5,1.03\n1.0,1.05\n1.5,1.08\n2.0,1.11\n2.5,1.14\n3.0,1.17\n3.5,1.20\n4.0,1.23\n4.5,1.27\n5.0,1.30\n5.5,1.34\n6.0,1.38\n6.5,1.42\n7.0,1.46\n7.5,1.51\n8.0,1.56\n8.5,1.62\n9.0,1.69\n9.5,1.76\n10.0,1.85\n10.5,1.95\n11.0,2.08\n11.5,2.26\n12.0,2.57\n12.5,7.00\n13.0,11.42\n13.5,11.72\n14.0,11.89\n14.5,12.01\n15.0,12.10\n15.5,12.17\n16.0,12.23\n16.5,12.29\n17.0,12.33\n17.5,12.37\n18.0,12.41\n18.5,12.44\n19.0,12.47\n19.5,12.50\n20.0,12.52\n"}</script>
+<script src="../assets/cours.js?v=f1fbedaa"></script>
+</body>
+</html>

@@ -1,7 +1,22 @@
 // 420-SN1-RE — Python (Pyodide) exécuté en arrière-plan, pour que la page ne gèle jamais.
 importScripts("https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js");
 const OUTILS = `
-import hashlib, json
+import hashlib, json, os, sys
+os.environ["MPLBACKEND"] = "Agg"
+
+def _figures():
+    # Graphiques Matplotlib produits par le code : images PNG en base64, puis on ferme tout.
+    if "matplotlib.pyplot" not in sys.modules:
+        return "[]"
+    import base64, io
+    import matplotlib.pyplot as plt
+    images = []
+    for num in plt.get_fignums():
+        tampon = io.BytesIO()
+        plt.figure(num).savefig(tampon, format="png", dpi=96, bbox_inches="tight")
+        images.append(base64.b64encode(tampon.getvalue()).decode())
+    plt.close("all")
+    return json.dumps(images)
 def _empreinte(v):
     if isinstance(v, bool) or v is None:
         texte = repr(v)
@@ -59,9 +74,10 @@ def _verifier(ns, checks):
             res.append([nom, ok, repr(v), "" if ok in (None, True) else _indice(v, h)])
             continue
         # Une expression, comme un appel de fonction : aire_disque(2)
-        fonction = nom.split("(")[0]
-        if fonction not in ns:
-            res.append([nom, False, "(fonction introuvable)", f"Aucune fonction nommée {fonction} : vérifie le nom de ta fonction, puis exécute de nouveau."])
+        fonction = nom.split("(")[0].split(".")[0].split("[")[0]
+        import builtins as _b
+        if fonction.isidentifier() and fonction not in ns and not hasattr(_b, fonction):
+            res.append([nom, False, f"({fonction} introuvable)", f"{fonction} n'existe pas encore dans ton code : vérifie son nom, ou l'import, puis exécute de nouveau."])
             continue
         try:
             v = eval(nom, ns)
@@ -87,15 +103,22 @@ const pret = loadPyodide().then(async p => { await p.runPythonAsync(OUTILS); py 
   .catch(e => postMessage({ type: "echec", message: String(e) }));
 onmessage = async e => {
   await pret;
-  const { id, code, espace, checks, valeurs } = e.data;
+  const { id, code, espace, checks, valeurs, fichiers } = e.data;
   let sortie = "";
+  // Fichiers de données fournis par la page (CSV, texte), écrits dans le dossier de travail.
+  if (fichiers) for (const [nom, contenu] of Object.entries(fichiers)) { try { py.FS.writeFile(nom, contenu); } catch (err) {} }
+  // Modules supplémentaires (numpy, matplotlib) : chargés au besoin, hors du délai d'exécution.
+  try { await py.loadPackagesFromImports(code); } catch (err) {}
+  postMessage({ type: "debut", id });
   py.setStdout({ batched: s => { sortie += s + "\n"; } });
   py.setStderr({ batched: s => { sortie += s + "\n"; } });
   const ns = espace ? (espaces[espace] = espaces[espace] || py.globals.get("dict")()) : py.globals.get("dict")();
   try {
     await py.runPythonAsync(code, { globals: ns });
   } catch (err) {
-    postMessage({ type: "resultat", id, sortie, erreur: nettoyerErreur(err.message || err) });
+    let figures = [];
+    try { figures = JSON.parse(py.globals.get("_figures")()); } catch (e2) {}
+    postMessage({ type: "resultat", id, sortie, erreur: nettoyerErreur(err.message || err), figures });
     return;
   }
   let verifs = null, vals = null;
@@ -103,5 +126,7 @@ onmessage = async e => {
   if (valeurs && valeurs.length) {
     vals = JSON.parse(py.globals.get("_valeurs")(ns, py.toPy(valeurs)));
   }
-  postMessage({ type: "resultat", id, sortie, erreur: null, verifs, valeurs: vals });
+  let figures = [];
+  try { figures = JSON.parse(py.globals.get("_figures")()); } catch (e2) {}
+  postMessage({ type: "resultat", id, sortie, erreur: null, verifs, valeurs: vals, figures });
 };

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="fr-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ch. 11 · Graphiques avec Matplotlib · 420-SN1-RE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/lecture.css?v=f1fbedaa">
+</head>
+<body data-chapitre="11">
+<header class="topbar"><div class="in">
+  <a class="home" href="../#chapitre-11"><span>420-SN1-RE</span>Programmation en sciences</a>
+  <span class="chap">Chapitre 11 · Semaine 11</span>
+</div></header>
+<div class="layout">
+<article>
+  <p class="eyebrow">Chapitre 11 · Semaine 11</p>
+  <h1>Graphiques avec Matplotlib</h1>
+  <div class="prep">
+    <div><h2>À faire avant le cours</h2><ol><li>Lis ce chapitre et exécute les exemples (environ 45 min).</li><li>Fais les 5 exercices préparatoires 11.1 à 11.5, au bas de la page (environ 45 min).</li><li>Révise les chapitres 1 à 10 : l'évaluation 3 a lieu pendant le cours.</li><li>Télécharge ton rapport et remets-le sur LÉA avant le cours.</li></ol></div>
+    <a class="btn" href="#exercices">Aller aux exercices</a>
+  </div>
+  <p class="aide">Tout le code de cette page s'exécute dans ton navigateur : clique sur <strong>▶ Exécuter</strong>. Tu peux modifier les exemples librement; <strong>Réinitialiser</strong> remet le code d'origine. Raccourci : Maj + Entrée.</p>
+<div class="admonition probleme">
+<p class="admonition-title">Problème d'ouverture</p>
+<p>Un tableau de 41 valeurs de pH ne dit presque rien au premier coup d'œil. La même chose en graphique montre tout de suite la forme de la courbe, le saut et le point d'équivalence. En sciences, presque tout résultat se communique par un graphique.</p>
+<p><strong>Matplotlib</strong> est la bibliothèque de graphiques de Python. Dans ce cours, chaque graphique s'affiche directement sous ton code.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Semaine d'évaluation</p>
+<p>L'<strong>évaluation 3</strong> (chapitres 1 à 10) a lieu pendant le cours de cette semaine. Ce chapitre n'a donc que <strong>5 exercices préparatoires</strong>.</p>
+</div>
+<h2 id="objectifs">Objectifs</h2>
+<ol>
+<li>Tracer une courbe et un nuage de points avec Matplotlib.</li>
+<li>Donner à chaque graphique un titre et des axes avec leurs <strong>unités</strong>.</li>
+<li>Superposer des mesures (points) et un modèle (ligne), avec une légende.</li>
+<li>Tracer des données lues dans un fichier.</li>
+</ol>
+<h2 id="une-premiere-courbe">Une première courbe</h2>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">import numpy as np
+import matplotlib.pyplot as plt
+
+t = np.linspace(0, 3, 31)          # s
+y = 0.5 * 9.81 * t ** 2            # m
+
+plt.plot(t, y)
+plt.xlabel(&quot;Temps (s)&quot;)
+plt.ylabel(&quot;Distance parcourue (m)&quot;)
+plt.title(&quot;Chute libre sans frottement&quot;)
+plt.grid(True)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<p><code>plt.plot(x, y)</code> relie les points (x, y) par des segments. Les deux listes ou tableaux doivent avoir la <strong>même longueur</strong>.</p>
+<div class="admonition piege">
+<p class="admonition-title">Piège : un graphique sans unités</p>
+<p>Un axe sans unité est incomplet, comme une mesure sans unité. Écris toujours l'unité entre parenthèses : <code>"Temps (s)"</code>, <code>"Pression (kPa)"</code>.</p>
+</div>
+<h2 id="points-ou-ligne">Points ou ligne?</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Ce qu'on représente</th>
+<th>Style</th>
+<th>Exemple</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Des <strong>mesures</strong> expérimentales</td>
+<td>des points, sans les relier</td>
+<td><code>plt.plot(t, y, "o")</code> ou <code>plt.scatter(t, y)</code></td>
+</tr>
+<tr>
+<td>Un <strong>modèle</strong> ou une fonction</td>
+<td>une ligne continue</td>
+<td><code>plt.plot(t, y)</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>Relier des mesures par des segments laisse croire qu'on connaît les valeurs entre les mesures, ce qui est faux.</p>
+<h2 id="mesures-et-modele-sur-le-meme-graphique">Mesures et modèle sur le même graphique</h2>
+<p>C'est le graphique le plus courant en laboratoire : il montre si le modèle théorique décrit bien les mesures. Chaque appel à <code>plt.plot</code> ajoute une courbe; <code>label=</code> donne son nom dans la légende.</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">import numpy as np
+import matplotlib.pyplot as plt
+
+# Mesures : position d&#x27;une bille en chute (m)
+t_mesures = np.array([0.0, 0.1, 0.2, 0.3, 0.4, 0.5])
+y_mesures = np.array([0.00, 0.06, 0.19, 0.45, 0.77, 1.24])
+
+# Modèle : y = ½ g t²
+t_modele = np.linspace(0, 0.5, 100)
+y_modele = 0.5 * 9.81 * t_modele ** 2
+
+plt.plot(t_mesures, y_mesures, &quot;o&quot;, label=&quot;Mesures&quot;)
+plt.plot(t_modele, y_modele, label=&quot;Modèle : y = ½gt²&quot;)
+plt.xlabel(&quot;Temps (s)&quot;)
+plt.ylabel(&quot;Position (m)&quot;)
+plt.title(&quot;Chute d&#x27;une bille&quot;)
+plt.legend()</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<div class="admonition essaie">
+<p class="admonition-title">Essaie-le</p>
+<p>Remplace 9.81 par 9.0 dans le modèle : la courbe s'éloigne des points. Comparer visuellement un modèle aux mesures, c'est la base de l'analyse de données expérimentales.</p>
+</div>
+<h2 id="plusieurs-courbes-et-leurs-styles">Plusieurs courbes et leurs styles</h2>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">import numpy as np
+import matplotlib.pyplot as plt
+
+g = 9.81
+v0 = 20
+for angle in [30, 45, 60]:
+    theta = np.radians(angle)
+    duree = 2 * v0 * np.sin(theta) / g
+    t = np.linspace(0, duree, 50)
+    x = v0 * np.cos(theta) * t
+    y = v0 * np.sin(theta) * t - 0.5 * g * t ** 2
+    plt.plot(x, y, label=f&quot;{angle}°&quot;)
+
+plt.xlabel(&quot;Distance horizontale (m)&quot;)
+plt.ylabel(&quot;Hauteur (m)&quot;)
+plt.title(&quot;Trajectoires selon l&#x27;angle de tir&quot;)
+plt.legend()
+plt.grid(True)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<p>Quelques options de style : <code>"o"</code> (points), <code>"--"</code> (tirets), <code>"r"</code> (rouge), <code>"o--"</code> (points reliés par des tirets). Matplotlib choisit une couleur différente pour chaque courbe.</p>
+<h2 id="exemple-complet-la-courbe-de-titrage">Exemple complet : la courbe de titrage</h2>
+<h3 id="planifier">Planifier</h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Réponse</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Intrant</td>
+<td>le fichier <code>titrage.csv</code> (volume en mL, pH)</td>
+</tr>
+<tr>
+<td>Extrant</td>
+<td>le graphique du pH en fonction du volume, avec le point d'équivalence indiqué</td>
+</tr>
+<tr>
+<td>Traitements</td>
+<td>lire le fichier (chapitre 9); trouver le plus grand saut de pH; tracer les mesures; marquer l'équivalence d'une ligne verticale</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="coder">Coder</h3>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">import csv
+import numpy as np
+import matplotlib.pyplot as plt
+
+volumes = []
+phs = []
+with open(&quot;titrage.csv&quot;) as fichier:
+    lecteur = csv.reader(fichier)
+    next(lecteur)
+    for ligne in lecteur:
+        volumes.append(float(ligne[0]))
+        phs.append(float(ligne[1]))
+volumes = np.array(volumes)
+phs = np.array(phs)
+
+pentes = np.diff(phs) / np.diff(volumes)
+i = pentes.argmax()
+v_eq = (volumes[i] + volumes[i + 1]) / 2
+
+plt.plot(volumes, phs, &quot;o-&quot;, label=&quot;Mesures&quot;)
+plt.axvline(v_eq, linestyle=&quot;--&quot;, color=&quot;gray&quot;, label=f&quot;Équivalence ≈ {v_eq} mL&quot;)
+plt.xlabel(&quot;Volume de NaOH ajouté (mL)&quot;)
+plt.ylabel(&quot;pH&quot;)
+plt.title(&quot;Titrage de HCl par NaOH&quot;)
+plt.legend()
+plt.grid(True)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<h3 id="verifier">Vérifier</h3>
+<p>La ligne verticale tombe au milieu du saut, à 12.25 mL. Ici, on relie les mesures d'un trait léger (<code>"o-"</code>) pour faire ressortir la forme de la courbe. C'est un choix courant pour une courbe de titrage, à condition que les points restent visibles.</p>
+<h2 id="pieges-frequents">Pièges fréquents</h2>
+<ul>
+<li>Un axe sans unité, ou un graphique sans titre.</li>
+<li>Deux tableaux de longueurs différentes dans <code>plt.plot(x, y)</code> : <code>ValueError</code>.</li>
+<li>Relier par une ligne des mesures expérimentales qu'on voulait montrer comme des points.</li>
+<li>Oublier <code>plt.legend()</code> après avoir donné des <code>label=</code>.</li>
+<li>Tracer <code>y</code> en fonction de <code>x</code> alors qu'on voulait l'inverse : le premier argument est l'axe horizontal.</li>
+</ul>
+<h2 id="autoquiz">Autoquiz</h2>
+<ol>
+<li>Quelle instruction ajoute la légende?</li>
+<li>Comment trace-t-on des points sans les relier?</li>
+<li>Pourquoi représenter les mesures par des points et le modèle par une ligne?</li>
+<li>Que doit contenir l'étiquette d'un axe, en plus du nom de la grandeur?</li>
+<li>Dans <code>plt.plot(a, b)</code>, quelle grandeur est sur l'axe horizontal?</li>
+</ol>
+<h2 id="vocabulaire">Vocabulaire</h2>
+<div class="vocab"><span>Matplotlib</span><span>pyplot</span><span>plot</span><span>scatter</span><span>axe</span><span>étiquette</span><span>unité</span><span>titre</span><span>légende</span><span>label</span><span>modèle</span><span>mesure</span></div>
+<h2 id="exercices">Exercices préparatoires</h2><p>Écris ton code dans chaque exercice : remplace les <code>None</code> par ta réponse, puis clique sur <strong>Vérifier</strong>. La vérification te dit si ta réponse est bonne, sans la montrer. Ton travail est sauvegardé automatiquement dans ce navigateur.</p>
+<section class="exo" id="exo-11-1" data-id="11.1" data-checks="[[&quot;len(plt.gca().lines)&quot;, &quot;64e4b892473f&quot;], [&quot;\&quot;(s)\&quot; in plt.gca().get_xlabel()&quot;, &quot;3cbc87c7681f&quot;], [&quot;\&quot;(m/s)\&quot; in plt.gca().get_ylabel()&quot;, &quot;3cbc87c7681f&quot;], [&quot;plt.gca().get_title() != \&quot;\&quot;&quot;, &quot;3cbc87c7681f&quot;]]">
+  <div class="exo-head"><h3>Exercice 11.1 — Une première courbe</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Trace la vitesse en fonction du temps. Ajoute un titre et des étiquettes d'axes <strong>avec les unités</strong> : le temps est en secondes et la vitesse en mètres par seconde, écrites <code>(s)</code> et <code>(m/s)</code>.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 11.1 — Une première courbe">import matplotlib.pyplot as plt
+t = [0, 1, 2, 3, 4, 5]               # s
+v = [3, 5, 7, 9, 11, 13]             # m/s
+
+# Trace v en fonction de t ici</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-11-2" data-id="11.2" data-checks="[[&quot;len(plt.gca().lines) + len(plt.gca().collections)&quot;, &quot;64e4b892473f&quot;], [&quot;all(l.get_linestyle() == \&quot;None\&quot; for l in plt.gca().lines)&quot;, &quot;3cbc87c7681f&quot;], [&quot;\&quot;(min)\&quot; in plt.gca().get_xlabel()&quot;, &quot;3cbc87c7681f&quot;], [&quot;\&quot;(\u00b0C)\&quot; in plt.gca().get_ylabel()&quot;, &quot;3cbc87c7681f&quot;]]">
+  <div class="exo-head"><h3>Exercice 11.2 — Des mesures, pas une ligne</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Ces températures sont des <strong>mesures</strong>. Trace-les sous forme de <strong>points</strong>, sans les relier. Axes : <code>(min)</code> et <code>(°C)</code>.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 11.2 — Des mesures, pas une ligne">import matplotlib.pyplot as plt
+minutes = [0, 5, 10, 15, 20, 25, 30]
+temperatures = [82.0, 68.5, 57.9, 49.6, 43.1, 38.0, 34.2]
+
+# Trace les mesures ici</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-11-3" data-id="11.3" data-checks="[[&quot;len(t_modele)&quot;, &quot;9fd94296c437&quot;], [&quot;float(T_modele[-1])&quot;, &quot;74b208c1c6c6&quot;], [&quot;len(plt.gca().lines)&quot;, &quot;7a284f128e61&quot;], [&quot;plt.gca().get_legend() is not None&quot;, &quot;3cbc87c7681f&quot;], [&quot;sorted(l.get_label() for l in plt.gca().lines)&quot;, &quot;18f2859aa594&quot;]]">
+  <div class="exo-head"><h3>Exercice 11.3 — Mesures et modèle</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Complète le graphique : les mesures en <strong>points</strong> (étiquette <code>"Mesures"</code>), le modèle de Newton en <strong>ligne</strong> (étiquette <code>"Modèle"</code>), puis la <strong>légende</strong>.</p>
+<p>Le modèle : T(t) = 20 + 62 e<sup>−0.06 t</sup>, calculé sur 100 instants entre 0 et 30 min.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 11.3 — Mesures et modèle">import numpy as np
+import matplotlib.pyplot as plt
+minutes = np.array([0, 5, 10, 15, 20, 25, 30])
+temperatures = np.array([82.0, 68.5, 57.9, 49.6, 43.1, 38.0, 34.2])
+
+t_modele = None
+T_modele = None
+
+# Trace les mesures, le modèle et la légende
+
+plt.xlabel(&quot;Temps (min)&quot;)
+plt.ylabel(&quot;Température (°C)&quot;)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-11-4" data-id="11.4" data-checks="[[&quot;len(plt.gca().lines)&quot;, &quot;207cd6d1a9c3&quot;], [&quot;float(x_max)&quot;, &quot;5592eacdc0c4&quot;], [&quot;sorted(l.get_label() for l in plt.gca().lines)&quot;, &quot;44c4af98958e&quot;], [&quot;\&quot;(s)\&quot; in plt.gca().get_xlabel()&quot;, &quot;3cbc87c7681f&quot;], [&quot;\&quot;(cm)\&quot; in plt.gca().get_ylabel()&quot;, &quot;3cbc87c7681f&quot;]]">
+  <div class="exo-head"><h3>Exercice 11.4 — Trois courbes en boucle</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Trace la position d'un ressort, x(t) = A cos(2π t / T), pour trois amplitudes : 2, 4 et 6 cm, avec T = 1.5 s, sur 200 instants entre 0 et 3 s. Utilise une <strong>boucle</strong>; chaque courbe a pour étiquette <code>"A = 2 cm"</code>, <code>"A = 4 cm"</code>, etc. Ajoute la légende et les unités.</p>
+<p>Garde dans <code>x_max</code> la plus grande valeur de la <strong>dernière</strong> courbe calculée.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 11.4 — Trois courbes en boucle">import numpy as np
+import matplotlib.pyplot as plt
+periode = 1.5                          # s
+t = np.linspace(0, 3, 200)             # s
+x_max = None</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-11-5" data-id="11.5" data-checks="[[&quot;len(volumes)&quot;, &quot;3dc1256b48bf&quot;], [&quot;max(phs)&quot;, &quot;cdc7445b308c&quot;], [&quot;len(plt.gca().lines)&quot;, &quot;64e4b892473f&quot;], [&quot;\&quot;(mL)\&quot; in plt.gca().get_xlabel()&quot;, &quot;3cbc87c7681f&quot;], [&quot;len(plt.gca().lines[0].get_xdata()) if plt.gca().lines else 0&quot;, &quot;3dc1256b48bf&quot;]]">
+  <div class="exo-head"><h3>Exercice 11.5 — Tracer un fichier</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Le fichier <code>titrage.csv</code> contient deux colonnes : le volume de NaOH (mL) et le pH. Lis-le dans les listes <code>volumes</code> et <code>phs</code>, puis trace le pH en fonction du volume, avec les unités <code>(mL)</code> sur l'axe horizontal.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 11.5 — Tracer un fichier">import csv
+import matplotlib.pyplot as plt
+
+volumes = []
+phs = []</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+  <div class="enclasse"><p><strong>En classe : évaluation 3, puis Labo 11.</strong> L'évaluation (60 min, chapitres 1 à 10) ouvre la séance; suivent la démonstration et un labo court sur les graphiques. Les codes d'accès sont donnés en classe.</p><a class="btn ghost" href="../labos/labo11.html">Page du labo 11</a></div>
+  <h2 id="remise">Remise sur LÉA</h2>
+  <div class="travail">
+    <label class="nom"><span>Ton nom (prénom et nom)</span><input id="nom-etudiant" type="text" autocomplete="name"></label>
+    <div><p class="progression"></p><div class="barre" aria-hidden="true"><span></span></div></div>
+    <ol>
+      <li>Clique sur <strong>Télécharger mon rapport</strong>. Le fichier contient ton code, tes fiches et le résultat de chaque vérification.</li>
+      <li>Dépose ce fichier dans le travail du chapitre 11 sur LÉA.</li>
+    </ol>
+    <div class="actions"><button class="btn telecharger" type="button">Télécharger mon rapport</button>
+      <label class="btn ghost">Importer un rapport<input class="importer" type="file" accept=".py,.txt" hidden></label></div>
+    <p id="msg-import" aria-live="polite"></p>
+    <p class="note">Ton travail est sauvegardé automatiquement, mais seulement dans <em>ce</em> navigateur, sur <em>cet</em> appareil. Pour continuer ailleurs, télécharge ton rapport et importe-le sur l'autre appareil.</p>
+  </div>
+  <nav class="pager" aria-label="Chapitres"><a class="btn ghost" href="ch10.html">← Chapitre 10</a><a class="btn ghost" href="../#calendrier">Calendrier →</a></nav>
+</article>
+<aside class="toc" aria-label="Dans ce chapitre">
+  <p>Dans ce chapitre</p>
+  <ol><li><a href="#objectifs">Objectifs</a></li><li><a href="#une-premiere-courbe">Une première courbe</a></li><li><a href="#points-ou-ligne">Points ou ligne?</a></li><li><a href="#mesures-et-modele-sur-le-meme-graphique">Mesures et modèle sur le même graphique</a></li><li><a href="#plusieurs-courbes-et-leurs-styles">Plusieurs courbes et leurs styles</a></li><li><a href="#exemple-complet-la-courbe-de-titrage">Exemple complet : la courbe de titrage</a></li><li><a href="#pieges-frequents">Pièges fréquents</a></li><li><a href="#autoquiz">Autoquiz</a></li><li><a href="#vocabulaire">Vocabulaire</a></li><li><a href="#exercices">Exercices préparatoires</a></li><li><a href="#remise">Remise sur LÉA</a></li></ol>
+  <div class="cta"><p class="progression"></p><div class="barre" aria-hidden="true"><span></span></div><a class="btn" href="#remise">Remise sur LÉA</a><a class="btn ghost" href="../#recettes">Recettes</a></div>
+</aside>
+</div>
+<script type="application/json" id="fichiers-donnees">{"titrage.csv": "volume_ml,ph\n0.0,1.00\n0.5,1.03\n1.0,1.05\n1.5,1.08\n2.0,1.11\n2.5,1.14\n3.0,1.17\n3.5,1.20\n4.0,1.23\n4.5,1.27\n5.0,1.30\n5.5,1.34\n6.0,1.38\n6.5,1.42\n7.0,1.46\n7.5,1.51\n8.0,1.56\n8.5,1.62\n9.0,1.69\n9.5,1.76\n10.0,1.85\n10.5,1.95\n11.0,2.08\n11.5,2.26\n12.0,2.57\n12.5,7.00\n13.0,11.42\n13.5,11.72\n14.0,11.89\n14.5,12.01\n15.0,12.10\n15.5,12.17\n16.0,12.23\n16.5,12.29\n17.0,12.33\n17.5,12.37\n18.0,12.41\n18.5,12.44\n19.0,12.47\n19.5,12.50\n20.0,12.52\n"}</script>
+<script src="../assets/cours.js?v=f1fbedaa"></script>
+</body>
+</html>

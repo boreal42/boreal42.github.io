@@ -27,25 +27,47 @@
         const m = e.data;
         if (m.type === "pret") { pyPret = true; resolve(); }
         else if (m.type === "echec") reject(new Error("Impossible de charger Python. Vérifie ta connexion Internet, puis réessaie."));
+        else if (m.type === "debut") { const r = attente.get(m.id); if (r) { clearTimeout(r.minuterie); r.minuterie = setTimeout(r.depasse, LIMITE_MS); } }
         else if (m.type === "resultat") { const r = attente.get(m.id); if (r) { attente.delete(m.id); clearTimeout(r.minuterie); r.resolve(m); } }
       };
       worker.onerror = () => reject(new Error("Impossible de charger Python. Vérifie ta connexion Internet, puis réessaie."));
     });
   }
-  function messageChargement() { return pyPret ? "Exécution…" : "Chargement de Python (quelques secondes)…"; }
+  // Fichiers de données de la page (CSV, texte), copiés dans le dossier de travail de Python à chaque exécution.
+  let FICHIERS = null;
+  try { const f = document.getElementById("fichiers-donnees"); if (f) FICHIERS = JSON.parse(f.textContent); } catch (e) {}
+
+  // Affiche les graphiques Matplotlib renvoyés par Python sous la sortie d'un bloc.
+  function afficherFigures(bloc, figures) {
+    let zone = bloc.querySelector(".figures");
+    if (!zone) { zone = document.createElement("div"); zone.className = "figures"; bloc.querySelector("output").after(zone); }
+    zone.innerHTML = "";
+    (figures || []).forEach(b64 => { const img = document.createElement("img"); img.src = "data:image/png;base64," + b64; img.alt = "Graphique produit par le code"; zone.appendChild(img); });
+  }
+  window.afficherFigures = afficherFigures;
+
+  const modulesCharges = new Set();
+  function messageChargement(code) {
+    const lourds = ["numpy", "matplotlib"].filter(m => code && code.includes(m) && !modulesCharges.has(m));
+    lourds.forEach(m => modulesCharges.add(m));
+    if (lourds.length) return "Chargement de " + lourds.join(" et ") + " (une seule fois, environ 10 secondes)…";
+    return pyPret ? "Exécution…" : "Chargement de Python (quelques secondes)…";
+  }
   async function executerPy(code, espace, checks, valeurs) {
     if (!worker) demarrer();
     try { await pretP; } catch (e) { worker.terminate(); worker = null; return { sortie: "", erreur: e.message }; }
     return new Promise(resolve => {
       const id = ++seq;
-      const minuterie = setTimeout(() => {
+      const depasse = () => {
         attente.delete(id);
         worker.terminate(); worker = null;
         attente.forEach(r => r.resolve({ sortie: "", erreur: "Exécution interrompue." })); attente.clear();
         resolve({ sortie: "", erreur: `⏱ Ton programme tourne depuis plus de ${LIMITE_MS / 1000} secondes : il a été arrêté.\nAs-tu une boucle infinie? Vérifie que la condition de ton while finit par devenir fausse.` });
-      }, LIMITE_MS);
-      attente.set(id, { resolve, minuterie });
-      worker.postMessage({ id, code, espace, checks, valeurs });
+      };
+      // Délai généreux pour charger un module (numpy, matplotlib); le délai de 5 s commence avec l'exécution.
+      const minuterie = setTimeout(depasse, 120000);
+      attente.set(id, { resolve, minuterie, depasse });
+      worker.postMessage({ id, code, espace, checks, valeurs, fichiers: FICHIERS });
     });
   }
 
@@ -153,9 +175,10 @@
     const original = zone.value;
     const lancer = async () => {
       sortie.className = ""; sortie.textContent = "";
-      etat.textContent = messageChargement();
+      etat.textContent = messageChargement(zone.value);
       const r = await executerPy(zone.value, "exemples");
-      sortie.textContent = r.sortie + (r.erreur || "") || "(aucun affichage)";
+      afficherFigures(bloc, r.figures);
+      sortie.textContent = r.sortie + (r.erreur || "") || ((r.figures && r.figures.length) ? "" : "(aucun affichage)");
       sortie.className = r.erreur ? "err" : "";
       etat.textContent = r.erreur ? "Erreur" : "";
     };
@@ -209,8 +232,9 @@
 
     async function lancer(avecVerif) {
       sortie.className = ""; sortie.textContent = ""; verdict.innerHTML = "";
-      etat.textContent = messageChargement();
+      etat.textContent = messageChargement(zone.value);
       const r = await executerPy(zone.value, null, avecVerif ? checks : null);
+      afficherFigures(exo.querySelector(".exo-runner"), r.figures);
       sortie.textContent = r.sortie + (r.erreur || "");
       if (r.erreur) sortie.className = "err";
       etat.textContent = "";
@@ -347,7 +371,7 @@
 
   // ---------- Verrou des laboratoires : le contenu est chiffré avec le code d'accès ----------
   // Le code tapé peut contenir des espaces, des majuscules ou des guillemets copiés : on les ignore.
-  function normaliserCode(c) { return String(c).toLowerCase().replace(/[\s`'"«»“”‘’]/g, ""); }
+  function normaliserCode(c) { return String(c).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[\s`'"«»“”‘’]/g, ""); }
   function b64(s) { return Uint8Array.from(atob(s), c => c.charCodeAt(0)); }
   async function dechiffrer(code, paquet) {
     const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(normaliserCode(code)), "PBKDF2", false, ["deriveKey"]);
