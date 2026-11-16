@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/lecture.css">
 </head>
-<body>
+<body data-chapitre="3">
 <header class="topbar"><div class="in">
   <a class="home" href="../#chapitre-3"><span>420-SN1-RE</span>Programmation en sciences</a>
   <span class="chap">Chapitre 3 · Semaine 3</span>
@@ -19,10 +19,10 @@
   <p class="eyebrow">Chapitre 3 · Semaine 3</p>
   <h1>Conditions</h1>
   <div class="prep">
-    <div><h2>À faire avant le cours</h2><ol><li>Lis ce chapitre et exécute les exemples (environ 1 h).</li><li>Fais les exercices préparatoires 3.1 à 3.10 dans le cahier Colab (environ 1 h 30).</li><li>Dépose ton cahier sur LÉA avant le cours.</li></ol></div>
-    <a class="btn" href="https://colab.research.google.com/github/boreal42/boreal42.github.io/blob/main/420-SN1-RE/notebooks/chapitre03.ipynb" target="_blank" rel="noopener">Ouvrir le cahier d'exercices dans Colab</a>
+    <div><h2>À faire avant le cours</h2><ol><li>Lis ce chapitre et exécute les exemples (environ 1 h).</li><li>Fais les exercices préparatoires 3.1 à 3.10, au bas de la page (environ 1 h 30).</li><li>Télécharge ton rapport et remets-le sur LÉA avant le cours.</li></ol></div>
+    <a class="btn" href="#exercices">Aller aux exercices</a>
   </div>
-  <p style="color:var(--muted);font-size:.92rem">Les blocs de code avec un bouton <strong>▶ Exécuter</strong> fonctionnent directement dans cette page. Modifie-les librement : <strong>Réinitialiser</strong> remet le code d'origine. Raccourci : Maj + Entrée.</p>
+  <p class="aide">Tout le code de cette page s'exécute dans ton navigateur : clique sur <strong>▶ Exécuter</strong>. Tu peux modifier les exemples librement; <strong>Réinitialiser</strong> remet le code d'origine. Raccourci : Maj + Entrée.</p>
 <div class="admonition probleme">
 <p class="admonition-title">Problème d'ouverture</p>
 <p>Ton labo de chimie mesure le pH de 30 solutions. Pour chacune, il faut indiquer si elle est acide, neutre ou basique, et signaler les mesures impossibles, causées par une sonde mal calibrée.</p>
@@ -277,19 +277,243 @@ print(f&quot;pH {ph} : {resultat}&quot;)</textarea><div class="bar"><button clas
 </ol>
 <h2 id="vocabulaire">Vocabulaire</h2>
 <div class="vocab"><span>booléen</span><span>expression logique</span><span>opérateur de comparaison</span><span>opérateur logique</span><span>condition</span><span>branche</span><span>bloc</span><span>indentation</span><span>structure conditionnelle</span><span>tolérance</span><span>borne</span><span>erreur de logique</span></div>
-  <section class="next">
-    <h2>Maintenant, pratique</h2>
-    <p>Ouvre le cahier d'exercices dans Colab, fais <strong>Fichier → Enregistrer une copie dans Drive</strong>, puis fais les exercices. Chacun a sa cellule de vérification.</p>
-    <a class="btn" href="https://colab.research.google.com/github/boreal42/boreal42.github.io/blob/main/420-SN1-RE/notebooks/chapitre03.ipynb" target="_blank" rel="noopener">Ouvrir le cahier d'exercices dans Colab</a>
-  </section>
+<h2 id="exercices">Exercices préparatoires</h2><p>Écris ton code dans chaque exercice : remplace les <code>None</code> par ta réponse, puis clique sur <strong>Vérifier</strong>. La vérification te dit si ta réponse est bonne, sans la montrer. Ton travail est sauvegardé automatiquement dans ce navigateur.</p>
+<section class="exo" id="exo-3-1" data-id="3.1" data-checks="[[&quot;e1&quot;, &quot;60a33e6cf515&quot;], [&quot;e2&quot;, &quot;60a33e6cf515&quot;], [&quot;e3&quot;, &quot;3cbc87c7681f&quot;], [&quot;e4&quot;, &quot;3cbc87c7681f&quot;]]">
+  <div class="exo-head"><h3>Exercice 3.1 — Vrai ou faux?</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Sans exécuter de code, donne la valeur (<code>True</code> ou <code>False</code>, <strong>sans</strong> guillemets) de chaque expression.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Expression</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>e1</code></td>
+<td><code>3 &gt; 2 and 2 &gt; 5</code></td>
+</tr>
+<tr>
+<td><code>e2</code></td>
+<td><code>not (4 == 4)</code></td>
+</tr>
+<tr>
+<td><code>e3</code></td>
+<td><code>7 % 2 == 1 or 10 / 2 == 3</code></td>
+</tr>
+<tr>
+<td><code>e4</code></td>
+<td><code>0 &lt;= 5 &lt; 10</code></td>
+</tr>
+</tbody>
+</table></div></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 3.1 — Vrai ou faux?">e1 = None
+e2 = None
+e3 = None
+e4 = None</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-3-2" data-id="3.2" data-checks="[[&quot;parite&quot;, &quot;5861d6642f2b&quot;]]">
+  <div class="exo-head"><h3>Exercice 3.2 — Pair ou impair</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Avec un <code>if</code> / <code>else</code> et l'opérateur <code>%</code>, donne à <code>parite</code> la valeur <code>"pair"</code> ou <code>"impair"</code>.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 3.2 — Pair ou impair">n = 17
+parite = None
+# ta condition ici
+print(parite)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-3-3" data-id="3.3" data-checks="[[&quot;valeur&quot;, &quot;ee873c079d6f&quot;]]">
+  <div class="exo-head"><h3>Exercice 3.3 — Valeur absolue, sans `abs()`</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Calcule la valeur absolue de <code>x</code> avec une condition, <strong>sans</strong> utiliser <code>abs()</code>.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 3.3 — Valeur absolue, sans `abs()`">x = -4.2
+valeur = None
+# ta condition ici
+print(valeur)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-3-4" data-id="3.4" data-checks="[[&quot;etat&quot;, &quot;2b5580c2e508&quot;]]">
+  <div class="exo-head"><h3>Exercice 3.4 — L&#x27;état de l&#x27;eau</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>À pression normale, on adopte la convention suivante :</p>
+<ul>
+<li>température de 0 °C ou moins : <code>"solide"</code>;</li>
+<li>température de moins de 100 °C : <code>"liquide"</code>;</li>
+<li>sinon : <code>"gaz"</code>.</li>
+</ul>
+<p>Écris la structure <code>if</code> / <code>elif</code> / <code>else</code>, puis teste-la avec 100 °C.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 3.4 — L&#x27;état de l&#x27;eau">temperature = 100   # °C
+etat = None
+# ta structure ici
+print(etat)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-3-5" data-id="3.5" data-checks="[[&quot;bissextile&quot;, &quot;60a33e6cf515&quot;]]">
+  <div class="exo-head"><h3>Exercice 3.5 — Année bissextile</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Une année est bissextile si elle est divisible par 4, <strong>sauf</strong> si elle est divisible par 100, <strong>à moins</strong> qu'elle soit aussi divisible par 400. Ainsi, 2024 et 2000 sont bissextiles, mais 1900 ne l'est pas.</p>
+<p>Donne à <code>bissextile</code> la valeur <code>True</code> ou <code>False</code>. Une seule expression logique suffit.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 3.5 — Année bissextile">annee = 1900
+bissextile = None
+print(bissextile)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-3-6" data-id="3.6" data-checks="[[&quot;nb_racines&quot;, &quot;7a284f128e61&quot;]]">
+  <div class="exo-head"><h3>Exercice 3.6 — Combien de racines?</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Pour l'équation ax² + bx + c = 0, le discriminant Δ = b² − 4ac détermine le nombre de racines réelles : 2 si Δ &gt; 0, 1 si Δ = 0, 0 si Δ &lt; 0.</p>
+<p>Donne à <code>nb_racines</code> la bonne valeur (un entier).</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 3.6 — Combien de racines?">a = 1
+b = -3
+c = 2
+nb_racines = None
+print(nb_racines)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-3-7" data-id="3.7" data-checks="[[&quot;egal_naif&quot;, &quot;60a33e6cf515&quot;], [&quot;egal_tolerant&quot;, &quot;3cbc87c7681f&quot;]]">
+  <div class="exo-head"><h3>Exercice 3.7 — Comparer des réels</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Une simulation calcule la position finale <code>x = 0.1 * 3</code> (m). On attend 0,3 m. Calcule :</p>
+<ul>
+<li><code>egal_naif</code> : la comparaison directe avec <code>==</code>;</li>
+<li><code>egal_tolerant</code> : la comparaison avec une tolérance de 10⁻⁹.</li>
+</ul></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 3.7 — Comparer des réels">x = 0.1 * 3
+egal_naif = None
+egal_tolerant = None
+print(egal_naif, egal_tolerant)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-3-8" data-id="3.8" data-checks="[[&quot;categorie&quot;, &quot;ec58a8306045&quot;]]">
+  <div class="exo-head"><h3>Exercice 3.8 — L&#x27;ordre compte</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Ce programme doit classer un séisme : 7 et plus, « majeur »; 6 et plus, « fort »; 5 et plus, « modéré »; sinon « léger ». Pour une magnitude de 6,5, il affiche pourtant « modéré ».</p>
+<p>Trouve l'erreur de <strong>logique</strong> et corrige-la. Aucun message d'erreur ne t'aidera : c'est ton raisonnement qui trouve l'erreur.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 3.8 — L&#x27;ordre compte">magnitude = 6.5
+if magnitude &gt;= 5:
+    categorie = &quot;modéré&quot;
+elif magnitude &gt;= 6:
+    categorie = &quot;fort&quot;
+elif magnitude &gt;= 7:
+    categorie = &quot;majeur&quot;
+else:
+    categorie = &quot;léger&quot;
+print(categorie)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-3-9" data-id="3.9" data-checks="[[&quot;plus_grand&quot;, &quot;6cbe6f8688f8&quot;]]">
+  <div class="exo-head"><h3>Exercice 3.9 — Le plus grand de trois</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Trouve la plus grande des trois mesures <strong>sans</strong> utiliser <code>max()</code>.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 3.9 — Le plus grand de trois">a = 4.1
+b = 9.3
+c = 7.8
+plus_grand = None
+# ta structure ici
+print(plus_grand)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-3-10" data-id="3.10" data-checks="[[&quot;domaine&quot;, &quot;5262fdc68654&quot;]]">
+  <div class="exo-head"><h3>Exercice 3.10 — Le spectre électromagnétique</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Classe une onde selon sa longueur d'onde λ, en nanomètres :</p>
+<ul>
+<li>moins de 400 nm : <code>"ultraviolet"</code>;</li>
+<li>de 400 à 700 nm <strong>inclusivement</strong> : <code>"visible"</code>;</li>
+<li>plus de 700 nm : <code>"infrarouge"</code>.</li>
+</ul>
+<p>Teste avec la borne 700 nm.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 3.10 — Le spectre électromagnétique">longueur_onde = 700   # nm
+domaine = None
+# ta structure ici
+print(domaine)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<h2 id="laboratoire">Laboratoire (en classe)</h2><p>Pour chaque exercice : remplis la fiche de planification <strong>avant</strong> de coder, puis code, puis clique sur <strong>Vérifier</strong>.</p>
+<section class="exo" id="exo-L3-1" data-id="L3.1" data-checks="[[&quot;nb_racines&quot;, &quot;7a284f128e61&quot;], [&quot;r1&quot;, &quot;7a284f128e61&quot;], [&quot;r2&quot;, &quot;64e4b892473f&quot;]]">
+  <div class="exo-head"><h3>Labo 3.1 (essentiel) — Les racines d&#x27;une équation du second degré</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Écris un programme complet pour ax² + bx + c = 0 :</p>
+<ul>
+<li>si a = 0, l'équation n'est pas du second degré : afficher un message;</li>
+<li>si Δ &gt; 0 : deux racines, r1 = (−b + √Δ) / 2a et r2 = (−b − √Δ) / 2a;</li>
+<li>si Δ = 0 : une racine;</li>
+<li>si Δ &lt; 0 : aucune racine réelle.</li>
+</ul>
+<p><strong>Jeu d'essais à compléter avant de coder :</strong> au moins un cas par branche. La vérification ci-dessous teste le cas a = 1, b = −3, c = 2.</p></div>
+  <div class="fiche"><p class="fiche-titre">Fiche de planification</p><label><span>Intrants</span><textarea data-champ="intrants" rows="2" spellcheck="true"></textarea></label><label><span>Extrants</span><textarea data-champ="extrants" rows="2" spellcheck="true"></textarea></label><label><span>Traitements</span><textarea data-champ="traitements" rows="2" spellcheck="true"></textarea></label><label><span>Jeu d'essais (calculé avant de coder)</span><textarea data-champ="jeu_essais" rows="2" spellcheck="true"></textarea></label></div>
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Labo 3.1 (essentiel) — Les racines d&#x27;une équation du second degré">import math
+a = 1
+b = -3
+c = 2
+nb_racines = None
+r1 = None
+r2 = None
+# ton programme ici
+print(nb_racines, r1, r2)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-L3-2" data-id="L3.2" data-checks="[[&quot;type_triangle&quot;, &quot;4096d17f8c81&quot;]]">
+  <div class="exo-head"><h3>Labo 3.2 (intermédiaire) — Quel triangle?</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Avec trois longueurs, un triangle n'existe que si chaque côté est plus petit que la somme des deux autres (inégalité triangulaire). Donne à <code>type_triangle</code> la valeur <code>"invalide"</code>, <code>"équilatéral"</code>, <code>"isocèle"</code> ou <code>"scalène"</code>.</p>
+<p><strong>Jeu d'essais :</strong> prévois au moins un cas par résultat. La vérification teste 5, 5, 8.</p></div>
+  <div class="fiche"><p class="fiche-titre">Fiche de planification</p><label><span>Intrants</span><textarea data-champ="intrants" rows="2" spellcheck="true"></textarea></label><label><span>Extrants</span><textarea data-champ="extrants" rows="2" spellcheck="true"></textarea></label><label><span>Traitements</span><textarea data-champ="traitements" rows="2" spellcheck="true"></textarea></label><label><span>Jeu d'essais (calculé avant de coder)</span><textarea data-champ="jeu_essais" rows="2" spellcheck="true"></textarea></label></div>
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Labo 3.2 (intermédiaire) — Quel triangle?">a = 5
+b = 5
+c = 8
+type_triangle = None
+# ton programme ici
+print(type_triangle)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-L3-3" data-id="L3.3" data-checks="[[&quot;rectangle&quot;, &quot;3cbc87c7681f&quot;]]">
+  <div class="exo-head"><h3>Labo 3.3 (défi) — Est-il rectangle?</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Ajoute à ton programme un test qui indique si le triangle est <strong>rectangle</strong> (Pythagore). Les côtés peuvent être des réels issus de mesures : utilise une tolérance relative de 10⁻⁶, et pense que l'hypoténuse n'est pas forcément <code>c</code>.</p>
+<p>La vérification teste les côtés 0,6, 0,8 et 1,0, en désordre.</p></div>
+  <div class="fiche"><p class="fiche-titre">Fiche de planification</p><label><span>Intrants</span><textarea data-champ="intrants" rows="2" spellcheck="true"></textarea></label><label><span>Extrants</span><textarea data-champ="extrants" rows="2" spellcheck="true"></textarea></label><label><span>Traitements</span><textarea data-champ="traitements" rows="2" spellcheck="true"></textarea></label><label><span>Jeu d'essais (calculé avant de coder)</span><textarea data-champ="jeu_essais" rows="2" spellcheck="true"></textarea></label></div>
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Labo 3.3 (défi) — Est-il rectangle?">a = 1.0
+b = 0.6
+c = 0.8
+rectangle = None
+# ton programme ici
+print(rectangle)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+  <h2 id="remise">Remise sur LÉA</h2>
+  <div class="travail">
+    <label class="nom"><span>Ton nom (prénom et nom)</span><input id="nom-etudiant" type="text" autocomplete="name"></label>
+    <div><p class="progression"></p><div class="barre" aria-hidden="true"><span></span></div></div>
+    <ol>
+      <li>Clique sur <strong>Télécharger mon rapport</strong>. Le fichier contient ton code, tes fiches et le résultat de chaque vérification.</li>
+      <li>Dépose ce fichier dans le travail du chapitre 3 sur LÉA.</li>
+    </ol>
+    <div class="actions"><button class="btn telecharger" type="button">Télécharger mon rapport</button>
+      <label class="btn ghost">Importer un rapport<input class="importer" type="file" accept=".py,.txt" hidden></label></div>
+    <p id="msg-import" aria-live="polite"></p>
+    <p class="note">Ton travail est sauvegardé automatiquement, mais seulement dans <em>ce</em> navigateur, sur <em>cet</em> appareil. Pour continuer ailleurs, télécharge ton rapport et importe-le sur l'autre appareil.</p>
+  </div>
   <nav class="pager" aria-label="Chapitres"><a class="btn ghost" href="ch02.html">← Chapitre 2</a><a class="btn ghost" href="../#calendrier">Calendrier →</a></nav>
 </article>
 <aside class="toc" aria-label="Dans ce chapitre">
   <p>Dans ce chapitre</p>
-  <ol><li><a href="#objectifs">Objectifs</a></li><li><a href="#les-expressions-logiques">Les expressions logiques</a></li><li><a href="#if-executer-seulement-si">if : exécuter seulement si</a></li><li><a href="#if-else-deux-chemins">if / else : deux chemins</a></li><li><a href="#if-elif-else-plusieurs-chemins">if / elif / else : plusieurs chemins</a></li><li><a href="#comparer-des-nombres-reels">Comparer des nombres réels</a></li><li><a href="#exemple-complet-classer-une-solution-selon-son-ph">Exemple complet : classer une solution selon son pH</a></li><li><a href="#pieges-frequents">Pièges fréquents</a></li><li><a href="#autoquiz">Autoquiz</a></li><li><a href="#vocabulaire">Vocabulaire</a></li></ol>
-  <div class="cta"><a class="btn" href="https://colab.research.google.com/github/boreal42/boreal42.github.io/blob/main/420-SN1-RE/notebooks/chapitre03.ipynb" target="_blank" rel="noopener">Cahier Colab</a><a class="btn ghost" href="../#recettes">Recettes</a></div>
+  <ol><li><a href="#objectifs">Objectifs</a></li><li><a href="#les-expressions-logiques">Les expressions logiques</a></li><li><a href="#if-executer-seulement-si">if : exécuter seulement si</a></li><li><a href="#if-else-deux-chemins">if / else : deux chemins</a></li><li><a href="#if-elif-else-plusieurs-chemins">if / elif / else : plusieurs chemins</a></li><li><a href="#comparer-des-nombres-reels">Comparer des nombres réels</a></li><li><a href="#exemple-complet-classer-une-solution-selon-son-ph">Exemple complet : classer une solution selon son pH</a></li><li><a href="#pieges-frequents">Pièges fréquents</a></li><li><a href="#autoquiz">Autoquiz</a></li><li><a href="#vocabulaire">Vocabulaire</a></li><li><a href="#exercices">Exercices préparatoires</a></li><li><a href="#laboratoire">Laboratoire (en classe)</a></li><li><a href="#remise">Remise sur LÉA</a></li></ol>
+  <div class="cta"><p class="progression"></p><div class="barre" aria-hidden="true"><span></span></div><a class="btn" href="#remise">Remise sur LÉA</a><a class="btn ghost" href="../#recettes">Recettes</a></div>
 </aside>
 </div>
-<script src="../assets/runner.js"></script>
+<script src="../assets/cours.js"></script>
 </body>
 </html>

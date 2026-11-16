@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/lecture.css">
 </head>
-<body>
+<body data-chapitre="1">
 <header class="topbar"><div class="in">
   <a class="home" href="../#chapitre-1"><span>420-SN1-RE</span>Programmation en sciences</a>
   <span class="chap">Chapitre 1 · Semaine 1</span>
@@ -19,10 +19,10 @@
   <p class="eyebrow">Chapitre 1 · Semaine 1</p>
   <h1>L&#x27;ordinateur comme instrument scientifique</h1>
   <div class="prep">
-    <div><h2>À faire avant le cours</h2><ol><li>La semaine 1 se fait en classe : rien à préparer.</li><li>En classe : lis ce chapitre, puis fais le cahier d'exercices dans Colab.</li><li>Remets ton cahier sur LÉA à la fin du labo.</li></ol></div>
-    <a class="btn" href="https://colab.research.google.com/github/boreal42/boreal42.github.io/blob/main/420-SN1-RE/notebooks/chapitre01.ipynb" target="_blank" rel="noopener">Ouvrir le cahier d'exercices dans Colab</a>
+    <div><h2>À faire avant le cours</h2><ol><li>La semaine 1 se fait en classe : rien à préparer.</li><li>En classe : lis ce chapitre, puis fais les exercices et le labo au bas de la page.</li><li>Télécharge ton rapport et remets-le sur LÉA à la fin du labo.</li></ol></div>
+    <a class="btn" href="#exercices">Aller aux exercices</a>
   </div>
-  <p style="color:var(--muted);font-size:.92rem">Les blocs de code avec un bouton <strong>▶ Exécuter</strong> fonctionnent directement dans cette page. Modifie-les librement : <strong>Réinitialiser</strong> remet le code d'origine. Raccourci : Maj + Entrée.</p>
+  <p class="aide">Tout le code de cette page s'exécute dans ton navigateur : clique sur <strong>▶ Exécuter</strong>. Tu peux modifier les exemples librement; <strong>Réinitialiser</strong> remet le code d'origine. Raccourci : Maj + Entrée.</p>
 <div class="admonition probleme">
 <p class="admonition-title">Problème d'ouverture</p>
 <p>Ton cahier de laboratoire de chimie donne des températures en degrés Celsius. Les tables thermodynamiques que tu consultes sont en kelvins, et l'article américain que tu cites parle en degrés Fahrenheit. Convertir trois valeurs à la main, ça va. Convertir 400 mesures, non.</p>
@@ -31,7 +31,7 @@
 <h2 id="objectifs">Objectifs</h2>
 <p>À la fin de ce chapitre, tu peux :</p>
 <ol>
-<li>exécuter du code Python, dans cette page et dans Google Colab;</li>
+<li>exécuter du code Python directement dans les pages du cours;</li>
 <li>utiliser Python comme une calculatrice scientifique;</li>
 <li>décrire un problème par ses <strong>intrants</strong>, ses <strong>extrants</strong> et ses <strong>traitements</strong>;</li>
 <li>construire un <strong>jeu d'essais</strong> avant d'écrire une seule ligne de code;</li>
@@ -46,26 +46,8 @@
 <p class="admonition-title">Essaie-le</p>
 <p>Modifie le code ci-dessus pour qu'il affiche ton prénom, puis exécute-le de nouveau.</p>
 </div>
-<h3 id="deux-endroits-pour-ecrire-du-python">Deux endroits pour écrire du Python</h3>
-<div class="tablewrap"><table>
-<thead>
-<tr>
-<th>Endroit</th>
-<th>Pour quoi faire</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>Les pages du site</strong>, comme celle-ci</td>
-<td>Lire la théorie et essayer les petits exemples sur place</td>
-</tr>
-<tr>
-<td><strong>Google Colab</strong></td>
-<td>Faire tes exercices et tes labos, sauvegarder ton travail, le remettre sur LÉA</td>
-</tr>
-</tbody>
-</table></div>
-<p>Dans Colab, ton travail est un <strong>notebook</strong> fait de cellules de texte et de cellules de code. On exécute une cellule de code avec ▶ ou <strong>Maj + Entrée</strong>, et le résultat s'affiche juste en dessous. La recette <a href="../#recettes">Ouvrir un chapitre dans Colab</a> explique comment enregistrer ta copie.</p>
+<h3 id="tout-se-passe-dans-le-site-du-cours">Tout se passe dans le site du cours</h3>
+<p>Chaque chapitre du cours est une page comme celle-ci. Les exemples de la théorie s'exécutent sur place, et les exercices, au bas de la page, aussi : tu écris ton code, tu l'exécutes, puis le bouton <strong>Vérifier</strong> te dit si ta réponse est bonne. Ton travail est sauvegardé automatiquement dans ton navigateur, et tu le remets sur LÉA sous forme de rapport. La <a href="../#recettes">recette</a> explique les détails.</p>
 <h2 id="python-comme-calculatrice-scientifique">Python comme calculatrice scientifique</h2>
 <div class="tablewrap"><table>
 <thead>
@@ -238,8 +220,8 @@ print(2 ** 3 ** 2)</textarea><div class="bar"><button class="run" type="button">
 </tbody>
 </table></div>
 <div class="admonition piege">
-<p class="admonition-title">Piège propre à Colab : l'ordre d'exécution</p>
-<p>Colab exécute les cellules <strong>dans l'ordre où tu cliques</strong>, pas dans l'ordre de la page. Si tu obtiens un <code>NameError</code> sur une variable créée plus haut, exécute la cellule qui la crée. En cas de doute : <strong>Exécution → Tout exécuter</strong>.</p>
+<p class="admonition-title">Piège : l'ordre d'exécution</p>
+<p>Python exécute les instructions <strong>de haut en bas</strong>. Si tu utilises une variable avant la ligne qui la crée, tu obtiens un <code>NameError</code>, même si la variable est créée plus bas.</p>
 </div>
 <h2 id="lia-generative-dans-ce-cours">L'IA générative dans ce cours</h2>
 <p>Les assistants d'IA font partie du travail en sciences. Dans ce cours, la règle est simple :</p>
@@ -250,27 +232,123 @@ print(2 ** 3 ** 2)</textarea><div class="bar"><button class="run" type="button">
 <p>La raison est pratique : les évaluations mesurent ta capacité à planifier, à faire la trace et à vérifier un programme. Ce sont exactement les habiletés qui te permettront plus tard de juger si le code d'une IA est correct. Voir la <a href="../#ia">politique complète</a>.</p>
 <h2 id="autoquiz">Autoquiz</h2>
 <ol>
-<li>Comment exécute-t-on une cellule de code dans Colab?</li>
+<li>Que fait la fonction <code>print()</code>?</li>
 <li>Que vaut <code>7 // 2</code>? Et <code>7 % 2</code>?</li>
 <li>Pourquoi écrit-on <code>9.81</code> et pas <code>9,81</code>?</li>
 <li>Nomme les trois parties d'une fiche de planification, en plus du jeu d'essais.</li>
 <li>Pourquoi construit-on le jeu d'essais <strong>avant</strong> de coder?</li>
 </ol>
 <h2 id="vocabulaire">Vocabulaire</h2>
-<div class="vocab"><span>programme</span><span>instruction</span><span>fonction</span><span>chaîne de caractères</span><span>commentaire</span><span>variable</span><span>notebook</span><span>cellule</span><span>intrant</span><span>extrant</span><span>traitement</span><span>jeu d'essais</span><span>erreur de syntaxe</span></div>
-  <section class="next">
-    <h2>Maintenant, pratique</h2>
-    <p>Ouvre le cahier d'exercices dans Colab, fais <strong>Fichier → Enregistrer une copie dans Drive</strong>, puis fais les exercices. Chacun a sa cellule de vérification.</p>
-    <a class="btn" href="https://colab.research.google.com/github/boreal42/boreal42.github.io/blob/main/420-SN1-RE/notebooks/chapitre01.ipynb" target="_blank" rel="noopener">Ouvrir le cahier d'exercices dans Colab</a>
-  </section>
+<div class="vocab"><span>programme</span><span>instruction</span><span>fonction</span><span>chaîne de caractères</span><span>commentaire</span><span>variable</span><span>intrant</span><span>extrant</span><span>traitement</span><span>jeu d'essais</span><span>erreur de syntaxe</span></div>
+<h2 id="exercices">Exercices de départ</h2><p>Écris ton code dans chaque exercice : remplace les <code>None</code> par ta réponse, puis clique sur <strong>Vérifier</strong>. La vérification te dit si ta réponse est bonne, sans la montrer. Ton travail est sauvegardé automatiquement dans ce navigateur.</p>
+<section class="exo" id="exo-1-1" data-id="1.1" data-checks="[[&quot;p1&quot;, &quot;1a5fd97b7ad1&quot;], [&quot;p2&quot;, &quot;7a284f128e61&quot;], [&quot;p3&quot;, &quot;2012e0c395ce&quot;], [&quot;p4&quot;, &quot;374f1f5ffcaa&quot;], [&quot;p5&quot;, &quot;e4a461125d6a&quot;]]">
+  <div class="exo-head"><h3>Exercice 1.1 — Prédire avant d&#x27;exécuter</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Sans exécuter de code, écris la valeur que Python affichera pour chaque expression. Écris des nombres, par exemple <code>3.5</code> ou <code>7</code>.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Expression</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>p1</code></td>
+<td><code>10 / 4</code></td>
+</tr>
+<tr>
+<td><code>p2</code></td>
+<td><code>10 // 4</code></td>
+</tr>
+<tr>
+<td><code>p3</code></td>
+<td><code>2 + 3 * 4</code></td>
+</tr>
+<tr>
+<td><code>p4</code></td>
+<td><code>(2 + 3) * 4</code></td>
+</tr>
+<tr>
+<td><code>p5</code></td>
+<td><code>2 ** 3 ** 2</code></td>
+</tr>
+</tbody>
+</table></div></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 1.1 — Prédire avant d&#x27;exécuter">p1 = None
+p2 = None
+p3 = None
+p4 = None
+p5 = None</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-1-2" data-id="1.2" data-checks="[[&quot;aire&quot;, &quot;aa20b4e57119&quot;]]">
+  <div class="exo-head"><h3>Exercice 1.2 — Corriger une erreur de syntaxe</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Ce programme calcule l'aire (m²) d'un disque de rayon 0,5 m, mais Python refuse de l'exécuter. Exécute-le, lis le message, corrige.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 1.2 — Corriger une erreur de syntaxe">aire = 3.14159 * (0.5 ** 2
+print(aire)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<h2 id="laboratoire">Laboratoire</h2><p>Pour chaque exercice : remplis la fiche de planification <strong>avant</strong> de coder, puis code, puis clique sur <strong>Vérifier</strong>.</p>
+<section class="exo" id="exo-L1-1" data-id="L1.1" data-checks="[[&quot;kelvin&quot;, &quot;f44f5448d1f7&quot;]]">
+  <div class="exo-head"><h3>Labo 1.1 (essentiel) — Celsius vers kelvins</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Traitement : K = C + 273,15.</p>
+<p>La vérification teste le cas <code>celsius = 0</code>.</p></div>
+  <div class="fiche"><p class="fiche-titre">Fiche de planification</p><label><span>Intrants</span><textarea data-champ="intrants" rows="2" spellcheck="true"></textarea></label><label><span>Extrants</span><textarea data-champ="extrants" rows="2" spellcheck="true"></textarea></label><label><span>Traitements</span><textarea data-champ="traitements" rows="2" spellcheck="true"></textarea></label><label><span>Jeu d'essais (calculé avant de coder)</span><textarea data-champ="jeu_essais" rows="2" spellcheck="true"></textarea></label></div>
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Labo 1.1 (essentiel) — Celsius vers kelvins">celsius = 0
+kelvin = None
+print(kelvin)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-L1-2" data-id="L1.2" data-checks="[[&quot;celsius&quot;, &quot;9fd94296c437&quot;]]">
+  <div class="exo-head"><h3>Labo 1.2 (intermédiaire) — Fahrenheit vers Celsius</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Trouve toi-même la formule à partir de F = C × 9/5 + 32. <strong>Indice :</strong> isole C.</p>
+<p>La vérification teste le cas <code>fahrenheit = 212</code>.</p></div>
+  <div class="fiche"><p class="fiche-titre">Fiche de planification</p><label><span>Intrants</span><textarea data-champ="intrants" rows="2" spellcheck="true"></textarea></label><label><span>Extrants</span><textarea data-champ="extrants" rows="2" spellcheck="true"></textarea></label><label><span>Traitements</span><textarea data-champ="traitements" rows="2" spellcheck="true"></textarea></label><label><span>Jeu d'essais (calculé avant de coder)</span><textarea data-champ="jeu_essais" rows="2" spellcheck="true"></textarea></label></div>
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Labo 1.2 (intermédiaire) — Fahrenheit vers Celsius">fahrenheit = 212
+celsius = None
+print(celsius)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-L1-3" data-id="L1.3" data-checks="[[&quot;vitesse_ms&quot;, &quot;ac3ac75256f3&quot;], [&quot;vitesse_kmh&quot;, &quot;f801677b3961&quot;]]">
+  <div class="exo-head"><h3>Labo 1.3 (défi) — Le 100 m d&#x27;Usain Bolt</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>En 2009, Usain Bolt a couru le 100 m en 9,58 s. Calcule sa vitesse moyenne en m/s, puis en km/h (1 m/s = 3,6 km/h).</p></div>
+  <div class="fiche"><p class="fiche-titre">Fiche de planification</p><label><span>Intrants</span><textarea data-champ="intrants" rows="2" spellcheck="true"></textarea></label><label><span>Extrants</span><textarea data-champ="extrants" rows="2" spellcheck="true"></textarea></label><label><span>Traitements</span><textarea data-champ="traitements" rows="2" spellcheck="true"></textarea></label><label><span>Jeu d'essais (calculé avant de coder)</span><textarea data-champ="jeu_essais" rows="2" spellcheck="true"></textarea></label></div>
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Labo 1.3 (défi) — Le 100 m d&#x27;Usain Bolt">distance = 100      # m
+temps = 9.58        # s
+vitesse_ms = None
+vitesse_kmh = None
+print(vitesse_ms, vitesse_kmh)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<p><strong>Question de jugement :</strong> ta vitesse en km/h est-elle plausible pour un humain? Une réponse de 3 758 km/h aurait dû t'alerter. Vérifier, c'est aussi se demander si le résultat a un sens physique.</p>
+  <h2 id="remise">Remise sur LÉA</h2>
+  <div class="travail">
+    <label class="nom"><span>Ton nom (prénom et nom)</span><input id="nom-etudiant" type="text" autocomplete="name"></label>
+    <div><p class="progression"></p><div class="barre" aria-hidden="true"><span></span></div></div>
+    <ol>
+      <li>Clique sur <strong>Télécharger mon rapport</strong>. Le fichier contient ton code, tes fiches et le résultat de chaque vérification.</li>
+      <li>Dépose ce fichier dans le travail du chapitre 1 sur LÉA.</li>
+    </ol>
+    <div class="actions"><button class="btn telecharger" type="button">Télécharger mon rapport</button>
+      <label class="btn ghost">Importer un rapport<input class="importer" type="file" accept=".py,.txt" hidden></label></div>
+    <p id="msg-import" aria-live="polite"></p>
+    <p class="note">Ton travail est sauvegardé automatiquement, mais seulement dans <em>ce</em> navigateur, sur <em>cet</em> appareil. Pour continuer ailleurs, télécharge ton rapport et importe-le sur l'autre appareil.</p>
+  </div>
   <nav class="pager" aria-label="Chapitres"><span></span><a class="btn ghost" href="ch02.html">Chapitre 2 →</a></nav>
 </article>
 <aside class="toc" aria-label="Dans ce chapitre">
   <p>Dans ce chapitre</p>
-  <ol><li><a href="#objectifs">Objectifs</a></li><li><a href="#ton-premier-programme">Ton premier programme</a></li><li><a href="#python-comme-calculatrice-scientifique">Python comme calculatrice scientifique</a></li><li><a href="#les-variables-en-bref">Les variables, en bref</a></li><li><a href="#la-demarche-planifier-coder-verifier">La démarche : planifier, coder, vérifier</a></li><li><a href="#predire-avant-dexecuter">Prédire avant d'exécuter</a></li><li><a href="#les-erreurs-sont-normales">Les erreurs sont normales</a></li><li><a href="#lia-generative-dans-ce-cours">L'IA générative dans ce cours</a></li><li><a href="#autoquiz">Autoquiz</a></li><li><a href="#vocabulaire">Vocabulaire</a></li></ol>
-  <div class="cta"><a class="btn" href="https://colab.research.google.com/github/boreal42/boreal42.github.io/blob/main/420-SN1-RE/notebooks/chapitre01.ipynb" target="_blank" rel="noopener">Cahier Colab</a><a class="btn ghost" href="../#recettes">Recettes</a></div>
+  <ol><li><a href="#objectifs">Objectifs</a></li><li><a href="#ton-premier-programme">Ton premier programme</a></li><li><a href="#python-comme-calculatrice-scientifique">Python comme calculatrice scientifique</a></li><li><a href="#les-variables-en-bref">Les variables, en bref</a></li><li><a href="#la-demarche-planifier-coder-verifier">La démarche : planifier, coder, vérifier</a></li><li><a href="#predire-avant-dexecuter">Prédire avant d'exécuter</a></li><li><a href="#les-erreurs-sont-normales">Les erreurs sont normales</a></li><li><a href="#lia-generative-dans-ce-cours">L'IA générative dans ce cours</a></li><li><a href="#autoquiz">Autoquiz</a></li><li><a href="#vocabulaire">Vocabulaire</a></li><li><a href="#exercices">Exercices de départ</a></li><li><a href="#laboratoire">Laboratoire</a></li><li><a href="#remise">Remise sur LÉA</a></li></ol>
+  <div class="cta"><p class="progression"></p><div class="barre" aria-hidden="true"><span></span></div><a class="btn" href="#remise">Remise sur LÉA</a><a class="btn ghost" href="../#recettes">Recettes</a></div>
 </aside>
 </div>
-<script src="../assets/runner.js"></script>
+<script src="../assets/cours.js"></script>
 </body>
 </html>

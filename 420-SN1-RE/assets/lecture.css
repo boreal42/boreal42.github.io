@@ -129,3 +129,33 @@ tr:last-child td{border-bottom:0}
 .toc .cta .btn.ghost{color:var(--accent);border:1px solid var(--accent)}
 .toc .cta .btn:hover{color:#fff}
 .toc .cta .btn.ghost:hover{color:var(--accent)}
+
+/* Exercices vérifiés */
+.aide{color:var(--muted);font-size:.92rem}
+.exo{border:1px solid var(--rule);border-radius:10px;padding:1rem 1.2rem 1.2rem;margin:1.4rem 0;background:var(--sheet);max-width:none}
+.exo-head{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}
+.exo-head h3{margin:0}
+.badge{font-family:var(--font-mono);font-size:.78rem;padding:.12rem .6rem;border-radius:99px;border:1px solid var(--rule);color:var(--muted);white-space:nowrap}
+.badge.ok{border-color:var(--ok);color:var(--ok);background:var(--ok-soft)}
+.enonce > *{max-width:70ch}
+.enonce .tablewrap,.enonce pre{max-width:none}
+.runner .bar .check{background:var(--ok);border-color:var(--ok);color:#fff}
+.verdict:empty{display:none}
+.verdict{padding:.6rem 1.1rem;border-top:1px solid var(--rule);background:var(--sheet);font-size:.92rem}
+.verdict ul{list-style:none;padding:0;margin:0}
+.verdict li{margin:.2rem 0}
+.v-oui{color:var(--ok)} .v-non{color:var(--signal)} .v-attente{color:var(--muted)}
+.fiche{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin:.8rem 0;padding:.8rem;border:1px dashed var(--accent);border-radius:8px}
+.fiche-titre{grid-column:1/-1;margin:0;font-family:var(--font-display);font-weight:700;color:var(--accent)}
+.fiche label{display:flex;flex-direction:column;gap:.2rem;font-size:.85rem;color:var(--muted)}
+.fiche textarea,.travail input{font-family:var(--font-body);font-size:.95rem;color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:6px;padding:.45rem .6rem;resize:vertical;overflow:hidden}
+.travail{border:1px solid var(--accent);border-radius:10px;padding:1.2rem;background:var(--accent-soft);max-width:none;display:flex;flex-direction:column;gap:.6rem}
+.travail .nom{display:flex;flex-direction:column;gap:.25rem;max-width:420px;font-weight:600}
+.travail .actions{display:flex;gap:.6rem;flex-wrap:wrap}
+.travail .note{font-size:.88rem;color:var(--muted);margin:0}
+.travail ol{margin:0}
+.barre{height:8px;background:var(--rule);border-radius:99px;overflow:hidden}
+.barre > span{display:block;height:100%;width:0;background:var(--ok);transition:width .3s}
+.toc .cta .progression{font-size:.82rem;color:var(--muted);margin:0;text-transform:none;letter-spacing:0}
+.progression{margin:0}
+@media (max-width:700px){.fiche{grid-template-columns:1fr}}

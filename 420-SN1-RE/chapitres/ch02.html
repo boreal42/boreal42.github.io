@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/lecture.css">
 </head>
-<body>
+<body data-chapitre="2">
 <header class="topbar"><div class="in">
   <a class="home" href="../#chapitre-2"><span>420-SN1-RE</span>Programmation en sciences</a>
   <span class="chap">Chapitre 2 · Semaine 2</span>
@@ -19,10 +19,10 @@
   <p class="eyebrow">Chapitre 2 · Semaine 2</p>
   <h1>Variables, types et expressions</h1>
   <div class="prep">
-    <div><h2>À faire avant le cours</h2><ol><li>Lis ce chapitre et exécute les exemples (environ 1 h).</li><li>Fais les exercices préparatoires 2.1 à 2.10 dans le cahier Colab (environ 1 h 30).</li><li>Dépose ton cahier sur LÉA avant le cours.</li></ol></div>
-    <a class="btn" href="https://colab.research.google.com/github/boreal42/boreal42.github.io/blob/main/420-SN1-RE/notebooks/chapitre02.ipynb" target="_blank" rel="noopener">Ouvrir le cahier d'exercices dans Colab</a>
+    <div><h2>À faire avant le cours</h2><ol><li>Lis ce chapitre et exécute les exemples (environ 1 h).</li><li>Fais les exercices préparatoires 2.1 à 2.10, au bas de la page (environ 1 h 30).</li><li>Télécharge ton rapport et remets-le sur LÉA avant le cours.</li></ol></div>
+    <a class="btn" href="#exercices">Aller aux exercices</a>
   </div>
-  <p style="color:var(--muted);font-size:.92rem">Les blocs de code avec un bouton <strong>▶ Exécuter</strong> fonctionnent directement dans cette page. Modifie-les librement : <strong>Réinitialiser</strong> remet le code d'origine. Raccourci : Maj + Entrée.</p>
+  <p class="aide">Tout le code de cette page s'exécute dans ton navigateur : clique sur <strong>▶ Exécuter</strong>. Tu peux modifier les exemples librement; <strong>Réinitialiser</strong> remet le code d'origine. Raccourci : Maj + Entrée.</p>
 <div class="admonition probleme">
 <p class="admonition-title">Problème d'ouverture</p>
 <p>Une balle de 0,5 kg roule à 3 m/s au sommet d'une rampe de 2 m de haut. Quelle est son énergie mécanique?</p>
@@ -370,19 +370,224 @@ print(&quot;Masse : &quot; + masse + &quot; kg&quot;)</textarea><div class="bar"
 </ol>
 <h2 id="vocabulaire">Vocabulaire</h2>
 <div class="vocab"><span>affectation</span><span>variable</span><span>constante</span><span>type</span><span>int</span><span>float</span><span>str</span><span>bool</span><span>conversion</span><span>expression</span><span>opérateur</span><span>module</span><span>import</span><span>f-string</span><span>notation scientifique</span></div>
-  <section class="next">
-    <h2>Maintenant, pratique</h2>
-    <p>Ouvre le cahier d'exercices dans Colab, fais <strong>Fichier → Enregistrer une copie dans Drive</strong>, puis fais les exercices. Chacun a sa cellule de vérification.</p>
-    <a class="btn" href="https://colab.research.google.com/github/boreal42/boreal42.github.io/blob/main/420-SN1-RE/notebooks/chapitre02.ipynb" target="_blank" rel="noopener">Ouvrir le cahier d'exercices dans Colab</a>
-  </section>
+<h2 id="exercices">Exercices préparatoires</h2><p>Écris ton code dans chaque exercice : remplace les <code>None</code> par ta réponse, puis clique sur <strong>Vérifier</strong>. La vérification te dit si ta réponse est bonne, sans la montrer. Ton travail est sauvegardé automatiquement dans ce navigateur.</p>
+<section class="exo" id="exo-2-1" data-id="2.1" data-checks="[[&quot;t1&quot;, &quot;d741a2314def&quot;], [&quot;t2&quot;, &quot;4af3d990269c&quot;], [&quot;t3&quot;, &quot;7996f13e6481&quot;], [&quot;t4&quot;, &quot;afd812c43000&quot;]]">
+  <div class="exo-head"><h3>Exercice 2.1 — Quel type?</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Sans exécuter de code, indique le type du résultat de chaque expression. Écris <code>"int"</code>, <code>"float"</code>, <code>"str"</code> ou <code>"bool"</code>, avec les guillemets.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Expression</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>t1</code></td>
+<td><code>7 / 2</code></td>
+</tr>
+<tr>
+<td><code>t2</code></td>
+<td><code>7 // 2</code></td>
+</tr>
+<tr>
+<td><code>t3</code></td>
+<td><code>"7"</code></td>
+</tr>
+<tr>
+<td><code>t4</code></td>
+<td><code>7 &gt; 2</code></td>
+</tr>
+</tbody>
+</table></div></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 2.1 — Quel type?">t1 = None
+t2 = None
+t3 = None
+t4 = None</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-2-2" data-id="2.2" data-checks="[[&quot;valeur_a&quot;, &quot;594bca8d3977&quot;], [&quot;valeur_b&quot;, &quot;fad35f27aef2&quot;]]">
+  <div class="exo-head"><h3>Exercice 2.2 — Suivre les affectations</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Sans l'exécuter, détermine la valeur finale de <code>a</code> et de <code>b</code> après ce programme. Suis-le ligne par ligne, sur papier.</p>
+<pre><code><span class="n">a</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">a</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">3</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">b</span> <span class="o">*</span> <span class="mi">2</span>
+</code></pre></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 2.2 — Suivre les affectations">valeur_a = None
+valeur_b = None</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-2-3" data-id="2.3" data-checks="[[&quot;volume&quot;, &quot;70a9a2926b9d&quot;]]">
+  <div class="exo-head"><h3>Exercice 2.3 — Volume d&#x27;une sphère</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Calcule le volume (m³) d'une sphère de rayon 0,5 m : V = 4/3 π r³. Utilise <code>math.pi</code>.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 2.3 — Volume d&#x27;une sphère">import math
+rayon = 0.5     # m
+volume = None   # m³
+print(volume)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-2-4" data-id="2.4" data-checks="[[&quot;heures&quot;, &quot;64e4b892473f&quot;], [&quot;minutes&quot;, &quot;7a284f128e61&quot;], [&quot;secondes&quot;, &quot;0be3a3882951&quot;]]">
+  <div class="exo-head"><h3>Exercice 2.4 — Durée d&#x27;une expérience</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Une expérience a duré 3725 secondes. Convertis cette durée en heures, minutes et secondes, avec <code>//</code> et <code>%</code>.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 2.4 — Durée d&#x27;une expérience">duree = 3725     # s
+heures = None
+minutes = None
+secondes = None
+print(heures, &quot;h&quot;, minutes, &quot;min&quot;, secondes, &quot;s&quot;)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-2-5" data-id="2.5" data-checks="[[&quot;hypotenuse&quot;, &quot;0be3a3882951&quot;]]">
+  <div class="exo-head"><h3>Exercice 2.5 — Pythagore</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Calcule l'hypoténuse d'un triangle rectangle dont les côtés mesurent 3 cm et 4 cm, avec <code>math.sqrt</code>.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 2.5 — Pythagore">import math
+cote_a = 3   # cm
+cote_b = 4   # cm
+hypotenuse = None
+print(hypotenuse)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-2-6" data-id="2.6" data-checks="[[&quot;fx&quot;, &quot;f7eec963adb1&quot;], [&quot;fy&quot;, &quot;be5150467b60&quot;]]">
+  <div class="exo-head"><h3>Exercice 2.6 — Composantes d&#x27;une force</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Une force de 50 N est appliquée à 30° au-dessus de l'horizontale. Calcule ses composantes horizontale (F cos θ) et verticale (F sin θ). Attention aux radians.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 2.6 — Composantes d&#x27;une force">import math
+force = 50       # N
+angle = 30       # degrés
+fx = None        # N
+fy = None        # N
+print(fx, fy)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-2-7" data-id="2.7" data-checks="[[&quot;pression&quot;, &quot;b28c9af42cd8&quot;]]">
+  <div class="exo-head"><h3>Exercice 2.7 — Loi des gaz parfaits</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Calcule la pression (Pa) de 2 mol de gaz à 300 K dans un volume de 0,05 m³ : P = nRT / V, avec R = 8,314 J/(mol·K).</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 2.7 — Loi des gaz parfaits">R = 8.314       # J/(mol·K)
+n = 2           # mol
+T = 300         # K
+V = 0.05        # m³
+pression = None # Pa
+print(pression)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-2-8" data-id="2.8" data-checks="[[&quot;message&quot;, &quot;510eab7c9e81&quot;]]">
+  <div class="exo-head"><h3>Exercice 2.8 — Afficher avec l&#x27;unité</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Construis la phrase <code>Le poids est de 19.6 N</code> avec une f-string, en arrondissant le poids à <strong>une</strong> décimale grâce au format. Ne tape pas <code>19.6</code> toi-même : calcule-le.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 2.8 — Afficher avec l&#x27;unité">masse = 2.0     # kg
+g = 9.81        # m/s²
+poids = masse * g
+message = None
+print(message)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-2-9" data-id="2.9" data-checks="[[&quot;energie&quot;, &quot;8ff4ac2b7fe5&quot;]]">
+  <div class="exo-head"><h3>Exercice 2.9 — Trouve les erreurs</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Ce programme doit calculer l'énergie cinétique (J) d'un cycliste de 75 kg roulant à 12,5 m/s. Il contient <strong>deux</strong> erreurs. Exécute-le, lis le message, corrige, recommence.</p>
+<p><em>Indice :</em> une des erreurs ne cause pas de message immédiat. Utilise <code>print(type(...))</code> pour enquêter.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 2.9 — Trouve les erreurs">masse = &quot;75&quot;
+vitesse = 12,5
+energie = 1 / 2 * masse * vitesse ** 2
+print(energie)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-2-10" data-id="2.10" data-checks="[[&quot;masse_lb&quot;, &quot;4d2f03f47387&quot;]]">
+  <div class="exo-head"><h3>Exercice 2.10 — Convertir une saisie</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>La variable <code>texte</code> contient ce qu'un utilisateur aurait tapé avec <code>input()</code>. Convertis-la en nombre, puis calcule la masse en livres (1 kg = 2,20462 lb), arrondie à une décimale avec <code>round()</code>.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 2.10 — Convertir une saisie">texte = &quot;72.5&quot;     # ce que input() aurait retourné
+masse_kg = None
+masse_lb = None
+print(masse_lb)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<h2 id="laboratoire">Laboratoire (en classe)</h2><p>Pour chaque exercice : remplis la fiche de planification <strong>avant</strong> de coder, puis code, puis clique sur <strong>Vérifier</strong>.</p>
+<section class="exo" id="exo-L2-1" data-id="L2.1" data-checks="[[&quot;pression_kpa&quot;, &quot;235d6eb6b3b7&quot;]]">
+  <div class="exo-head"><h3>Labo 2.1 (essentiel) — Gaz parfaits, avec les unités du labo</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Au labo, on mesure la quantité de gaz en mol, la température en °C et le volume en litres. Calcule la pression en <strong>kPa</strong>.</p>
+<p>Attention aux unités : la loi des gaz parfaits demande des kelvins et des m³ (1 L = 0,001 m³), et donne des pascals.</p>
+<p>La vérification teste le cas 1 mol, 0 °C, 22,4 L, qui donne environ la pression atmosphérique.</p>
+<p><strong>Bonus :</strong> remplace les trois valeurs par des <code>input()</code> convertis en <code>float</code>, et affiche le résultat avec deux décimales grâce à une f-string.</p></div>
+  <div class="fiche"><p class="fiche-titre">Fiche de planification</p><label><span>Intrants</span><textarea data-champ="intrants" rows="2" spellcheck="true"></textarea></label><label><span>Extrants</span><textarea data-champ="extrants" rows="2" spellcheck="true"></textarea></label><label><span>Traitements</span><textarea data-champ="traitements" rows="2" spellcheck="true"></textarea></label><label><span>Jeu d'essais (calculé avant de coder)</span><textarea data-champ="jeu_essais" rows="2" spellcheck="true"></textarea></label></div>
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Labo 2.1 (essentiel) — Gaz parfaits, avec les unités du labo">R = 8.314             # J/(mol·K)
+quantite = 1          # mol
+temperature_c = 0     # °C
+volume_l = 22.4       # L
+pression_kpa = None
+print(pression_kpa)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-L2-2" data-id="L2.2" data-checks="[[&quot;portee&quot;, &quot;89ebfd8b4096&quot;], [&quot;hauteur_max&quot;, &quot;6553395677af&quot;]]">
+  <div class="exo-head"><h3>Labo 2.2 (intermédiaire) — Le tir d&#x27;un projectile</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Un projectile est lancé à 20 m/s, à 45° au-dessus de l'horizontale, sur un sol plat. Calcule :</p>
+<ul>
+<li>sa portée : R = v² sin(2θ) / g;</li>
+<li>sa hauteur maximale : H = v² sin²(θ) / (2g).</li>
+</ul>
+<p>Avant de coder, estime les deux réponses. Une portée de 4 000 m serait-elle plausible?</p></div>
+  <div class="fiche"><p class="fiche-titre">Fiche de planification</p><label><span>Intrants</span><textarea data-champ="intrants" rows="2" spellcheck="true"></textarea></label><label><span>Extrants</span><textarea data-champ="extrants" rows="2" spellcheck="true"></textarea></label><label><span>Traitements</span><textarea data-champ="traitements" rows="2" spellcheck="true"></textarea></label><label><span>Jeu d'essais (calculé avant de coder)</span><textarea data-champ="jeu_essais" rows="2" spellcheck="true"></textarea></label></div>
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Labo 2.2 (intermédiaire) — Le tir d&#x27;un projectile">import math
+g = 9.81          # m/s²
+v = 20            # m/s
+angle = 45        # degrés
+portee = None     # m
+hauteur_max = None  # m
+print(f&quot;Portée : {portee} m, hauteur maximale : {hauteur_max} m&quot;)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-L2-3" data-id="L2.3" data-checks="[[&quot;minutes&quot;, &quot;594bca8d3977&quot;], [&quot;secondes&quot;, &quot;68719882aed6&quot;]]">
+  <div class="exo-head"><h3>Labo 2.3 (défi) — La lumière du Soleil</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>La Terre est à 1,496 × 10¹¹ m du Soleil, et la lumière voyage à 2,998 × 10⁸ m/s. Combien de temps la lumière met-elle pour nous atteindre? Donne le résultat en minutes et en secondes <strong>entières</strong>, par exemple <code>8 min 19 s</code>.</p>
+<p><em>Indice :</em> arrondis le temps total à la seconde avec <code>round()</code> avant de le découper.</p></div>
+  <div class="fiche"><p class="fiche-titre">Fiche de planification</p><label><span>Intrants</span><textarea data-champ="intrants" rows="2" spellcheck="true"></textarea></label><label><span>Extrants</span><textarea data-champ="extrants" rows="2" spellcheck="true"></textarea></label><label><span>Traitements</span><textarea data-champ="traitements" rows="2" spellcheck="true"></textarea></label><label><span>Jeu d'essais (calculé avant de coder)</span><textarea data-champ="jeu_essais" rows="2" spellcheck="true"></textarea></label></div>
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Labo 2.3 (défi) — La lumière du Soleil">distance = 1.496e11   # m
+c = 2.998e8           # m/s
+minutes = None
+secondes = None
+print(f&quot;{minutes} min {secondes} s&quot;)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+  <h2 id="remise">Remise sur LÉA</h2>
+  <div class="travail">
+    <label class="nom"><span>Ton nom (prénom et nom)</span><input id="nom-etudiant" type="text" autocomplete="name"></label>
+    <div><p class="progression"></p><div class="barre" aria-hidden="true"><span></span></div></div>
+    <ol>
+      <li>Clique sur <strong>Télécharger mon rapport</strong>. Le fichier contient ton code, tes fiches et le résultat de chaque vérification.</li>
+      <li>Dépose ce fichier dans le travail du chapitre 2 sur LÉA.</li>
+    </ol>
+    <div class="actions"><button class="btn telecharger" type="button">Télécharger mon rapport</button>
+      <label class="btn ghost">Importer un rapport<input class="importer" type="file" accept=".py,.txt" hidden></label></div>
+    <p id="msg-import" aria-live="polite"></p>
+    <p class="note">Ton travail est sauvegardé automatiquement, mais seulement dans <em>ce</em> navigateur, sur <em>cet</em> appareil. Pour continuer ailleurs, télécharge ton rapport et importe-le sur l'autre appareil.</p>
+  </div>
   <nav class="pager" aria-label="Chapitres"><a class="btn ghost" href="ch01.html">← Chapitre 1</a><a class="btn ghost" href="ch03.html">Chapitre 3 →</a></nav>
 </article>
 <aside class="toc" aria-label="Dans ce chapitre">
   <p>Dans ce chapitre</p>
-  <ol><li><a href="#objectifs">Objectifs</a></li><li><a href="#les-variables">Les variables</a></li><li><a href="#les-types-de-donnees">Les types de données</a></li><li><a href="#les-expressions">Les expressions</a></li><li><a href="#le-module-math">Le module math</a></li><li><a href="#lire-et-afficher">Lire et afficher</a></li><li><a href="#exemple-complet-lenergie-mecanique">Exemple complet : l'énergie mécanique</a></li><li><a href="#trois-erreurs-a-reconnaitre">Trois erreurs à reconnaître</a></li><li><a href="#pieges-frequents">Pièges fréquents</a></li><li><a href="#autoquiz">Autoquiz</a></li><li><a href="#vocabulaire">Vocabulaire</a></li></ol>
-  <div class="cta"><a class="btn" href="https://colab.research.google.com/github/boreal42/boreal42.github.io/blob/main/420-SN1-RE/notebooks/chapitre02.ipynb" target="_blank" rel="noopener">Cahier Colab</a><a class="btn ghost" href="../#recettes">Recettes</a></div>
+  <ol><li><a href="#objectifs">Objectifs</a></li><li><a href="#les-variables">Les variables</a></li><li><a href="#les-types-de-donnees">Les types de données</a></li><li><a href="#les-expressions">Les expressions</a></li><li><a href="#le-module-math">Le module math</a></li><li><a href="#lire-et-afficher">Lire et afficher</a></li><li><a href="#exemple-complet-lenergie-mecanique">Exemple complet : l'énergie mécanique</a></li><li><a href="#trois-erreurs-a-reconnaitre">Trois erreurs à reconnaître</a></li><li><a href="#pieges-frequents">Pièges fréquents</a></li><li><a href="#autoquiz">Autoquiz</a></li><li><a href="#vocabulaire">Vocabulaire</a></li><li><a href="#exercices">Exercices préparatoires</a></li><li><a href="#laboratoire">Laboratoire (en classe)</a></li><li><a href="#remise">Remise sur LÉA</a></li></ol>
+  <div class="cta"><p class="progression"></p><div class="barre" aria-hidden="true"><span></span></div><a class="btn" href="#remise">Remise sur LÉA</a><a class="btn ghost" href="../#recettes">Recettes</a></div>
 </aside>
 </div>
-<script src="../assets/runner.js"></script>
+<script src="../assets/cours.js"></script>
 </body>
 </html>

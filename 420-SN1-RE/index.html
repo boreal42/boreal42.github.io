@@ -189,7 +189,7 @@ footer{margin-top:2rem;font-size:.82rem;color:var(--muted)}
           <div class="step">
             <span class="when">Avant le cours · 3 h</span>
             <h3>Lire et essayer</h3>
-            <p>Lis le chapitre de la semaine sur ce site, puis fais les exercices préparatoires dans son cahier Colab.</p>
+            <p>Lis le chapitre de la semaine et fais ses exercices préparatoires, directement sur ce site. Le code s'exécute dans la page.</p>
           </div>
           <div class="step">
             <span class="when">En classe · 1 h</span>
@@ -199,7 +199,7 @@ footer{margin-top:2rem;font-size:.82rem;color:var(--muted)}
           <div class="step">
             <span class="when">En classe · 2 h</span>
             <h3>Pratiquer</h3>
-            <p>Laboratoire en équipe puis seul. Remise du notebook <code>.ipynb</code> sur LÉA.</p>
+            <p>Laboratoire en équipe puis seul, sur le site. Remise du rapport du chapitre sur LÉA.</p>
           </div>
         </div>
 
@@ -269,7 +269,7 @@ footer{margin-top:2rem;font-size:.82rem;color:var(--muted)}
         <h2>Pourquoi</h2>
         <p>Les évaluations mesurent ta capacité à planifier un programme, à en faire la trace et à valider ses résultats. Une IA peut écrire du code, mais elle ne peut pas développer ces habiletés à ta place.</p>
         <h2>Pendant les évaluations</h2>
-        <p>Les fonctions d'IA de Colab sont désactivées, et les évaluations se font en laboratoire, sous supervision.</p>
+        <p>Les évaluations se font sur le site du cours, qui n'a aucun assistant d'IA intégré, en laboratoire et sous supervision.</p>
         <div class="callout">Un code que tu ne peux pas expliquer n'est pas ton code. L'enseignant peut te demander d'expliquer n'importe quelle ligne que tu as remise.</div>
       </div>
     </section>
@@ -281,22 +281,30 @@ footer{margin-top:2rem;font-size:.82rem;color:var(--muted)}
         <h1 id="t-rec">Recettes</h1>
         <p class="lead">Les gestes qui reviennent chaque semaine, en quelques étapes.</p>
 
-        <div class="recipe" id="recette-colab">
-          <h2>Ouvrir un cahier d'exercices dans Colab</h2>
+        <div class="recipe" id="recette-sauvegarde">
+          <h2>Où est sauvegardé mon travail?</h2>
           <ol>
-            <li>Clique sur <strong>Cahier d'exercices dans Colab</strong>, sur la page du chapitre.</li>
-            <li>Connecte-toi avec ton compte Google.</li>
-            <li>Fais <strong>Fichier → Enregistrer une copie dans Drive</strong>. Sans cette étape, ton travail n'est pas sauvegardé.</li>
-            <li>Travaille toujours dans ta copie, que tu retrouves dans le dossier <em>Colab Notebooks</em> de ton Drive.</li>
+            <li>Ton code et tes fiches sont sauvegardés <strong>automatiquement</strong>, à chaque modification.</li>
+            <li>La sauvegarde est dans <strong>ce navigateur, sur cet appareil</strong>. Un autre ordinateur, un autre navigateur ou une navigation privée ne la voient pas.</li>
+            <li>Si tu effaces l'historique de ton navigateur, la sauvegarde disparaît : télécharge ton rapport régulièrement.</li>
           </ol>
         </div>
 
         <div class="recipe" id="recette-lea">
-          <h2>Remettre un notebook sur LÉA</h2>
+          <h2>Remettre ton travail sur LÉA</h2>
           <ol>
-            <li>Dans Colab, fais <strong>Exécution → Tout exécuter</strong> et vérifie qu'il n'y a pas d'erreur imprévue.</li>
-            <li>Fais <strong>Fichier → Télécharger → Télécharger le fichier .ipynb</strong>.</li>
-            <li>Dans LÉA, ouvre le travail correspondant et dépose le fichier <code>.ipynb</code>.</li>
+            <li>Au bas de la page du chapitre, écris ton nom dans la section <strong>Remise sur LÉA</strong>.</li>
+            <li>Clique sur <strong>Télécharger mon rapport</strong>. Tu obtiens un fichier <code>.py</code> qui contient ton code, tes fiches et le résultat de chaque vérification.</li>
+            <li>Dans LÉA, ouvre le travail du chapitre et dépose ce fichier.</li>
+          </ol>
+        </div>
+
+        <div class="recipe" id="recette-appareil">
+          <h2>Continuer sur un autre appareil</h2>
+          <ol>
+            <li>Sur le premier appareil, télécharge ton rapport.</li>
+            <li>Sur le second, ouvre la page du même chapitre et clique sur <strong>Importer un rapport</strong>, au bas de la page.</li>
+            <li>Choisis ton fichier : ton code, tes fiches et tes réussites reviennent.</li>
           </ol>
         </div>
 
@@ -316,7 +324,7 @@ footer{margin-top:2rem;font-size:.82rem;color:var(--muted)}
             <li>Fais un tableau avec une colonne par variable, plus une colonne « Affichage ».</li>
             <li>Exécute le programme à la main, une ligne à la fois.</li>
             <li>À chaque affectation, écris la nouvelle valeur dans une nouvelle ligne du tableau.</li>
-            <li>Compare ensuite ton tableau avec l'exécution réelle dans Colab.</li>
+            <li>Compare ensuite ton tableau avec l'exécution réelle : ajoute des <code>print()</code> et exécute.</li>
           </ol>
           <pre>a = 3          # a=3
 b = a * 2      # a=3  b=6
@@ -353,7 +361,7 @@ print(a, b)    # affiche : 9 6</pre>
           <thead><tr><th>Message</th><th>Cause habituelle</th></tr></thead>
           <tbody>
             <tr><td><code>SyntaxError</code></td><td>Virgule, parenthèse ou guillemet manquant : Python ne peut pas lire l'instruction.</td></tr>
-            <tr><td><code>NameError</code></td><td>Nom utilisé avant d'être créé, mal écrit, ou cellule Colab non exécutée.</td></tr>
+            <tr><td><code>NameError</code></td><td>Nom utilisé avant d'être créé, ou mal écrit (attention aux majuscules).</td></tr>
             <tr><td><code>ZeroDivisionError</code></td><td>Division par zéro.</td></tr>
           </tbody>
         </table></div>
@@ -364,31 +372,30 @@ print(a, b)    # affiche : 9 6</pre>
 </div>
 
 <script>
-const COLAB = "https://colab.research.google.com/github/boreal42/boreal42.github.io/blob/main/420-SN1-RE/notebooks/";
 
 const CHAPITRES = [
   {n:1, sem:1, titre:"L'ordinateur comme instrument scientifique",
-   notions:"Google Colab, premier programme, Python comme calculatrice, démarche planifier-coder-vérifier, erreurs de syntaxe, politique sur l'IA",
-   labo:"Conversions de température (°C, °F, K) et vitesse d'un sprinteur", ready:true, notebook:"chapitre01.ipynb",
+   notions:"Premier programme, Python comme calculatrice, démarche planifier-coder-vérifier, erreurs de syntaxe, politique sur l'IA",
+   labo:"Conversions de température (°C, °F, K) et vitesse d'un sprinteur", ready:true,
    probleme:"Ton cahier de laboratoire donne des températures en °C, tes tables thermodynamiques sont en kelvins et l'article que tu cites parle en °F. Convertir trois valeurs à la main, ça va. Convertir 400 mesures, non.",
-   objectifs:["Exécuter du code Python dans Google Colab","Utiliser Python comme une calculatrice scientifique","Décrire un problème par ses intrants, ses extrants et ses traitements","Construire un jeu d'essais avant d'écrire du code","Reconnaître et corriger une erreur de syntaxe","Appliquer la politique du cours sur l'IA"],
+   objectifs:["Exécuter du code Python sur le site du cours","Utiliser Python comme une calculatrice scientifique","Décrire un problème par ses intrants, ses extrants et ses traitements","Construire un jeu d'essais avant d'écrire du code","Reconnaître et corriger une erreur de syntaxe","Appliquer la politique du cours sur l'IA"],
    avant:["Rien à préparer : la semaine 1 se fait en classe"],
    labos:["Exercice 1 (essentiel) : Celsius vers kelvins","Exercice 2 (intermédiaire) : Fahrenheit vers Celsius","Exercice 3 (défi) : la vitesse d'Usain Bolt au 100 m"],
    vocab:["programme","instruction","cellule","fonction","chaîne de caractères","variable","intrant","extrant","traitement","jeu d'essais","erreur de syntaxe"],
    ensuite:"Pour la semaine 2 : lire le chapitre 2 et faire les exercices préparatoires 2.1 à 2.10."},
   {n:2, sem:2, titre:"Variables, types et expressions", notions:"Variables, types (int, float, str, bool), opérateurs, input et print, f-strings, module math, erreurs de syntaxe",
-   labo:"Gaz parfaits, tir d'un projectile, lumière du Soleil", ready:true, notebook:"chapitre02.ipynb",
+   labo:"Gaz parfaits, tir d'un projectile, lumière du Soleil", ready:true,
    probleme:"Une balle de 0,5 kg roule à 3 m/s au sommet d'une rampe de 2 m. Quelle est son énergie mécanique? Tu sais le calculer à la main. Ici, tu écris un programme qui le fait pour n'importe quelle masse, vitesse et hauteur, et qui présente le résultat avec ses unités.",
    objectifs:["Créer et modifier des variables aux noms clairs","Distinguer int, float, str et bool, et convertir de l'un à l'autre","Écrire des expressions arithmétiques exactes","Utiliser le module math, angles en radians compris","Lire au clavier et afficher avec des f-strings","Reconnaître TypeError, ValueError et NameError"],
-   avant:["Lire le chapitre en exécutant les exemples (environ 1 h)","Faire les exercices préparatoires 2.1 à 2.10, autocorrigés (environ 1 h 30)","Déposer le notebook sur LÉA avant le cours"],
+   avant:["Lire le chapitre en exécutant les exemples (environ 1 h)","Faire les exercices préparatoires 2.1 à 2.10, autocorrigés (environ 1 h 30)","Déposer le rapport du chapitre sur LÉA avant le cours"],
    labos:["Labo 2.1 (essentiel) : gaz parfaits, version interactive","Labo 2.2 (intermédiaire) : portée et hauteur d'un projectile","Labo 2.3 (défi) : le temps de trajet de la lumière du Soleil"],
    vocab:["affectation","constante","type","int","float","str","bool","conversion","expression","module","import","f-string"],
    ensuite:"Pour la semaine 3 : lire le chapitre 3 et faire les exercices préparatoires 3.1 à 3.10."},
   {n:3, sem:3, titre:"Conditions", notions:"Expressions logiques, if, elif, else, conditions composées, comparaison de réels, jeu d'essais par branche",
-   labo:"Racines d'une équation du second degré, classification de triangles", ready:true, notebook:"chapitre03.ipynb",
+   labo:"Racines d'une équation du second degré, classification de triangles", ready:true,
    probleme:"Ton labo mesure le pH de 30 solutions. Pour chacune, il faut dire si elle est acide, neutre ou basique, et signaler les mesures impossibles d'une sonde mal calibrée. Le programme doit choisir quoi faire selon la valeur.",
    objectifs:["Écrire des expressions logiques avec and, or, not","Choisir entre if, if/else et if/elif/else","Ordonner correctement une suite de conditions","Comparer des réels avec une tolérance","Construire un jeu d'essais qui passe par chaque branche et teste les bornes"],
-   avant:["Lire le chapitre en exécutant les exemples (environ 1 h)","Faire les exercices préparatoires 3.1 à 3.10, autocorrigés (environ 1 h 30)","Déposer le notebook sur LÉA avant le cours"],
+   avant:["Lire le chapitre en exécutant les exemples (environ 1 h)","Faire les exercices préparatoires 3.1 à 3.10, autocorrigés (environ 1 h 30)","Déposer le rapport du chapitre sur LÉA avant le cours"],
    labos:["Labo 3.1 (essentiel) : racines d'une équation du second degré","Labo 3.2 (intermédiaire) : quel triangle?","Labo 3.3 (défi) : est-il rectangle?"],
    vocab:["booléen","expression logique","condition","branche","bloc","indentation","tolérance","borne","erreur de logique"],
    ensuite:"Pour la semaine 4 : lire le chapitre 4. L'évaluation 1 (chapitres 1 à 3) a lieu pendant le labo de la semaine 4."},
@@ -426,7 +433,6 @@ CHAPITRES.forEach(c => {
   cal.appendChild(tr);
 });
 
-const colabIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 7a5 5 0 1 0 0 10"/><path d="M17 7a5 5 0 1 1 0 10"/></svg>';
 
 function renderChapitre(c){
   const v = document.getElementById("v-chapitre");
@@ -441,7 +447,7 @@ function renderChapitre(c){
         <div class="card"><h3>Notions</h3><p>${c.notions}.</p></div>
         <div class="card"><h3>Laboratoire</h3><p>${c.labo}.</p>${c.eval ? `<p><span class="pill eval">${c.eval}</span></p>` : ""}</div>
       </div>
-      <p class="prose" style="color:var(--muted)">Le notebook de ce chapitre sera publié au plus tard à la fin du cours de la semaine ${c.sem - 1}.</p>
+      <p class="prose" style="color:var(--muted)">Ce chapitre sera publié au plus tard à la fin du cours de la semaine ${c.sem - 1}.</p>
       ${navLinks}</div>`;
     return;
   }
@@ -451,15 +457,15 @@ function renderChapitre(c){
     <div class="problem"><strong>Problème d'ouverture.</strong> ${c.probleme}</div>
     <div class="actions">
       <a class="btn" href="chapitres/ch${String(c.n).padStart(2,"0")}.html">Lire le chapitre</a>
-      <a class="btn ghost" href="${COLAB + c.notebook}" target="_blank" rel="noopener">${colabIcon}Cahier d'exercices dans Colab</a>
+      <a class="btn ghost" href="chapitres/ch${String(c.n).padStart(2,"0")}.html#exercices">Aller aux exercices</a>
     </div>
     <div class="grid2">
       <div class="card"><h3>Avant le cours</h3><ul class="check">${c.avant.map(x => `<li>${x}</li>`).join("")}</ul></div>
       <div class="card"><h3>Objectifs</h3><ol>${c.objectifs.map(x => `<li>${x}</li>`).join("")}</ol></div>
-      <div class="card"><h3>Laboratoire</h3><ul>${c.labos.map(x => `<li>${x}</li>`).join("")}</ul><p style="margin-top:.6rem;font-size:.9rem">Chaque exercice : fiche de planification, code, cellule de vérification.</p></div>
+      <div class="card"><h3>Laboratoire</h3><ul>${c.labos.map(x => `<li>${x}</li>`).join("")}</ul><p style="margin-top:.6rem;font-size:.9rem">Chaque exercice : fiche de planification, code, puis le bouton Vérifier.</p></div>
       <div class="card"><h3>Vocabulaire</h3><div class="vocab">${c.vocab.map(x => `<span>${x}</span>`).join("")}</div></div>
     </div>
-    <div class="callout"><strong>Remise :</strong> télécharge ton cahier en <code>.ipynb</code> et dépose-le sur LÉA (<a href="#recettes">recette</a>). ${c.ensuite}</div>
+    <div class="callout"><strong>Remise :</strong> au bas de la page du chapitre, télécharge ton rapport et dépose-le sur LÉA (<a href="#recettes">recette</a>). ${c.ensuite}</div>
     ${navLinks}</div>`;
 }
 
