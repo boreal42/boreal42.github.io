@@ -25,7 +25,7 @@
   <p class="aide">Tout le code de cette page s'exécute dans ton navigateur : clique sur <strong>▶ Exécuter</strong>. Tu peux modifier les exemples librement; <strong>Réinitialiser</strong> remet le code d'origine. Raccourci : Maj + Entrée.</p>
 <div class="admonition probleme">
 <p class="admonition-title">Problème d'ouverture</p>
-<p>Une balle de 0,5 kg roule à 3 m/s au sommet d'une rampe de 2 m de haut. Quelle est son énergie mécanique?</p>
+<p>Une balle de 0.5 kg roule à 3 m/s au sommet d'une rampe de 2 m de haut. Quelle est son énergie mécanique?</p>
 <p>Tu sais faire ce calcul à la main. L'objectif de ce chapitre : écrire un programme qui le fait pour <strong>n'importe quelle</strong> masse, vitesse et hauteur, et qui présente le résultat proprement, avec ses unités.</p>
 </div>
 <h2 id="objectifs">Objectifs</h2>
@@ -74,7 +74,7 @@ print(compteur)</textarea><div class="bar"><button class="run" type="button">▶
 </tbody>
 </table></div>
 <p>Dans ce cours, on écrit les noms en minuscules, avec des <code>_</code> entre les mots, et on indique l'<strong>unité en commentaire</strong>. En sciences, une valeur sans unité ne veut rien dire.</p>
-<p>Une valeur qui ne change jamais, comme g = 9,81 m/s², est une <strong>constante</strong>. Par convention, on écrit son nom en majuscules : <code>G = 9.81</code>.</p>
+<p>Une valeur qui ne change jamais, comme g = 9.81 m/s², est une <strong>constante</strong>. Par convention, on écrit son nom en majuscules : <code>G = 9.81</code>.</p>
 <h2 id="les-types-de-donnees">Les types de données</h2>
 <p>Chaque valeur a un <strong>type</strong>. La fonction <code>type()</code> le révèle.</p>
 <div class="tablewrap"><table>
@@ -115,7 +115,7 @@ print(type(3 &gt; 2))</textarea><div class="bar"><button class="run" type="butto
 <p>Deux observations :</p>
 <ul>
 <li><code>"9.81"</code> est du <strong>texte</strong>, pas un nombre. Les guillemets font toute la différence.</li>
-<li><code>6.022e23</code> est la <strong>notation scientifique</strong> de Python : 6,022 × 10²³.</li>
+<li><code>6.022e23</code> est la <strong>notation scientifique</strong> de Python : 6.022 × 10²³.</li>
 </ul>
 <h3 id="convertir-dun-type-a-lautre">Convertir d'un type à l'autre</h3>
 <div class="tablewrap"><table>
@@ -179,7 +179,7 @@ print(math.log(math.e))     # logarithme NATUREL (ln)
 print(math.log10(1000))     # logarithme en base 10</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
 <div class="admonition piege">
 <p class="admonition-title">Piège majeur : les angles sont en radians</p>
-<p><code>math.sin(30)</code> ne donne <strong>pas</strong> 0,5 : Python interprète 30 comme 30 radians. Il faut d'abord convertir les degrés avec <code>math.radians()</code>. Et attention : <code>math.log()</code> est le logarithme <strong>naturel</strong> (ln), pas le log en base 10.</p>
+<p><code>math.sin(30)</code> ne donne <strong>pas</strong> 0.5 : Python interprète 30 comme 30 radians. Il faut d'abord convertir les degrés avec <code>math.radians()</code>. Et attention : <code>math.log()</code> est le logarithme <strong>naturel</strong> (ln), pas le log en base 10.</p>
 </div>
 <div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">import math
 print(math.sin(30))                  # faux pour 30°
@@ -252,7 +252,7 @@ print(f&quot;Masse de la Terre : {5.972e24:.2e} kg&quot;)</textarea><div class="
 </tr>
 <tr>
 <td>Traitements</td>
-<td>Ec = ½ m v², Ep = m g h, Em = Ec + Ep, avec g = 9,81 m/s²</td>
+<td>Ec = ½ m v², Ep = m g h, Em = Ec + Ep, avec g = 9.81 m/s²</td>
 </tr>
 </tbody>
 </table></div>
@@ -269,10 +269,10 @@ print(f&quot;Masse de la Terre : {5.972e24:.2e} kg&quot;)</textarea><div class="
 </thead>
 <tbody>
 <tr>
-<td>0,5</td>
+<td>0.5</td>
 <td>3</td>
 <td>2</td>
-<td>12,06</td>
+<td>12.06</td>
 <td>le problème d'ouverture</td>
 </tr>
 <tr>
@@ -293,7 +293,7 @@ print(f&quot;Masse de la Terre : {5.972e24:.2e} kg&quot;)</textarea><div class="
 <td>1</td>
 <td>0</td>
 <td>1</td>
-<td>9,81</td>
+<td>9.81</td>
 <td>énergie potentielle seule</td>
 </tr>
 </tbody>
@@ -370,7 +370,7 @@ print(&quot;Masse : &quot; + masse + &quot; kg&quot;)</textarea><div class="bar"
 </ol>
 <h2 id="vocabulaire">Vocabulaire</h2>
 <div class="vocab"><span>affectation</span><span>variable</span><span>constante</span><span>type</span><span>int</span><span>float</span><span>str</span><span>bool</span><span>conversion</span><span>expression</span><span>opérateur</span><span>module</span><span>import</span><span>f-string</span><span>notation scientifique</span></div>
-<h2 id="exercices">Exercices préparatoires</h2><p>Écris ton code dans chaque exercice : remplace les <code>None</code> par ta réponse, puis clique sur <strong>Vérifier</strong>. La vérification te dit si ta réponse est bonne, sans la montrer. Ton travail est sauvegardé automatiquement dans ce navigateur.</p><div class="admonition piege"><p class="admonition-title">Les nombres dans les énoncés</p><p>Les énoncés écrivent les nombres à la française, avec une virgule : 273,15. Dans ton code, écris <strong>toujours un point</strong> : <code>273.15</code>. Avec une virgule, Python crée deux valeurs séparées, et ta réponse sera refusée.</p></div>
+<h2 id="exercices">Exercices préparatoires</h2><p>Écris ton code dans chaque exercice : remplace les <code>None</code> par ta réponse, puis clique sur <strong>Vérifier</strong>. La vérification te dit si ta réponse est bonne, sans la montrer. Ton travail est sauvegardé automatiquement dans ce navigateur.</p>
 <section class="exo" id="exo-2-1" data-id="2.1" data-checks="[[&quot;t1&quot;, &quot;d741a2314def&quot;], [&quot;t2&quot;, &quot;4af3d990269c&quot;], [&quot;t3&quot;, &quot;7996f13e6481&quot;], [&quot;t4&quot;, &quot;afd812c43000&quot;]]">
   <div class="exo-head"><h3>Exercice 2.1 — Quel type?</h3><span class="badge">À faire</span></div>
   <div class="enonce"><p>Sans exécuter de code, indique le type du résultat de chaque expression. Écris <code>"int"</code>, <code>"float"</code>, <code>"str"</code> ou <code>"bool"</code>, avec les guillemets.</p>
@@ -424,7 +424,7 @@ valeur_b = None</textarea>
 </section>
 <section class="exo" id="exo-2-3" data-id="2.3" data-checks="[[&quot;volume&quot;, &quot;70a9a2926b9d&quot;]]">
   <div class="exo-head"><h3>Exercice 2.3 — Volume d&#x27;une sphère</h3><span class="badge">À faire</span></div>
-  <div class="enonce"><p>Calcule le volume (m³) d'une sphère de rayon 0,5 m : V = 4/3 π r³. Utilise <code>math.pi</code>.</p></div>
+  <div class="enonce"><p>Calcule le volume (m³) d'une sphère de rayon 0.5 m : V = 4/3 π r³. Utilise <code>math.pi</code>.</p></div>
   
   <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 2.3 — Volume d&#x27;une sphère">import math
 rayon = 0.5     # m
@@ -472,7 +472,7 @@ print(fx, fy)</textarea>
 </section>
 <section class="exo" id="exo-2-7" data-id="2.7" data-checks="[[&quot;pression&quot;, &quot;b28c9af42cd8&quot;]]">
   <div class="exo-head"><h3>Exercice 2.7 — Loi des gaz parfaits</h3><span class="badge">À faire</span></div>
-  <div class="enonce"><p>Calcule la pression (Pa) de 2 mol de gaz à 300 K dans un volume de 0,05 m³ : P = nRT / V, avec R = 8,314 J/(mol·K).</p></div>
+  <div class="enonce"><p>Calcule la pression (Pa) de 2 mol de gaz à 300 K dans un volume de 0.05 m³ : P = nRT / V, avec R = 8.314 J/(mol·K).</p></div>
   
   <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 2.7 — Loi des gaz parfaits">R = 8.314       # J/(mol·K)
 n = 2           # mol
@@ -497,7 +497,7 @@ print(message)</textarea>
 </section>
 <section class="exo" id="exo-2-9" data-id="2.9" data-checks="[[&quot;energie&quot;, &quot;8ff4ac2b7fe5&quot;]]">
   <div class="exo-head"><h3>Exercice 2.9 — Trouve les erreurs</h3><span class="badge">À faire</span></div>
-  <div class="enonce"><p>Ce programme doit calculer l'énergie cinétique (J) d'un cycliste de 75 kg roulant à 12,5 m/s. Il contient <strong>deux</strong> erreurs. Exécute-le, lis le message, corrige, recommence.</p>
+  <div class="enonce"><p>Ce programme doit calculer l'énergie cinétique (J) d'un cycliste de 75 kg roulant à 12.5 m/s. Il contient <strong>deux</strong> erreurs. Exécute-le, lis le message, corrige, recommence.</p>
 <p><em>Indice :</em> une des erreurs ne cause pas de message immédiat. Utilise <code>print(type(...))</code> pour enquêter.</p></div>
   
   <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 2.9 — Trouve les erreurs">masse = &quot;75&quot;
@@ -509,7 +509,7 @@ print(energie)</textarea>
 </section>
 <section class="exo" id="exo-2-10" data-id="2.10" data-checks="[[&quot;masse_lb&quot;, &quot;4d2f03f47387&quot;]]">
   <div class="exo-head"><h3>Exercice 2.10 — Convertir une saisie</h3><span class="badge">À faire</span></div>
-  <div class="enonce"><p>La variable <code>texte</code> contient ce qu'un utilisateur aurait tapé avec <code>input()</code>. Convertis-la en nombre, puis calcule la masse en livres (1 kg = 2,20462 lb, à écrire <code>2.20462</code> dans ton code), arrondie à une décimale avec <code>round()</code>.</p></div>
+  <div class="enonce"><p>La variable <code>texte</code> contient ce qu'un utilisateur aurait tapé avec <code>input()</code>. Convertis-la en nombre, puis calcule la masse en livres (1 kg = 2.20462 lb), arrondie à une décimale avec <code>round()</code>.</p></div>
   
   <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 2.10 — Convertir une saisie">texte = &quot;72.5&quot;     # ce que input() aurait retourné
 masse_kg = None
@@ -522,8 +522,8 @@ print(masse_lb)</textarea>
 <section class="exo" id="exo-L2-1" data-id="L2.1" data-checks="[[&quot;pression_kpa&quot;, &quot;235d6eb6b3b7&quot;]]">
   <div class="exo-head"><h3>Labo 2.1 (essentiel) — Gaz parfaits, avec les unités du labo</h3><span class="badge">À faire</span></div>
   <div class="enonce"><p>Au labo, on mesure la quantité de gaz en mol, la température en °C et le volume en litres. Calcule la pression en <strong>kPa</strong>.</p>
-<p>Attention aux unités : la loi des gaz parfaits demande des kelvins et des m³ (1 L = 0,001 m³, à écrire <code>0.001</code> dans ton code), et donne des pascals.</p>
-<p>La vérification teste le cas 1 mol, 0 °C, 22,4 L, qui donne environ la pression atmosphérique.</p>
+<p>Attention aux unités : la loi des gaz parfaits demande des kelvins et des m³ (1 L = 0.001 m³), et donne des pascals.</p>
+<p>La vérification teste le cas 1 mol, 0 °C, 22.4 L, qui donne environ la pression atmosphérique.</p>
 <p><strong>Bonus :</strong> remplace les trois valeurs par des <code>input()</code> convertis en <code>float</code>, et affiche le résultat avec deux décimales grâce à une f-string.</p></div>
   <div class="fiche"><p class="fiche-titre">Fiche de planification</p><label><span>Intrants</span><textarea data-champ="intrants" rows="2" spellcheck="true"></textarea></label><label><span>Extrants</span><textarea data-champ="extrants" rows="2" spellcheck="true"></textarea></label><label><span>Traitements</span><textarea data-champ="traitements" rows="2" spellcheck="true"></textarea></label><label><span>Jeu d'essais (calculé avant de coder)</span><textarea data-champ="jeu_essais" rows="2" spellcheck="true"></textarea></label></div>
   <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Labo 2.1 (essentiel) — Gaz parfaits, avec les unités du labo">R = 8.314             # J/(mol·K)
@@ -556,7 +556,7 @@ print(f&quot;Portée : {portee} m, hauteur maximale : {hauteur_max} m&quot;)</te
 </section>
 <section class="exo" id="exo-L2-3" data-id="L2.3" data-checks="[[&quot;minutes&quot;, &quot;594bca8d3977&quot;], [&quot;secondes&quot;, &quot;68719882aed6&quot;]]">
   <div class="exo-head"><h3>Labo 2.3 (défi) — La lumière du Soleil</h3><span class="badge">À faire</span></div>
-  <div class="enonce"><p>La Terre est à 1,496 × 10¹¹ m du Soleil, et la lumière voyage à 2,998 × 10⁸ m/s. Combien de temps la lumière met-elle pour nous atteindre? Donne le résultat en minutes et en secondes <strong>entières</strong>, par exemple <code>8 min 19 s</code>.</p>
+  <div class="enonce"><p>La Terre est à <code>1.496e11</code> m du Soleil, et la lumière voyage à <code>2.998e8</code> m/s. Combien de temps la lumière met-elle pour nous atteindre? Donne le résultat en minutes et en secondes <strong>entières</strong>, par exemple <code>8 min 19 s</code>.</p>
 <p><em>Indice :</em> arrondis le temps total à la seconde avec <code>round()</code> avant de le découper.</p></div>
   <div class="fiche"><p class="fiche-titre">Fiche de planification</p><label><span>Intrants</span><textarea data-champ="intrants" rows="2" spellcheck="true"></textarea></label><label><span>Extrants</span><textarea data-champ="extrants" rows="2" spellcheck="true"></textarea></label><label><span>Traitements</span><textarea data-champ="traitements" rows="2" spellcheck="true"></textarea></label><label><span>Jeu d'essais (calculé avant de coder)</span><textarea data-champ="jeu_essais" rows="2" spellcheck="true"></textarea></label></div>
   <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Labo 2.3 (défi) — La lumière du Soleil">distance = 1.496e11   # m

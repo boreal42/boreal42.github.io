@@ -157,7 +157,7 @@ print(f&quot;Séisme {categorie}&quot;)</textarea><div class="bar"><button class
 <p>Pourquoi la ligne <code>elif magnitude &gt;= 5</code> n'a-t-elle pas besoin de vérifier <code>magnitude &lt; 6</code>? Parce qu'on n'arrive à cette ligne <strong>que si</strong> les conditions précédentes étaient fausses.</p>
 <div class="admonition piege">
 <p class="admonition-title">Piège : l'ordre des conditions</p>
-<p>Puisque seul le premier bloc vrai s'exécute, l'ordre des <code>elif</code> change le résultat. Mets <code>magnitude &gt;= 5</code> en premier dans l'exemple ci-dessus, puis essaie une magnitude de 7,5 : le séisme devient « modéré ». Aucun message d'erreur ne t'avertit.</p>
+<p>Puisque seul le premier bloc vrai s'exécute, l'ordre des <code>elif</code> change le résultat. Mets <code>magnitude &gt;= 5</code> en premier dans l'exemple ci-dessus, puis essaie une magnitude de 7.5 : le séisme devient « modéré ». Aucun message d'erreur ne t'avertit.</p>
 </div>
 <h2 id="comparer-des-nombres-reels">Comparer des nombres réels</h2>
 <div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">a = 0.1 + 0.2
@@ -277,7 +277,7 @@ print(f&quot;pH {ph} : {resultat}&quot;)</textarea><div class="bar"><button clas
 </ol>
 <h2 id="vocabulaire">Vocabulaire</h2>
 <div class="vocab"><span>booléen</span><span>expression logique</span><span>opérateur de comparaison</span><span>opérateur logique</span><span>condition</span><span>branche</span><span>bloc</span><span>indentation</span><span>structure conditionnelle</span><span>tolérance</span><span>borne</span><span>erreur de logique</span></div>
-<h2 id="exercices">Exercices préparatoires</h2><p>Écris ton code dans chaque exercice : remplace les <code>None</code> par ta réponse, puis clique sur <strong>Vérifier</strong>. La vérification te dit si ta réponse est bonne, sans la montrer. Ton travail est sauvegardé automatiquement dans ce navigateur.</p><div class="admonition piege"><p class="admonition-title">Les nombres dans les énoncés</p><p>Les énoncés écrivent les nombres à la française, avec une virgule : 273,15. Dans ton code, écris <strong>toujours un point</strong> : <code>273.15</code>. Avec une virgule, Python crée deux valeurs séparées, et ta réponse sera refusée.</p></div>
+<h2 id="exercices">Exercices préparatoires</h2><p>Écris ton code dans chaque exercice : remplace les <code>None</code> par ta réponse, puis clique sur <strong>Vérifier</strong>. La vérification te dit si ta réponse est bonne, sans la montrer. Ton travail est sauvegardé automatiquement dans ce navigateur.</p>
 <section class="exo" id="exo-3-1" data-id="3.1" data-checks="[[&quot;e1&quot;, &quot;60a33e6cf515&quot;], [&quot;e2&quot;, &quot;60a33e6cf515&quot;], [&quot;e3&quot;, &quot;3cbc87c7681f&quot;], [&quot;e4&quot;, &quot;3cbc87c7681f&quot;]]">
   <div class="exo-head"><h3>Exercice 3.1 — Vrai ou faux?</h3><span class="badge">À faire</span></div>
   <div class="enonce"><p>Sans exécuter de code, donne la valeur (<code>True</code> ou <code>False</code>, <strong>sans</strong> guillemets) de chaque expression.</p>
@@ -380,7 +380,7 @@ print(nb_racines)</textarea>
 </section>
 <section class="exo" id="exo-3-7" data-id="3.7" data-checks="[[&quot;egal_naif&quot;, &quot;60a33e6cf515&quot;], [&quot;egal_tolerant&quot;, &quot;3cbc87c7681f&quot;]]">
   <div class="exo-head"><h3>Exercice 3.7 — Comparer des réels</h3><span class="badge">À faire</span></div>
-  <div class="enonce"><p>Une simulation calcule la position finale <code>x = 0.1 * 3</code> (m). On attend 0,3 m. Calcule :</p>
+  <div class="enonce"><p>Une simulation calcule la position finale <code>x = 0.1 * 3</code> (m). On attend 0.3 m. Calcule :</p>
 <ul>
 <li><code>egal_naif</code> : la comparaison directe avec <code>==</code>;</li>
 <li><code>egal_tolerant</code> : la comparaison avec une tolérance de 10⁻⁹.</li>
@@ -395,7 +395,7 @@ print(egal_naif, egal_tolerant)</textarea>
 </section>
 <section class="exo" id="exo-3-8" data-id="3.8" data-checks="[[&quot;categorie&quot;, &quot;ec58a8306045&quot;]]">
   <div class="exo-head"><h3>Exercice 3.8 — L&#x27;ordre compte</h3><span class="badge">À faire</span></div>
-  <div class="enonce"><p>Ce programme doit classer un séisme : 7 et plus, « majeur »; 6 et plus, « fort »; 5 et plus, « modéré »; sinon « léger ». Pour une magnitude de 6,5, il affiche pourtant « modéré ».</p>
+  <div class="enonce"><p>Ce programme doit classer un séisme : 7 et plus, « majeur »; 6 et plus, « fort »; 5 et plus, « modéré »; sinon « léger ». Pour une magnitude de 6.5, il affiche pourtant « modéré ».</p>
 <p>Trouve l'erreur de <strong>logique</strong> et corrige-la. Aucun message d'erreur ne t'aidera : c'est ton raisonnement qui trouve l'erreur.</p></div>
   
   <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 3.8 — L&#x27;ordre compte">magnitude = 6.5
@@ -482,7 +482,7 @@ print(type_triangle)</textarea>
 <section class="exo" id="exo-L3-3" data-id="L3.3" data-checks="[[&quot;rectangle&quot;, &quot;3cbc87c7681f&quot;]]">
   <div class="exo-head"><h3>Labo 3.3 (défi) — Est-il rectangle?</h3><span class="badge">À faire</span></div>
   <div class="enonce"><p>Ajoute à ton programme un test qui indique si le triangle est <strong>rectangle</strong> (Pythagore). Les côtés peuvent être des réels issus de mesures : utilise une tolérance relative de 10⁻⁶, et pense que l'hypoténuse n'est pas forcément <code>c</code>.</p>
-<p>La vérification teste les côtés 0,6, 0,8 et 1,0, en désordre.</p></div>
+<p>La vérification teste les côtés 0.6, 0.8 et 1.0, en désordre.</p></div>
   <div class="fiche"><p class="fiche-titre">Fiche de planification</p><label><span>Intrants</span><textarea data-champ="intrants" rows="2" spellcheck="true"></textarea></label><label><span>Extrants</span><textarea data-champ="extrants" rows="2" spellcheck="true"></textarea></label><label><span>Traitements</span><textarea data-champ="traitements" rows="2" spellcheck="true"></textarea></label><label><span>Jeu d'essais (calculé avant de coder)</span><textarea data-champ="jeu_essais" rows="2" spellcheck="true"></textarea></label></div>
   <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Labo 3.3 (défi) — Est-il rectangle?">a = 1.0
 b = 0.6
