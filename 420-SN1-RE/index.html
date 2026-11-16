@@ -189,7 +189,7 @@ footer{margin-top:2rem;font-size:.82rem;color:var(--muted)}
           <div class="step">
             <span class="when">Avant le cours · 3 h</span>
             <h3>Lire et essayer</h3>
-            <p>Ouvre le chapitre de la semaine dans Colab, lis-le et fais les exercices préparatoires.</p>
+            <p>Lis le chapitre de la semaine sur ce site, puis fais les exercices préparatoires dans son cahier Colab.</p>
           </div>
           <div class="step">
             <span class="when">En classe · 1 h</span>
@@ -282,9 +282,9 @@ footer{margin-top:2rem;font-size:.82rem;color:var(--muted)}
         <p class="lead">Les gestes qui reviennent chaque semaine, en quelques étapes.</p>
 
         <div class="recipe" id="recette-colab">
-          <h2>Ouvrir un chapitre dans Colab</h2>
+          <h2>Ouvrir un cahier d'exercices dans Colab</h2>
           <ol>
-            <li>Clique sur <strong>Ouvrir dans Colab</strong> sur la page du chapitre.</li>
+            <li>Clique sur <strong>Cahier d'exercices dans Colab</strong>, sur la page du chapitre.</li>
             <li>Connecte-toi avec ton compte Google.</li>
             <li>Fais <strong>Fichier → Enregistrer une copie dans Drive</strong>. Sans cette étape, ton travail n'est pas sauvegardé.</li>
             <li>Travaille toujours dans ta copie, que tu retrouves dans le dossier <em>Colab Notebooks</em> de ton Drive.</li>
@@ -450,8 +450,8 @@ function renderChapitre(c){
     <h1 id="t-ch">${c.titre}</h1>
     <div class="problem"><strong>Problème d'ouverture.</strong> ${c.probleme}</div>
     <div class="actions">
-      <a class="btn" href="${COLAB + c.notebook}" target="_blank" rel="noopener">${colabIcon}Ouvrir dans Colab</a>
-      <a class="btn ghost" href="#recettes">Comment enregistrer et remettre</a>
+      <a class="btn" href="chapitres/ch${String(c.n).padStart(2,"0")}.html">Lire le chapitre</a>
+      <a class="btn ghost" href="${COLAB + c.notebook}" target="_blank" rel="noopener">${colabIcon}Cahier d'exercices dans Colab</a>
     </div>
     <div class="grid2">
       <div class="card"><h3>Avant le cours</h3><ul class="check">${c.avant.map(x => `<li>${x}</li>`).join("")}</ul></div>
@@ -459,7 +459,7 @@ function renderChapitre(c){
       <div class="card"><h3>Laboratoire</h3><ul>${c.labos.map(x => `<li>${x}</li>`).join("")}</ul><p style="margin-top:.6rem;font-size:.9rem">Chaque exercice : fiche de planification, code, cellule de vérification.</p></div>
       <div class="card"><h3>Vocabulaire</h3><div class="vocab">${c.vocab.map(x => `<span>${x}</span>`).join("")}</div></div>
     </div>
-    <div class="callout"><strong>Remise :</strong> télécharge ton notebook en <code>.ipynb</code> et dépose-le sur LÉA. ${c.ensuite}</div>
+    <div class="callout"><strong>Remise :</strong> télécharge ton cahier en <code>.ipynb</code> et dépose-le sur LÉA (<a href="#recettes">recette</a>). ${c.ensuite}</div>
     ${navLinks}</div>`;
 }
 

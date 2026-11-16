@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="fr-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ch. 3 · Conditions · 420-SN1-RE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/lecture.css">
+</head>
+<body>
+<header class="topbar"><div class="in">
+  <a class="home" href="../#chapitre-3"><span>420-SN1-RE</span>Programmation en sciences</a>
+  <span class="chap">Chapitre 3 · Semaine 3</span>
+</div></header>
+<div class="layout">
+<article>
+  <p class="eyebrow">Chapitre 3 · Semaine 3</p>
+  <h1>Conditions</h1>
+  <div class="prep">
+    <div><h2>À faire avant le cours</h2><ol><li>Lis ce chapitre et exécute les exemples (environ 1 h).</li><li>Fais les exercices préparatoires 3.1 à 3.10 dans le cahier Colab (environ 1 h 30).</li><li>Dépose ton cahier sur LÉA avant le cours.</li></ol></div>
+    <a class="btn" href="https://colab.research.google.com/github/boreal42/boreal42.github.io/blob/main/420-SN1-RE/notebooks/chapitre03.ipynb" target="_blank" rel="noopener">Ouvrir le cahier d'exercices dans Colab</a>
+  </div>
+  <p style="color:var(--muted);font-size:.92rem">Les blocs de code avec un bouton <strong>▶ Exécuter</strong> fonctionnent directement dans cette page. Modifie-les librement : <strong>Réinitialiser</strong> remet le code d'origine. Raccourci : Maj + Entrée.</p>
+<div class="admonition probleme">
+<p class="admonition-title">Problème d'ouverture</p>
+<p>Ton labo de chimie mesure le pH de 30 solutions. Pour chacune, il faut indiquer si elle est acide, neutre ou basique, et signaler les mesures impossibles, causées par une sonde mal calibrée.</p>
+<p>Jusqu'ici, tes programmes exécutaient toutes leurs instructions, de haut en bas. Pour classer une solution, le programme doit <strong>choisir</strong> quoi faire selon la valeur. C'est le rôle des conditions.</p>
+</div>
+<h2 id="objectifs">Objectifs</h2>
+<ol>
+<li>Écrire des expressions logiques avec les opérateurs de comparaison et <code>and</code>, <code>or</code>, <code>not</code>.</li>
+<li>Choisir entre <code>if</code>, <code>if</code>/<code>else</code> et <code>if</code>/<code>elif</code>/<code>else</code>.</li>
+<li>Ordonner correctement une suite de conditions.</li>
+<li>Comparer des nombres réels avec une tolérance.</li>
+<li>Construire un jeu d'essais qui passe par <strong>chaque branche</strong> et teste les <strong>bornes</strong>.</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Rappel</p>
+<p>L'<strong>évaluation 1</strong> a lieu pendant le labo de la semaine 4. Elle porte sur les chapitres 1 à 3.</p>
+</div>
+<h2 id="les-expressions-logiques">Les expressions logiques</h2>
+<p>Une comparaison donne un <strong>booléen</strong> : <code>True</code> ou <code>False</code>.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Opérateur</th>
+<th>Signification</th>
+<th>Exemple</th>
+<th>Résultat</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>==</code></td>
+<td>égal à</td>
+<td><code>7 == 7</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>!=</code></td>
+<td>différent de</td>
+<td><code>7 != 7</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>&lt;</code>, <code>&lt;=</code></td>
+<td>plus petit, plus petit ou égal</td>
+<td><code>3 &lt;= 3</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>&gt;</code>, <code>&gt;=</code></td>
+<td>plus grand, plus grand ou égal</td>
+<td><code>3 &gt; 5</code></td>
+<td><code>False</code></td>
+</tr>
+</tbody>
+</table></div>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">ph = 6.2
+print(ph &lt; 7)
+print(ph == 7)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<div class="admonition piege">
+<p class="admonition-title">Piège : = ou ==?</p>
+<p><code>=</code> <strong>affecte</strong> une valeur à une variable. <code>==</code> <strong>compare</strong> deux valeurs. C'est la confusion la plus fréquente du chapitre.</p>
+</div>
+<h3 id="combiner-des-conditions">Combiner des conditions</h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Opérateur</th>
+<th>Vrai quand</th>
+<th>Exemple</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>and</code></td>
+<td>les deux conditions sont vraies</td>
+<td><code>ph &gt;= 0 and ph &lt;= 14</code></td>
+</tr>
+<tr>
+<td><code>or</code></td>
+<td>au moins une des deux est vraie</td>
+<td><code>ph &lt; 0 or ph &gt; 14</code></td>
+</tr>
+<tr>
+<td><code>not</code></td>
+<td>la condition est fausse</td>
+<td><code>not (ph &lt; 7)</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>Python accepte aussi les comparaisons enchaînées, comme en mathématiques : <code>0 &lt;= ph &lt;= 14</code>.</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">ph = 6.2
+print(0 &lt;= ph &lt;= 14)
+print(ph &lt; 0 or ph &gt; 14)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<h2 id="if-executer-seulement-si">if : exécuter seulement si</h2>
+<pre><code><span class="k">if</span> <span class="n">condition</span><span class="p">:</span>
+    <span class="n">instructions</span> <span class="n">exécutées</span> <span class="n">seulement</span> <span class="n">si</span> <span class="n">la</span> <span class="n">condition</span> <span class="n">est</span> <span class="n">vraie</span>
+<span class="n">suite</span> <span class="n">du</span> <span class="n">programme</span><span class="p">,</span> <span class="n">exécutée</span> <span class="n">dans</span> <span class="n">tous</span> <span class="n">les</span> <span class="n">cas</span>
+</code></pre>
+<p>Trois détails sont obligatoires :</p>
+<ol>
+<li>le <strong>deux-points</strong> <code>:</code> à la fin de la ligne <code>if</code>;</li>
+<li>l'<strong>indentation</strong> de 4 espaces des instructions qui dépendent de la condition : c'est le <strong>bloc</strong>;</li>
+<li>le retour à la marge de gauche pour la suite du programme.</li>
+</ol>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">temperature = 105   # °C
+if temperature &gt; 100:
+    print(&quot;Attention : l&#x27;eau bout à pression normale.&quot;)
+print(&quot;Mesure enregistrée.&quot;)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<div class="admonition essaie">
+<p class="admonition-title">Essaie-le</p>
+<p>Change la température à 25 et exécute de nouveau. Quelle ligne disparaît? Et pourquoi l'autre reste-t-elle?</p>
+</div>
+<h2 id="if-else-deux-chemins">if / else : deux chemins</h2>
+<p>Avec <code>else</code>, le programme a toujours deux <strong>branches</strong> : une seule des deux s'exécute.</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">n = 17
+if n % 2 == 0:
+    print(n, &quot;est pair&quot;)
+else:
+    print(n, &quot;est impair&quot;)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<h2 id="if-elif-else-plusieurs-chemins">if / elif / else : plusieurs chemins</h2>
+<p>Python teste les conditions <strong>dans l'ordre</strong>, et exécute <strong>seulement le premier bloc</strong> dont la condition est vraie. Les suivants sont ignorés.</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">magnitude = 5.4   # échelle de Richter
+if magnitude &gt;= 7:
+    categorie = &quot;majeur&quot;
+elif magnitude &gt;= 6:
+    categorie = &quot;fort&quot;
+elif magnitude &gt;= 5:
+    categorie = &quot;modéré&quot;
+else:
+    categorie = &quot;léger&quot;
+print(f&quot;Séisme {categorie}&quot;)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<p>Pourquoi la ligne <code>elif magnitude &gt;= 5</code> n'a-t-elle pas besoin de vérifier <code>magnitude &lt; 6</code>? Parce qu'on n'arrive à cette ligne <strong>que si</strong> les conditions précédentes étaient fausses.</p>
+<div class="admonition piege">
+<p class="admonition-title">Piège : l'ordre des conditions</p>
+<p>Puisque seul le premier bloc vrai s'exécute, l'ordre des <code>elif</code> change le résultat. Mets <code>magnitude &gt;= 5</code> en premier dans l'exemple ci-dessus, puis essaie une magnitude de 7,5 : le séisme devient « modéré ». Aucun message d'erreur ne t'avertit.</p>
+</div>
+<h2 id="comparer-des-nombres-reels">Comparer des nombres réels</h2>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">a = 0.1 + 0.2
+print(a)
+print(a == 0.3)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<p>Les réels sont stockés avec une précision limitée : <code>0.1 + 0.2</code> vaut <code>0.30000000000000004</code>. Pour comparer deux réels, on vérifie plutôt que leur écart est <strong>plus petit qu'une tolérance</strong> :</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">TOLERANCE = 1e-9
+a = 0.1 + 0.2
+print(abs(a - 0.3) &lt; TOLERANCE)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<h2 id="exemple-complet-classer-une-solution-selon-son-ph">Exemple complet : classer une solution selon son pH</h2>
+<h3 id="planifier">Planifier</h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Réponse</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Intrant</td>
+<td>le pH mesuré (réel)</td>
+</tr>
+<tr>
+<td>Extrant</td>
+<td>un message : « acide », « neutre », « basique » ou « mesure invalide »</td>
+</tr>
+<tr>
+<td>Traitements</td>
+<td>pH hors de [0, 14] : invalide; pH &lt; 7 : acide; pH = 7 : neutre; sinon : basique</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="le-jeu-dessais-une-ligne-par-branche-plus-les-bornes">Le jeu d'essais : une ligne par branche, plus les bornes</h3>
+<p>Un bon jeu d'essais passe par <strong>chaque branche</strong> du programme au moins une fois, et il teste les <strong>bornes</strong>, c'est-à-dire les valeurs où le résultat change.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>pH</th>
+<th>Attendu</th>
+<th>Ce que ce cas teste</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3</td>
+<td>acide</td>
+<td>branche « acide »</td>
+</tr>
+<tr>
+<td>7</td>
+<td>neutre</td>
+<td>branche « neutre », et la borne 7</td>
+</tr>
+<tr>
+<td>11</td>
+<td>basique</td>
+<td>branche « basique »</td>
+</tr>
+<tr>
+<td>−1</td>
+<td>mesure invalide</td>
+<td>branche « invalide », côté bas</td>
+</tr>
+<tr>
+<td>15</td>
+<td>mesure invalide</td>
+<td>branche « invalide », côté haut</td>
+</tr>
+<tr>
+<td>0</td>
+<td>acide</td>
+<td>borne inférieure : 0 est valide</td>
+</tr>
+<tr>
+<td>14</td>
+<td>basique</td>
+<td>borne supérieure : 14 est valide</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="coder">Coder</h3>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">ph = 7.0
+
+if ph &lt; 0 or ph &gt; 14:
+    resultat = &quot;mesure invalide&quot;
+elif ph &lt; 7:
+    resultat = &quot;acide&quot;
+elif ph == 7:
+    resultat = &quot;neutre&quot;
+else:
+    resultat = &quot;basique&quot;
+
+print(f&quot;pH {ph} : {resultat}&quot;)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<h3 id="verifier">Vérifier</h3>
+<p>Exécute le programme pour <strong>chacune</strong> des 7 lignes du jeu d'essais. Une seule ligne fausse suffit pour que le programme soit faux.</p>
+<div class="admonition note">
+<p class="admonition-title">Question pour le cours</p>
+<p>Le test <code>ph == 7</code> est-il risqué, selon la section précédente? Si le pH vient d'un calcul, oui. Ici, il vient d'une mesure saisie : on l'accepte. On discutera en classe d'une meilleure version.</p>
+</div>
+<h2 id="pieges-frequents">Pièges fréquents</h2>
+<ul>
+<li>Confondre <code>=</code> (affectation) et <code>==</code> (comparaison).</li>
+<li>Oublier le <code>:</code> ou l'indentation après <code>if</code>, <code>elif</code> ou <code>else</code>.</li>
+<li>Mettre les conditions d'un <code>elif</code> dans le mauvais ordre : le premier bloc vrai l'emporte.</li>
+<li>Comparer des réels avec <code>==</code>.</li>
+<li>Écrire <code>if ph &lt; 0 or &gt; 14</code> : chaque côté du <code>or</code> doit être une comparaison complète, <code>ph &lt; 0 or ph &gt; 14</code>.</li>
+<li>Tester une seule branche et conclure que « ça marche ».</li>
+</ul>
+<h2 id="autoquiz">Autoquiz</h2>
+<ol>
+<li>Que vaut <code>not (3 &gt; 2 or 1 &gt; 2)</code>?</li>
+<li>Dans un <code>if</code> / <code>elif</code> / <code>else</code>, combien de blocs peuvent s'exécuter au maximum?</li>
+<li>Pourquoi <code>0.1 + 0.2 == 0.3</code> est-il faux?</li>
+<li>Combien de cas faut-il au minimum dans le jeu d'essais d'une structure à 4 branches?</li>
+<li>Qu'est-ce qu'une borne, et pourquoi faut-il la tester?</li>
+</ol>
+<h2 id="vocabulaire">Vocabulaire</h2>
+<div class="vocab"><span>booléen</span><span>expression logique</span><span>opérateur de comparaison</span><span>opérateur logique</span><span>condition</span><span>branche</span><span>bloc</span><span>indentation</span><span>structure conditionnelle</span><span>tolérance</span><span>borne</span><span>erreur de logique</span></div>
+  <section class="next">
+    <h2>Maintenant, pratique</h2>
+    <p>Ouvre le cahier d'exercices dans Colab, fais <strong>Fichier → Enregistrer une copie dans Drive</strong>, puis fais les exercices. Chacun a sa cellule de vérification.</p>
+    <a class="btn" href="https://colab.research.google.com/github/boreal42/boreal42.github.io/blob/main/420-SN1-RE/notebooks/chapitre03.ipynb" target="_blank" rel="noopener">Ouvrir le cahier d'exercices dans Colab</a>
+  </section>
+  <nav class="pager" aria-label="Chapitres"><a class="btn ghost" href="ch02.html">← Chapitre 2</a><a class="btn ghost" href="../#calendrier">Calendrier →</a></nav>
+</article>
+<aside class="toc" aria-label="Dans ce chapitre">
+  <p>Dans ce chapitre</p>
+  <ol><li><a href="#objectifs">Objectifs</a></li><li><a href="#les-expressions-logiques">Les expressions logiques</a></li><li><a href="#if-executer-seulement-si">if : exécuter seulement si</a></li><li><a href="#if-else-deux-chemins">if / else : deux chemins</a></li><li><a href="#if-elif-else-plusieurs-chemins">if / elif / else : plusieurs chemins</a></li><li><a href="#comparer-des-nombres-reels">Comparer des nombres réels</a></li><li><a href="#exemple-complet-classer-une-solution-selon-son-ph">Exemple complet : classer une solution selon son pH</a></li><li><a href="#pieges-frequents">Pièges fréquents</a></li><li><a href="#autoquiz">Autoquiz</a></li><li><a href="#vocabulaire">Vocabulaire</a></li></ol>
+  <div class="cta"><a class="btn" href="https://colab.research.google.com/github/boreal42/boreal42.github.io/blob/main/420-SN1-RE/notebooks/chapitre03.ipynb" target="_blank" rel="noopener">Cahier Colab</a><a class="btn ghost" href="../#recettes">Recettes</a></div>
+</aside>
+</div>
+<script src="../assets/runner.js"></script>
+</body>
+</html>

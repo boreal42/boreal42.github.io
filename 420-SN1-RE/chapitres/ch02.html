@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="fr-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ch. 2 · Variables, types et expressions · 420-SN1-RE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/lecture.css">
+</head>
+<body>
+<header class="topbar"><div class="in">
+  <a class="home" href="../#chapitre-2"><span>420-SN1-RE</span>Programmation en sciences</a>
+  <span class="chap">Chapitre 2 · Semaine 2</span>
+</div></header>
+<div class="layout">
+<article>
+  <p class="eyebrow">Chapitre 2 · Semaine 2</p>
+  <h1>Variables, types et expressions</h1>
+  <div class="prep">
+    <div><h2>À faire avant le cours</h2><ol><li>Lis ce chapitre et exécute les exemples (environ 1 h).</li><li>Fais les exercices préparatoires 2.1 à 2.10 dans le cahier Colab (environ 1 h 30).</li><li>Dépose ton cahier sur LÉA avant le cours.</li></ol></div>
+    <a class="btn" href="https://colab.research.google.com/github/boreal42/boreal42.github.io/blob/main/420-SN1-RE/notebooks/chapitre02.ipynb" target="_blank" rel="noopener">Ouvrir le cahier d'exercices dans Colab</a>
+  </div>
+  <p style="color:var(--muted);font-size:.92rem">Les blocs de code avec un bouton <strong>▶ Exécuter</strong> fonctionnent directement dans cette page. Modifie-les librement : <strong>Réinitialiser</strong> remet le code d'origine. Raccourci : Maj + Entrée.</p>
+<div class="admonition probleme">
+<p class="admonition-title">Problème d'ouverture</p>
+<p>Une balle de 0,5 kg roule à 3 m/s au sommet d'une rampe de 2 m de haut. Quelle est son énergie mécanique?</p>
+<p>Tu sais faire ce calcul à la main. L'objectif de ce chapitre : écrire un programme qui le fait pour <strong>n'importe quelle</strong> masse, vitesse et hauteur, et qui présente le résultat proprement, avec ses unités.</p>
+</div>
+<h2 id="objectifs">Objectifs</h2>
+<ol>
+<li>Créer et modifier des variables, en choisissant des noms clairs.</li>
+<li>Distinguer les types <code>int</code>, <code>float</code>, <code>str</code> et <code>bool</code>, et convertir de l'un à l'autre.</li>
+<li>Écrire des expressions arithmétiques exactes, en respectant les priorités.</li>
+<li>Utiliser le module <code>math</code>.</li>
+<li>Lire des données au clavier et afficher des résultats avec leurs unités.</li>
+<li>Reconnaître les erreurs <code>TypeError</code>, <code>ValueError</code> et <code>NameError</code>.</li>
+</ol>
+<h2 id="les-variables">Les variables</h2>
+<p>Une variable est un <strong>nom</strong> associé à une <strong>valeur</strong>. Le signe <code>=</code> est une <strong>affectation</strong> : la valeur à droite est calculée, puis rangée dans le nom à gauche.</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">masse = 0.5        # kg
+vitesse = 3.0      # m/s
+print(masse, vitesse)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<p>Comme <code>=</code> veut dire « reçoit », l'instruction suivante est valide, même si elle est fausse en mathématiques : Python calcule <code>compteur + 1</code>, puis range le résultat dans <code>compteur</code>.</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">compteur = 10
+compteur = compteur + 1
+print(compteur)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<h3 id="bien-nommer-ses-variables">Bien nommer ses variables</h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Règle</th>
+<th>Valide</th>
+<th>Invalide</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lettres, chiffres et <code>_</code> seulement</td>
+<td><code>vitesse_initiale</code></td>
+<td><code>vitesse-initiale</code></td>
+</tr>
+<tr>
+<td>Ne commence pas par un chiffre</td>
+<td><code>t2</code></td>
+<td><code>2t</code></td>
+</tr>
+<tr>
+<td>Les majuscules comptent</td>
+<td><code>masse</code> et <code>Masse</code> sont deux variables différentes</td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<p>Dans ce cours, on écrit les noms en minuscules, avec des <code>_</code> entre les mots, et on indique l'<strong>unité en commentaire</strong>. En sciences, une valeur sans unité ne veut rien dire.</p>
+<p>Une valeur qui ne change jamais, comme g = 9,81 m/s², est une <strong>constante</strong>. Par convention, on écrit son nom en majuscules : <code>G = 9.81</code>.</p>
+<h2 id="les-types-de-donnees">Les types de données</h2>
+<p>Chaque valeur a un <strong>type</strong>. La fonction <code>type()</code> le révèle.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Ce qu'il représente</th>
+<th>Exemples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>int</code></td>
+<td>nombre entier</td>
+<td><code>3</code>, <code>-12</code>, <code>0</code></td>
+</tr>
+<tr>
+<td><code>float</code></td>
+<td>nombre réel</td>
+<td><code>9.81</code>, <code>-0.5</code>, <code>6.022e23</code></td>
+</tr>
+<tr>
+<td><code>str</code></td>
+<td>texte (chaîne de caractères)</td>
+<td><code>"H2O"</code>, <code>'pH'</code></td>
+</tr>
+<tr>
+<td><code>bool</code></td>
+<td>vrai ou faux</td>
+<td><code>True</code>, <code>False</code></td>
+</tr>
+</tbody>
+</table></div>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">print(type(42))
+print(type(9.81))
+print(type(&quot;9.81&quot;))
+print(type(3 &gt; 2))</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<p>Deux observations :</p>
+<ul>
+<li><code>"9.81"</code> est du <strong>texte</strong>, pas un nombre. Les guillemets font toute la différence.</li>
+<li><code>6.022e23</code> est la <strong>notation scientifique</strong> de Python : 6,022 × 10²³.</li>
+</ul>
+<h3 id="convertir-dun-type-a-lautre">Convertir d'un type à l'autre</h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Fonction</th>
+<th>Convertit en</th>
+<th>Exemple</th>
+<th>Résultat</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>int()</code></td>
+<td>entier (tronque, n'arrondit pas)</td>
+<td><code>int(7.9)</code></td>
+<td><code>7</code></td>
+</tr>
+<tr>
+<td><code>float()</code></td>
+<td>réel</td>
+<td><code>float("9.81")</code></td>
+<td><code>9.81</code></td>
+</tr>
+<tr>
+<td><code>str()</code></td>
+<td>texte</td>
+<td><code>str(25)</code></td>
+<td><code>"25"</code></td>
+</tr>
+</tbody>
+</table></div>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">print(int(7.9))
+print(float(&quot;9.81&quot;) * 2)
+print(&quot;Température : &quot; + str(25) + &quot; °C&quot;)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<h2 id="les-expressions">Les expressions</h2>
+<p>Une <strong>expression</strong> combine des valeurs, des variables et des <strong>opérateurs</strong>. Python la calcule en suivant les priorités mathématiques.</p>
+<p>Deux opérateurs servent souvent à découper des quantités :</p>
+<ul>
+<li><code>//</code> donne le <strong>quotient entier</strong> : <code>125 // 60</code> vaut <code>2</code>;</li>
+<li><code>%</code> donne le <strong>reste</strong> : <code>125 % 60</code> vaut <code>5</code>.</li>
+</ul>
+<p>Ensemble, ils convertissent 125 secondes en 2 min 5 s :</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">duree = 125          # s
+minutes = duree // 60
+secondes = duree % 60
+print(minutes, &quot;min&quot;, secondes, &quot;s&quot;)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<p>Deux fonctions intégrées très utiles : <code>round(x, n)</code> arrondit <code>x</code> à <code>n</code> décimales, et <code>abs(x)</code> donne la valeur absolue.</p>
+<div class="admonition piege">
+<p class="admonition-title">Piège : la division donne toujours un réel</p>
+<p><code>10 / 2</code> vaut <code>5.0</code>, pas <code>5</code>. Ce n'est pas une erreur, c'est le comportement normal de Python : l'opérateur <code>/</code> produit toujours un <code>float</code>.</p>
+</div>
+<h2 id="le-module-math">Le module math</h2>
+<p>Python n'a pas de racine carrée ni de sinus « de base ». Ces fonctions sont rangées dans le <strong>module</strong> <code>math</code>, qu'il faut <strong>importer</strong> une fois.</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">import math
+
+print(math.sqrt(16))        # racine carrée
+print(math.pi)              # π
+print(math.exp(1))          # e¹
+print(math.log(math.e))     # logarithme NATUREL (ln)
+print(math.log10(1000))     # logarithme en base 10</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<div class="admonition piege">
+<p class="admonition-title">Piège majeur : les angles sont en radians</p>
+<p><code>math.sin(30)</code> ne donne <strong>pas</strong> 0,5 : Python interprète 30 comme 30 radians. Il faut d'abord convertir les degrés avec <code>math.radians()</code>. Et attention : <code>math.log()</code> est le logarithme <strong>naturel</strong> (ln), pas le log en base 10.</p>
+</div>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">import math
+print(math.sin(30))                  # faux pour 30°
+print(math.sin(math.radians(30)))    # correct (ou presque)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<p>Tu obtiens <code>0.49999999999999994</code> au lieu de <code>0.5</code>. C'est la précision limitée des nombres réels. On arrondit à l'<strong>affichage</strong>, jamais en cours de calcul.</p>
+<h2 id="lire-et-afficher">Lire et afficher</h2>
+<h3 id="input-lit-toujours-du-texte">input() lit toujours du texte</h3>
+<p>La fonction <code>input()</code> affiche une question et attend que l'utilisateur tape une réponse. Elle retourne <strong>toujours une chaîne</strong>, même si l'utilisateur tape un nombre. Pour calculer, il faut convertir :</p>
+<pre><code><span class="n">masse</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">"Masse (kg) : "</span><span class="p">))</span>
+</code></pre>
+<p>Si l'utilisateur tape <code>2,5</code>, <code>float()</code> échoue avec une <code>ValueError</code> : en Python, le séparateur décimal est le point.</p>
+<h3 id="les-f-strings">Les f-strings</h3>
+<p>Une <strong>f-string</strong> commence par la lettre <code>f</code> et insère des valeurs entre accolades. Après un <code>:</code>, on précise le format d'affichage.</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">g = 9.81
+masse = 2.0
+poids = masse * g
+
+print(f&quot;Poids : {poids} N&quot;)
+print(f&quot;Poids : {poids:.2f} N&quot;)        # 2 décimales
+print(f&quot;Poids : {poids:.3e} N&quot;)        # notation scientifique
+print(f&quot;Masse de la Terre : {5.972e24:.2e} kg&quot;)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Format</th>
+<th>Effet</th>
+<th><code>{19.62:…}</code> donne</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>.2f</code></td>
+<td>2 décimales</td>
+<td><code>19.62</code></td>
+</tr>
+<tr>
+<td><code>.1f</code></td>
+<td>1 décimale</td>
+<td><code>19.6</code></td>
+</tr>
+<tr>
+<td><code>.0f</code></td>
+<td>aucune décimale</td>
+<td><code>20</code></td>
+</tr>
+<tr>
+<td><code>.2e</code></td>
+<td>notation scientifique, 2 décimales</td>
+<td><code>1.96e+01</code></td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="exemple-complet-lenergie-mecanique">Exemple complet : l'énergie mécanique</h2>
+<h3 id="planifier">Planifier</h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Réponse</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Intrants</td>
+<td>masse <em>m</em> (kg), vitesse <em>v</em> (m/s), hauteur <em>h</em> (m)</td>
+</tr>
+<tr>
+<td>Extrants</td>
+<td>énergies cinétique, potentielle et mécanique (J)</td>
+</tr>
+<tr>
+<td>Traitements</td>
+<td>Ec = ½ m v², Ep = m g h, Em = Ec + Ep, avec g = 9,81 m/s²</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Jeu d'essais</strong>, calculé à la main avant de coder :</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th><em>m</em> (kg)</th>
+<th><em>v</em> (m/s)</th>
+<th><em>h</em> (m)</th>
+<th>Em attendue (J)</th>
+<th>Pourquoi ce cas</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0,5</td>
+<td>3</td>
+<td>2</td>
+<td>12,06</td>
+<td>le problème d'ouverture</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>objet immobile au sol</td>
+</tr>
+<tr>
+<td>2</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>énergie cinétique seule</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>9,81</td>
+<td>énergie potentielle seule</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="coder">Coder</h3>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">G = 9.81   # m/s², accélération gravitationnelle
+
+masse = 0.5      # kg
+vitesse = 3.0    # m/s
+hauteur = 2.0    # m
+
+energie_cinetique = 0.5 * masse * vitesse ** 2
+energie_potentielle = masse * G * hauteur
+energie_mecanique = energie_cinetique + energie_potentielle
+
+print(f&quot;Ec = {energie_cinetique:.2f} J&quot;)
+print(f&quot;Ep = {energie_potentielle:.2f} J&quot;)
+print(f&quot;Em = {energie_mecanique:.2f} J&quot;)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<h3 id="verifier">Vérifier</h3>
+<p>Remplace les intrants par chaque ligne du jeu d'essais et compare.</p>
+<p>Remarque l'écriture <code>0.5 * masse * vitesse ** 2</code> : grâce aux priorités, seule la vitesse est au carré. Écrire <code>(0.5 * masse * vitesse) ** 2</code> donnerait un résultat faux, <strong>sans aucun message d'erreur</strong>.</p>
+<div class="admonition piege">
+<p class="admonition-title">Python n'avertit jamais d'une erreur de logique</p>
+<p>Un programme peut s'exécuter sans erreur et donner un résultat faux. Seul ton jeu d'essais, préparé à l'avance, peut le détecter. C'est pour cette raison qu'on le construit avant de coder.</p>
+</div>
+<h2 id="trois-erreurs-a-reconnaitre">Trois erreurs à reconnaître</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Erreur</th>
+<th>Exemple</th>
+<th>Cause</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>TypeError</code></td>
+<td><code>"Masse : " + 5</code></td>
+<td>opération impossible entre deux types (texte + nombre)</td>
+</tr>
+<tr>
+<td><code>ValueError</code></td>
+<td><code>float("2,5")</code></td>
+<td>conversion impossible : la valeur n'a pas le bon format</td>
+</tr>
+<tr>
+<td><code>NameError</code></td>
+<td><code>print(Masse)</code></td>
+<td>la variable n'existe pas (ici, à cause de la majuscule)</td>
+</tr>
+</tbody>
+</table></div>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">masse = 2
+print(&quot;Masse : &quot; + masse + &quot; kg&quot;)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<div class="admonition essaie">
+<p class="admonition-title">Essaie-le</p>
+<p>Corrige l'exemple ci-dessus de deux façons : avec <code>str()</code>, puis avec une f-string. Laquelle est la plus lisible?</p>
+</div>
+<h2 id="pieges-frequents">Pièges fréquents</h2>
+<ul>
+<li>Écrire <code>9,81</code> au lieu de <code>9.81</code> : Python crée deux valeurs séparées, sans message d'erreur immédiat.</li>
+<li>Oublier que <code>input()</code> retourne du texte.</li>
+<li>Donner des degrés à <code>math.sin()</code> ou <code>math.cos()</code>.</li>
+<li>Confondre <code>math.log()</code> (ln) et <code>math.log10()</code>.</li>
+<li>Arrondir en cours de calcul plutôt qu'à l'affichage.</li>
+</ul>
+<h2 id="autoquiz">Autoquiz</h2>
+<ol>
+<li>Que vaut <code>int(9.99)</code>?</li>
+<li>Pourquoi <code>"3" + "4"</code> donne-t-il <code>"34"</code>?</li>
+<li>Comment calcule-t-on le cosinus de 60° en Python?</li>
+<li>Quelle erreur obtient-on avec <code>float("1,5")</code>?</li>
+<li>Écris une f-string qui affiche une vitesse de <code>12.3456</code> m/s avec deux décimales.</li>
+</ol>
+<h2 id="vocabulaire">Vocabulaire</h2>
+<div class="vocab"><span>affectation</span><span>variable</span><span>constante</span><span>type</span><span>int</span><span>float</span><span>str</span><span>bool</span><span>conversion</span><span>expression</span><span>opérateur</span><span>module</span><span>import</span><span>f-string</span><span>notation scientifique</span></div>
+  <section class="next">
+    <h2>Maintenant, pratique</h2>
+    <p>Ouvre le cahier d'exercices dans Colab, fais <strong>Fichier → Enregistrer une copie dans Drive</strong>, puis fais les exercices. Chacun a sa cellule de vérification.</p>
+    <a class="btn" href="https://colab.research.google.com/github/boreal42/boreal42.github.io/blob/main/420-SN1-RE/notebooks/chapitre02.ipynb" target="_blank" rel="noopener">Ouvrir le cahier d'exercices dans Colab</a>
+  </section>
+  <nav class="pager" aria-label="Chapitres"><a class="btn ghost" href="ch01.html">← Chapitre 1</a><a class="btn ghost" href="ch03.html">Chapitre 3 →</a></nav>
+</article>
+<aside class="toc" aria-label="Dans ce chapitre">
+  <p>Dans ce chapitre</p>
+  <ol><li><a href="#objectifs">Objectifs</a></li><li><a href="#les-variables">Les variables</a></li><li><a href="#les-types-de-donnees">Les types de données</a></li><li><a href="#les-expressions">Les expressions</a></li><li><a href="#le-module-math">Le module math</a></li><li><a href="#lire-et-afficher">Lire et afficher</a></li><li><a href="#exemple-complet-lenergie-mecanique">Exemple complet : l'énergie mécanique</a></li><li><a href="#trois-erreurs-a-reconnaitre">Trois erreurs à reconnaître</a></li><li><a href="#pieges-frequents">Pièges fréquents</a></li><li><a href="#autoquiz">Autoquiz</a></li><li><a href="#vocabulaire">Vocabulaire</a></li></ol>
+  <div class="cta"><a class="btn" href="https://colab.research.google.com/github/boreal42/boreal42.github.io/blob/main/420-SN1-RE/notebooks/chapitre02.ipynb" target="_blank" rel="noopener">Cahier Colab</a><a class="btn ghost" href="../#recettes">Recettes</a></div>
+</aside>
+</div>
+<script src="../assets/runner.js"></script>
+</body>
+</html>
