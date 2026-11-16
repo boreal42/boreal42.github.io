@@ -37,6 +37,19 @@ def _indice(v, h):
                 return f"Bonne idée, mais True et False s'écrivent sans guillemets : {cand}"
     return ""
 
+def _valeurs(ns, noms):
+    # Valeurs de variables ou d'expressions (appels de fonctions), pour la correction.
+    sortie = {}
+    for n in noms:
+        try:
+            v = ns.get(n, None) if n.isidentifier() else eval(n, ns)
+        except Exception as e:
+            v = f"Erreur : {type(e).__name__}: {e}"
+        if not (v is None or isinstance(v, (int, float, str, bool))):
+            v = repr(v)
+        sortie[n] = v
+    return json.dumps(sortie)
+
 def _verifier(ns, checks):
     res = []
     for nom, h in checks:
@@ -88,10 +101,7 @@ onmessage = async e => {
   let verifs = null, vals = null;
   if (checks && checks.length) verifs = JSON.parse(py.globals.get("_verifier")(ns, py.toPy(checks)));
   if (valeurs && valeurs.length) {
-    ns.set("__noms__", py.toPy(valeurs));
-    vals = JSON.parse(await py.runPythonAsync(
-      '__import__("json").dumps({n: (lambda v: v if v is None or isinstance(v, (int, float, str, bool)) else repr(v))(globals().get(n)) for n in __noms__})',
-      { globals: ns }));
+    vals = JSON.parse(py.globals.get("_valeurs")(ns, py.toPy(valeurs)));
   }
   postMessage({ type: "resultat", id, sortie, erreur: null, verifs, valeurs: vals });
 };

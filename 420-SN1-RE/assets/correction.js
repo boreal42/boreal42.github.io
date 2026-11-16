@@ -65,7 +65,16 @@
       for (const p of cle.problemes) {
         const code = (d.exercices && d.exercices[p.id] && d.exercices[p.id].code) || "";
         const essais = [];
-        for (const t of p.tests) {
+        if (p.appels) {
+          // Problème de fonctions : on exécute le code une fois, puis on appelle les fonctions avec les tests cachés.
+          const r = await window.Cours.executerPy(code, null, null, p.appels.map(a => a.expr));
+          for (const a of p.appels) {
+            const obtenu = r.valeurs ? r.valeurs[a.expr] : undefined;
+            essais.push({ intrants: { appel: a.expr }, attendu: { valeur: a.attendu }, obtenu: { valeur: obtenu }, erreur: r.erreur,
+                          ok: !r.erreur && egal(obtenu, a.attendu), manquants: [] });
+          }
+        }
+        for (const t of (p.tests || [])) {
           const s = substituer(code, t.intrants);
           const r = await window.Cours.executerPy(s.code, null, null, Object.keys(t.attendu));
           const ok = !r.erreur && Object.entries(t.attendu).every(([k, v]) => egal(r.valeurs && r.valeurs[k], v));
@@ -118,7 +127,7 @@
         .map(([k, v]) => `<p><strong>${esc(k.replace("B — ", ""))} :</strong><br>${esc(v || "(vide)").replace(/\n/g, "<br>")}</p>`).join("");
       const B = cle.grille_b.map(([cleB, lib], k) => `<label class="critere"><input type="checkbox" data-i="${i}" data-b="${k}"${e.b[k] ? " checked" : ""}> ${esc(lib)}</label>`).join("");
       const C = e.c.map(x => `<h4>${esc(x.titre)} : ${x.reussis} test(s) réussi(s) sur ${x.essais.length}, ${x.points} point(s)</h4><ul>${x.essais.map(t =>
-        `<li>${t.ok ? "✅" : "❌"} ${esc(Object.entries(t.intrants).map(([k, v]) => k + " = " + v).join(", "))} → attendu ${esc(JSON.stringify(t.attendu))}, obtenu ${t.erreur ? "<em>erreur : " + esc(t.erreur.split("\n").slice(-1)[0]) + "</em>" : esc(JSON.stringify(t.obtenu))}${t.manquants.length ? " <em>(ligne d'intrant introuvable)</em>" : ""}</li>`).join("")}</ul>
+        `<li>${t.ok ? "✅" : "❌"} ${esc(t.intrants.appel ? t.intrants.appel : Object.entries(t.intrants).map(([k, v]) => k + " = " + v).join(", "))} → attendu ${esc(JSON.stringify(t.attendu))}, obtenu ${t.erreur ? "<em>erreur : " + esc(t.erreur.split("\n").slice(-1)[0]) + "</em>" : esc(JSON.stringify(t.obtenu))}${t.manquants.length ? " <em>(ligne d'intrant introuvable)</em>" : ""}</li>`).join("")}</ul>
         <details><summary>Code de l'étudiant</summary><pre>${esc(x.code || "(vide)")}</pre></details>`).join("");
       return `<details><summary>Détail</summary><div class="detail-grille">
         <section><h4>Partie A</h4><ul class="sans-puces">${A}</ul></section>

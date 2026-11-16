@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="fr-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ch. 7 · Modules et tests · 420-SN1-RE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/lecture.css?v=2626b37d">
+</head>
+<body data-chapitre="7">
+<header class="topbar"><div class="in">
+  <a class="home" href="../#chapitre-7"><span>420-SN1-RE</span>Programmation en sciences</a>
+  <span class="chap">Chapitre 7 · Semaine 7</span>
+</div></header>
+<div class="layout">
+<article>
+  <p class="eyebrow">Chapitre 7 · Semaine 7</p>
+  <h1>Modules et tests</h1>
+  <div class="prep">
+    <div><h2>À faire avant le cours</h2><ol><li>Lis ce chapitre et exécute les exemples (environ 1 h).</li><li>Fais les 5 exercices préparatoires 7.1 à 7.5, au bas de la page (environ 45 min).</li><li>Révise les chapitres 1 à 6 : l'évaluation 2 a lieu pendant le cours.</li><li>Télécharge ton rapport et remets-le sur LÉA avant le cours.</li></ol></div>
+    <a class="btn" href="#exercices">Aller aux exercices</a>
+  </div>
+  <p class="aide">Tout le code de cette page s'exécute dans ton navigateur : clique sur <strong>▶ Exécuter</strong>. Tu peux modifier les exemples librement; <strong>Réinitialiser</strong> remet le code d'origine. Raccourci : Maj + Entrée.</p>
+<div class="admonition probleme">
+<p class="admonition-title">Problème d'ouverture</p>
+<p>Depuis le chapitre 6, tu écris des fonctions utiles : conversions, énergies, classifications. Deux questions se posent. Comment les réutiliser dans un autre programme sans les recopier? Et comment être <strong>sûr</strong> qu'elles sont justes, même après les avoir modifiées?</p>
+<p>La réponse tient en deux outils : les <strong>modules</strong>, qui rangent des fonctions pour les réutiliser, et les <strong>tests automatisés</strong>, qui vérifient un jeu d'essais en une seule exécution.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Semaine d'évaluation</p>
+<p>L'<strong>évaluation 2</strong> (chapitres 1 à 6) a lieu pendant le cours de cette semaine. Ce chapitre n'a donc que <strong>5 exercices préparatoires</strong>.</p>
+</div>
+<h2 id="objectifs">Objectifs</h2>
+<ol>
+<li>Importer un module de trois façons : <code>import</code>, <code>import ... as</code>, <code>from ... import</code>.</li>
+<li>Utiliser les modules <code>math</code>, <code>random</code> et <code>statistics</code>.</li>
+<li>Comprendre ce qu'est un module maison : un fichier <code>.py</code> qui regroupe des fonctions.</li>
+<li>Écrire des tests automatisés avec <code>assert</code>.</li>
+<li>Tester des résultats réels avec une tolérance.</li>
+</ol>
+<h2 id="importer-un-module">Importer un module</h2>
+<p>Un <strong>module</strong> est un fichier qui regroupe des fonctions et des constantes. Python en fournit des centaines. Il y a trois façons de les importer :</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Écriture</th>
+<th>Utilisation</th>
+<th>Quand l'utiliser</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>import math</code></td>
+<td><code>math.sqrt(2)</code></td>
+<td>Par défaut : on voit d'où vient chaque fonction</td>
+</tr>
+<tr>
+<td><code>import statistics as st</code></td>
+<td><code>st.mean(...)</code></td>
+<td>Nom de module long</td>
+</tr>
+<tr>
+<td><code>from math import sqrt, pi</code></td>
+<td><code>sqrt(2)</code>, <code>pi</code></td>
+<td>Quelques fonctions très utilisées</td>
+</tr>
+</tbody>
+</table></div>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">import math
+import statistics as st
+from random import randint, seed
+
+print(math.sqrt(2))
+mesures = [9.79, 9.83, 9.81, 9.76, 9.85]   # g mesuré par 5 équipes (m/s²)
+print(&quot;moyenne :&quot;, st.mean(mesures))
+print(&quot;écart type :&quot;, st.stdev(mesures))
+seed(3)
+print(&quot;dé :&quot;, randint(1, 6))</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<p><code>[9.79, 9.83, ...]</code> est une <strong>liste</strong> de valeurs. On l'utilise ici seulement pour donner des mesures au module <code>statistics</code>; les listes sont le sujet du chapitre 8.</p>
+<div class="admonition piege">
+<p class="admonition-title">Piège : un nom écrasé</p>
+<p>Après <code>from math import pi</code>, une ligne <code>pi = 3</code> remplace la valeur de π dans tout le programme. Avec <code>import math</code>, la valeur reste protégée dans <code>math.pi</code>. Dans le doute, préfère <code>import math</code>.</p>
+</div>
+<h2 id="les-modules-utiles-en-sciences">Les modules utiles en sciences</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Exemples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>math</code></td>
+<td><code>sqrt</code>, <code>exp</code>, <code>log</code>, <code>log10</code>, <code>sin</code>, <code>cos</code>, <code>radians</code>, <code>pi</code>, <code>e</code></td>
+</tr>
+<tr>
+<td><code>random</code></td>
+<td><code>random</code>, <code>randint</code>, <code>uniform</code>, <code>seed</code></td>
+</tr>
+<tr>
+<td><code>statistics</code></td>
+<td><code>mean</code> (moyenne), <code>median</code> (médiane), <code>stdev</code> (écart type)</td>
+</tr>
+</tbody>
+</table></div>
+<p>On trouve la liste complète des fonctions d'un module dans la documentation officielle de Python, ou avec <code>help(math)</code>.</p>
+<h2 id="un-module-maison">Un module maison</h2>
+<p>Un module maison, c'est simplement un fichier <code>.py</code> qui contient tes fonctions. Si le fichier <code>physique.py</code> contient <code>def energie_cinetique(m, v): ...</code>, n'importe quel programme du même dossier peut écrire <code>import physique</code> puis <code>physique.energie_cinetique(2, 3)</code>.</p>
+<p>L'exemple ci-dessous crée le fichier du module avec du code, puis l'importe. Sur ton ordinateur, tu créerais plutôt le fichier <code>physique.py</code> dans ton éditeur.</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable"># Création du fichier physique.py (sur ton ordinateur : un fichier dans ton dossier)
+code_du_module = &#x27;&#x27;&#x27;
+G = 9.81
+
+def energie_cinetique(m, v):
+    &quot;&quot;&quot;Énergie cinétique (J).&quot;&quot;&quot;
+    return 0.5 * m * v ** 2
+
+def energie_potentielle(m, h):
+    &quot;&quot;&quot;Énergie potentielle gravitationnelle (J).&quot;&quot;&quot;
+    return m * G * h
+&#x27;&#x27;&#x27;
+fichier = open(&quot;physique.py&quot;, &quot;w&quot;)
+fichier.write(code_du_module)
+fichier.close()
+
+# Utilisation du module, comme n&#x27;importe quel autre
+import physique
+print(physique.energie_cinetique(2, 3))
+print(physique.energie_potentielle(2, 10))</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<p>Avantages : une seule copie de chaque fonction, qu'on corrige à un seul endroit; des programmes principaux plus courts et plus lisibles.</p>
+<h2 id="les-tests-automatises-avec-assert">Les tests automatisés avec assert</h2>
+<p>Depuis le chapitre 1, tu construis un jeu d'essais, puis tu compares les résultats à la main. L'instruction <code>assert</code> fait cette comparaison pour toi :</p>
+<pre><code><span class="k">assert</span> <span class="n">condition</span><span class="p">,</span> <span class="s2">"message si la condition est fausse"</span>
+</code></pre>
+<p>Si la condition est vraie, rien ne se passe. Si elle est fausse, le programme s'arrête avec une <code>AssertionError</code> et ton message.</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">def celsius_vers_kelvin(c):
+    return c + 273.15
+
+assert celsius_vers_kelvin(0) == 273.15, &quot;le point de congélation&quot;
+assert celsius_vers_kelvin(-273.15) == 0, &quot;le zéro absolu&quot;
+assert celsius_vers_kelvin(100) == 373.15, &quot;le point d&#x27;ébullition&quot;
+print(&quot;Tous les tests passent.&quot;)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<div class="admonition essaie">
+<p class="admonition-title">Essaie-le</p>
+<p>Introduis une erreur dans la fonction, par exemple <code>c + 273</code>. Quel test échoue en premier? Le message te dit lequel.</p>
+</div>
+<h3 id="regrouper-les-tests-dans-une-fonction">Regrouper les tests dans une fonction</h3>
+<p>On regroupe souvent les tests d'une fonction dans une fonction de test, qu'on exécute après chaque modification. C'est ton jeu d'essais, rendu automatique.</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">def classer_ph(ph):
+    if ph &lt; 0 or ph &gt; 14:
+        return &quot;mesure invalide&quot;
+    elif ph &lt; 7:
+        return &quot;acide&quot;
+    elif ph == 7:
+        return &quot;neutre&quot;
+    else:
+        return &quot;basique&quot;
+
+def tester_classer_ph():
+    assert classer_ph(3) == &quot;acide&quot;
+    assert classer_ph(7) == &quot;neutre&quot;
+    assert classer_ph(11) == &quot;basique&quot;
+    assert classer_ph(-1) == &quot;mesure invalide&quot;
+    assert classer_ph(0) == &quot;acide&quot;, &quot;borne inférieure&quot;
+    assert classer_ph(14) == &quot;basique&quot;, &quot;borne supérieure&quot;
+    return True
+
+print(tester_classer_ph())</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<h2 id="tester-des-nombres-reels-la-tolerance">Tester des nombres réels : la tolérance</h2>
+<p><code>assert 0.1 + 0.2 == 0.3</code> échoue, pour la raison vue au chapitre 3. Pour un résultat réel, on teste l'écart :</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">import math
+
+def vitesse_impact(h):
+    return math.sqrt(2 * 9.81 * h)
+
+TOLERANCE = 1e-9
+assert abs(vitesse_impact(0) - 0) &lt; TOLERANCE
+assert abs(vitesse_impact(5) - 9.9045444115) &lt; 1e-6, &quot;valeur calculée à la main&quot;
+print(&quot;Tests réussis.&quot;)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<p>Le module <code>math</code> offre aussi <code>math.isclose(a, b)</code>, qui fait la même chose avec une tolérance relative.</p>
+<h2 id="exemple-complet-ecrire-les-tests-dabord">Exemple complet : écrire les tests d'abord</h2>
+<p>On peut écrire les tests <strong>avant</strong> la fonction : c'est le jeu d'essais de la fiche de planification, traduit en <code>assert</code>. On écrit ensuite la fonction jusqu'à ce que tous les tests passent.</p>
+<h3 id="planifier">Planifier</h3>
+<p>Fonction <code>annee_bissextile(annee)</code> : divisible par 4, sauf les années divisibles par 100, à moins qu'elles soient divisibles par 400.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Année</th>
+<th>Attendu</th>
+<th>Pourquoi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2024</td>
+<td><code>True</code></td>
+<td>divisible par 4</td>
+</tr>
+<tr>
+<td>2023</td>
+<td><code>False</code></td>
+<td>pas divisible par 4</td>
+</tr>
+<tr>
+<td>1900</td>
+<td><code>False</code></td>
+<td>divisible par 100</td>
+</tr>
+<tr>
+<td>2000</td>
+<td><code>True</code></td>
+<td>divisible par 400</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="coder-les-tests-puis-la-fonction">Coder : les tests, puis la fonction</h3>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">def annee_bissextile(annee):
+    return (annee % 4 == 0 and annee % 100 != 0) or annee % 400 == 0
+
+def tester_bissextile():
+    assert annee_bissextile(2024) is True
+    assert annee_bissextile(2023) is False
+    assert annee_bissextile(1900) is False, &quot;siècle non bissextile&quot;
+    assert annee_bissextile(2000) is True, &quot;siècle divisible par 400&quot;
+    return True
+
+print(tester_bissextile())</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<h3 id="verifier">Vérifier</h3>
+<p>Les tests passent. Remplace la fonction par une version naïve, <code>return annee % 4 == 0</code>, et exécute : le test de 1900 la démasque immédiatement. C'est tout l'intérêt d'un jeu d'essais qui contient les cas particuliers.</p>
+<h2 id="pieges-frequents">Pièges fréquents</h2>
+<ul>
+<li>Écrire <code>assert</code> entre parenthèses avec un message : <code>assert (x == 1, "message")</code> est toujours vrai. Écris <code>assert x == 1, "message"</code>.</li>
+<li>Comparer des réels avec <code>==</code> dans un test.</li>
+<li>Ne tester que le cas « normal », jamais les bornes.</li>
+<li>Donner à une variable le nom d'une fonction importée.</li>
+</ul>
+<h2 id="autoquiz">Autoquiz</h2>
+<ol>
+<li>Après <code>import math as m</code>, comment écrit-on la racine carrée de 2?</li>
+<li>Que fait <code>assert 2 + 2 == 5, "arithmétique"</code>?</li>
+<li>Pourquoi tester un réel avec une tolérance?</li>
+<li>Qu'est-ce qu'un module maison?</li>
+<li>Pourquoi écrire les tests avant la fonction?</li>
+</ol>
+<h2 id="vocabulaire">Vocabulaire</h2>
+<div class="vocab"><span>module</span><span>import</span><span>from ... import</span><span>as</span><span>statistics</span><span>module maison</span><span>assert</span><span>AssertionError</span><span>test automatisé</span><span>tolérance</span><span>jeu d'essais</span></div>
+<h2 id="exercices">Exercices préparatoires</h2><p>Écris ton code dans chaque exercice : remplace les <code>None</code> par ta réponse, puis clique sur <strong>Vérifier</strong>. La vérification te dit si ta réponse est bonne, sans la montrer. Ton travail est sauvegardé automatiquement dans ce navigateur.</p>
+<section class="exo" id="exo-7-1" data-id="7.1" data-checks="[[&quot;moyenne&quot;, &quot;853921f6957c&quot;], [&quot;mediane&quot;, &quot;be68b5330581&quot;], [&quot;ecart_type&quot;, &quot;f50160ace49c&quot;]]">
+  <div class="exo-head"><h3>Exercice 7.1 — Le module statistics</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Cinq équipes ont mesuré la période d'un pendule (s). Avec le module <code>statistics</code>, calcule la moyenne, la médiane et l'écart type de ces mesures.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 7.1 — Le module statistics">import statistics
+periodes = [2.03, 1.98, 2.01, 2.07, 1.99]   # s
+moyenne = None
+mediane = None
+ecart_type = None
+print(moyenne, mediane, ecart_type)</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-7-2" data-id="7.2" data-checks="[[&quot;test_qui_echoue&quot;, &quot;7eee9525c86f&quot;]]">
+  <div class="exo-head"><h3>Exercice 7.2 — Quel test échoue?</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p><strong>Sans exécuter de code</strong> : lequel de ces quatre tests provoque une <code>AssertionError</code>? Donne son numéro.</p>
+<pre><code><span class="k">def</span><span class="w"> </span><span class="nf">double</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span>
+
+<span class="k">assert</span> <span class="n">double</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>          <span class="c1"># test 1</span>
+<span class="k">assert</span> <span class="n">double</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">6</span>        <span class="c1"># test 2</span>
+<span class="k">assert</span> <span class="n">double</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span> <span class="o">==</span> <span class="mf">0.2</span>      <span class="c1"># test 3</span>
+<span class="k">assert</span> <span class="n">double</span><span class="p">(</span><span class="mf">0.1</span> <span class="o">+</span> <span class="mf">0.2</span><span class="p">)</span> <span class="o">==</span> <span class="mf">0.6</span>   <span class="c1"># test 4</span>
+</code></pre></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 7.2 — Quel test échoue?">test_qui_echoue = None</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-7-3" data-id="7.3" data-checks="[[&quot;moyenne3(3, 6, 9)&quot;, &quot;5592eacdc0c4&quot;], [&quot;moyenne3(2, 4, 9)&quot;, &quot;0be3a3882951&quot;], [&quot;moyenne3(10, 0, 0)&quot;, &quot;2ec1ffd5b73d&quot;]]">
+  <div class="exo-head"><h3>Exercice 7.3 — Des tests pour trouver l&#x27;erreur</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>La fonction <code>moyenne3(a, b, c)</code> doit retourner la moyenne de trois nombres, mais elle contient une erreur. Écris d'abord <strong>trois tests</strong> avec <code>assert</code> (dont <code>moyenne3(3, 6, 9)</code> qui doit valoir 6), exécute pour voir lequel échoue, puis corrige la fonction.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 7.3 — Des tests pour trouver l&#x27;erreur">def moyenne3(a, b, c):
+    return a + b + c / 3
+
+# Tes tests ici</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-7-4" data-id="7.4" data-checks="[[&quot;aire_trapeze(2, 4, 3)&quot;, &quot;3c05d2794f40&quot;], [&quot;aire_trapeze(1.5, 2.5, 4)&quot;, &quot;594bca8d3977&quot;], [&quot;tester_aire_trapeze()&quot;, &quot;3cbc87c7681f&quot;]]">
+  <div class="exo-head"><h3>Exercice 7.4 — Une fonction et sa fonction de test</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Écris <code>aire_trapeze(petite_base, grande_base, hauteur)</code>, qui retourne (b + B) × h / 2, puis <code>tester_aire_trapeze()</code>, qui contient au moins 3 <code>assert</code> et retourne <code>True</code> à la fin. La vérification appelle tes deux fonctions.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 7.4 — Une fonction et sa fonction de test">def aire_trapeze(petite_base, grande_base, hauteur):
+    pass   # remplace cette ligne
+
+def tester_aire_trapeze():
+    pass   # tes assert ici, puis return True</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-7-5" data-id="7.5" data-checks="[[&quot;presque_egal(0.1 + 0.2, 0.3)&quot;, &quot;3cbc87c7681f&quot;], [&quot;presque_egal(1, 1.1)&quot;, &quot;60a33e6cf515&quot;], [&quot;presque_egal(1, 1.1, 0.5)&quot;, &quot;3cbc87c7681f&quot;], [&quot;presque_egal(2.0, 2.0)&quot;, &quot;3cbc87c7681f&quot;]]">
+  <div class="exo-head"><h3>Exercice 7.5 — Comparer avec une tolérance</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Écris <code>presque_egal(a, b, tolerance=1e-9)</code>, qui retourne <code>True</code> si l'écart entre <code>a</code> et <code>b</code> est plus petit que la tolérance. Tu t'en serviras dans tes propres tests.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 7.5 — Comparer avec une tolérance">def presque_egal(a, b, tolerance=1e-9):
+    pass   # remplace cette ligne</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+  <div class="enclasse"><p><strong>En classe : évaluation 2, puis Labo 7.</strong> L'évaluation (60 min, chapitres 1 à 6) ouvre la séance; suivent la démonstration et un labo court. Les codes d'accès sont donnés en classe.</p><a class="btn ghost" href="../labos/labo07.html">Page du labo 7</a></div>
+  <h2 id="remise">Remise sur LÉA</h2>
+  <div class="travail">
+    <label class="nom"><span>Ton nom (prénom et nom)</span><input id="nom-etudiant" type="text" autocomplete="name"></label>
+    <div><p class="progression"></p><div class="barre" aria-hidden="true"><span></span></div></div>
+    <ol>
+      <li>Clique sur <strong>Télécharger mon rapport</strong>. Le fichier contient ton code, tes fiches et le résultat de chaque vérification.</li>
+      <li>Dépose ce fichier dans le travail du chapitre 7 sur LÉA.</li>
+    </ol>
+    <div class="actions"><button class="btn telecharger" type="button">Télécharger mon rapport</button>
+      <label class="btn ghost">Importer un rapport<input class="importer" type="file" accept=".py,.txt" hidden></label></div>
+    <p id="msg-import" aria-live="polite"></p>
+    <p class="note">Ton travail est sauvegardé automatiquement, mais seulement dans <em>ce</em> navigateur, sur <em>cet</em> appareil. Pour continuer ailleurs, télécharge ton rapport et importe-le sur l'autre appareil.</p>
+  </div>
+  <nav class="pager" aria-label="Chapitres"><a class="btn ghost" href="ch06.html">← Chapitre 6</a><a class="btn ghost" href="../#calendrier">Calendrier →</a></nav>
+</article>
+<aside class="toc" aria-label="Dans ce chapitre">
+  <p>Dans ce chapitre</p>
+  <ol><li><a href="#objectifs">Objectifs</a></li><li><a href="#importer-un-module">Importer un module</a></li><li><a href="#les-modules-utiles-en-sciences">Les modules utiles en sciences</a></li><li><a href="#un-module-maison">Un module maison</a></li><li><a href="#les-tests-automatises-avec-assert">Les tests automatisés avec assert</a></li><li><a href="#tester-des-nombres-reels-la-tolerance">Tester des nombres réels : la tolérance</a></li><li><a href="#exemple-complet-ecrire-les-tests-dabord">Exemple complet : écrire les tests d'abord</a></li><li><a href="#pieges-frequents">Pièges fréquents</a></li><li><a href="#autoquiz">Autoquiz</a></li><li><a href="#vocabulaire">Vocabulaire</a></li><li><a href="#exercices">Exercices préparatoires</a></li><li><a href="#remise">Remise sur LÉA</a></li></ol>
+  <div class="cta"><p class="progression"></p><div class="barre" aria-hidden="true"><span></span></div><a class="btn" href="#remise">Remise sur LÉA</a><a class="btn ghost" href="../#recettes">Recettes</a></div>
+</aside>
+</div>
+<script src="../assets/cours.js?v=2626b37d"></script>
+</body>
+</html>
