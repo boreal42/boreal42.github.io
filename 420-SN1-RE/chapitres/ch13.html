@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="fr-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ch. 13 · Problème intégrateur · 420-SN1-RE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/lecture.css?v=65bf887f">
+</head>
+<body data-chapitre="13">
+<header class="topbar"><div class="in">
+  <a class="home" href="../#chapitre-13"><span>420-SN1-RE</span>Programmation en sciences</a>
+  <span class="chap">Chapitre 13 · Semaine 13</span>
+</div></header>
+<div class="layout">
+<article>
+  <p class="eyebrow">Chapitre 13 · Semaine 13</p>
+  <h1>Problème intégrateur</h1>
+  <div class="prep">
+    <div><h2>À faire avant le cours</h2><ol><li>Lis ce chapitre et exécute les exemples (environ 1 h).</li><li>Fais les 7 exercices préparatoires 13.1 à 13.7, au bas de la page (environ 1 h 30).</li><li>Commence ta révision : repère, pour chaque étape de la démarche, un exercice de la session que tu saurais refaire seul.</li><li>Télécharge ton rapport et remets-le sur LÉA avant le cours.</li></ol></div>
+    <a class="btn" href="#exercices">Aller aux exercices</a>
+  </div>
+  <p class="aide">Tout le code de cette page s'exécute dans ton navigateur : clique sur <strong>▶ Exécuter</strong>. Tu peux modifier les exemples librement; <strong>Réinitialiser</strong> remet le code d'origine. Raccourci : Maj + Entrée.</p>
+<div class="admonition probleme">
+<p class="admonition-title">Problème d'ouverture</p>
+<p>Une équipe remet son rapport sur une station météo. En le lisant, on découvre trois choses :</p>
+<ul>
+<li>deux mesures manquantes ont été remplacées par 20 °C « pour que la courbe soit plus belle »;</li>
+<li>la fonction qui calcule l'écart type vient d'un forum, sans aucune mention de la source;</li>
+<li>une autre fonction a été produite par un assistant d'IA. Elle s'exécute sans erreur, mais elle donne un mauvais résultat, et personne ne l'a testée.</li>
+</ul>
+<p>Le programme fonctionne. Le rapport, lui, ne vaut plus rien : on ne peut faire confiance ni aux données, ni au code. Ce dernier chapitre porte sur ce qui rend un travail scientifique <strong>fiable</strong> : une démarche complète, des données intègres, des sources citées et un usage vérifié de l'IA.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Dernier chapitre</p>
+<p>Ce chapitre est aussi ta <strong>révision</strong> avant l'épreuve finale des semaines 14 et 15. Il a 7 exercices préparatoires, qui mélangent les notions de toute la session.</p>
+</div>
+<h2 id="objectifs">Objectifs</h2>
+<ol>
+<li>Appliquer la démarche complète, du problème au résultat validé.</li>
+<li>Traiter des données sans les altérer : garder les données brutes, appliquer des règles de rejet explicites et rapporter ce qui a été rejeté.</li>
+<li>Citer correctement du code qui ne vient pas de toi.</li>
+<li>Utiliser l'IA de manière permise, vérifier le code qu'elle produit et déclarer son usage.</li>
+</ol>
+<h2 id="revision-la-demarche-complete">Révision : la démarche complète</h2>
+<p>Tous les problèmes de la session suivent la même démarche. À l'épreuve finale, c'est elle qu'on évalue autant que ton code.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Étape</th>
+<th>Question à te poser</th>
+<th>Outils de la session</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Comprendre</td>
+<td>Quelles sont les grandeurs, et leurs unités?</td>
+<td>Lecture de l'énoncé, ordre de grandeur (ch. 1-2)</td>
+</tr>
+<tr>
+<td>2. Planifier</td>
+<td>Quels intrants, quel extrant, quels traitements?</td>
+<td>Fiche de planification, pseudocode (ch. 3)</td>
+</tr>
+<tr>
+<td>3. Coder par petites étapes</td>
+<td>Est-ce que chaque morceau fonctionne avant de passer au suivant?</td>
+<td>Conditions, boucles, fonctions, listes, fichiers, NumPy (ch. 4-10)</td>
+</tr>
+<tr>
+<td>4. Tester</td>
+<td>Le programme donne-t-il le bon résultat sur des cas dont je connais la réponse?</td>
+<td>Trace, <code>assert</code>, cas limites (ch. 3, 7)</td>
+</tr>
+<tr>
+<td>5. Valider</td>
+<td>Le résultat a-t-il du sens physiquement?</td>
+<td>Unités, ordre de grandeur, cas connu, convergence (ch. 10, 12)</td>
+</tr>
+<tr>
+<td>6. Communiquer</td>
+<td>Quelqu'un d'autre peut-il comprendre et refaire mon travail?</td>
+<td>Graphique avec unités, rapport, commentaires, citations (ch. 9, 11, 13)</td>
+</tr>
+</tbody>
+</table></div>
+<div class="admonition essaie">
+<p class="admonition-title">Fais ton bilan</p>
+<p>Pour chaque ligne du tableau, trouve un exercice de la session que tu saurais refaire seul, sans notes. Une ligne sans exemple? C'est le chapitre à revoir avant l'épreuve finale.</p>
+</div>
+<h2 id="lintegrite-des-donnees">L'intégrité des données</h2>
+<p>En sciences, les données sont des <strong>preuves</strong>. Les modifier pour obtenir le résultat espéré, même un peu, c'est de la <strong>falsification</strong> : la faute la plus grave en recherche. Mais les données réelles sont imparfaites : mesures manquantes, codes d'erreur des capteurs, valeurs impossibles. Il faut donc les nettoyer, de façon <strong>honnête et traçable</strong>.</p>
+<p>Cinq règles :</p>
+<ol>
+<li><strong>Ne jamais modifier les données brutes.</strong> Le fichier original reste intact; le programme construit une <strong>nouvelle</strong> liste nettoyée.</li>
+<li><strong>Décider des règles de rejet avant de regarder les résultats</strong>, et les écrire dans le code : « valeurs hors de −40 à 50 °C rejetées », pas « j'ai enlevé ce qui semblait bizarre ».</li>
+<li><strong>Compter et rapporter</strong> ce qui a été rejeté, et pourquoi.</li>
+<li><strong>Ne jamais inventer une valeur.</strong> Une mesure manquante reste manquante. Si une méthode exige de la remplacer, on le dit clairement dans le rapport.</li>
+<li><strong>Rendre le traitement reproductible</strong> : relancer le programme sur les données brutes doit redonner exactement le même résultat.</li>
+</ol>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">import csv
+
+brutes = []
+with open(&quot;capteur.csv&quot;) as fichier:
+    lecteur = csv.reader(fichier)
+    next(lecteur)
+    for ligne in lecteur:
+        brutes.append(ligne[1])           # on garde le texte tel quel
+
+# Règles décidées d&#x27;avance
+MINIMUM = -40     # °C
+MAXIMUM = 50      # °C
+
+propres = []
+nb_manquantes = 0
+nb_hors_plage = 0
+for texte in brutes:
+    if texte == &quot;NA&quot;:
+        nb_manquantes = nb_manquantes + 1
+    else:
+        valeur = float(texte)
+        if MINIMUM &lt;= valeur &lt;= MAXIMUM:
+            propres.append(valeur)
+        else:
+            nb_hors_plage = nb_hors_plage + 1
+
+print(&quot;Mesures brutes :&quot;, len(brutes))
+print(&quot;Rejetées : manquantes =&quot;, nb_manquantes, &quot;, hors plage =&quot;, nb_hors_plage)
+print(&quot;Mesures retenues :&quot;, len(propres))
+print(&quot;Moyenne :&quot;, round(sum(propres) / len(propres), 2), &quot;°C&quot;)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<p>Le capteur a produit −999, un code d'erreur, et 85.0 °C, une valeur impossible un jour de novembre. Les deux sont rejetés par la <strong>même règle</strong>, écrite dans le code. Le rapport dit combien de mesures ont été rejetées : le lecteur peut juger.</p>
+<div class="admonition piege">
+<p class="admonition-title">Piège : rejeter ce qui dérange</p>
+<p>Une mesure qui s'éloigne du modèle n'est <strong>pas</strong> fausse pour autant : c'est peut-être une découverte, ou le signe que le modèle est mauvais. On ne rejette une mesure que selon une règle <strong>fixée d'avance</strong> (plage physique, code d'erreur, critère d'aberrance comme au chapitre 8), jamais parce qu'elle gâche le résultat.</p>
+</div>
+<h2 id="citer-le-code">Citer le code</h2>
+<p>Réutiliser du code est normal : c'est ainsi que travaillent les programmeurs. Le présenter comme le tien, par contre, c'est du <strong>plagiat</strong>, au même titre que copier un texte. La politique d'évaluation du cégep le traite de la même façon.</p>
+<p>Tout code qui ne vient ni de toi ni des notes du cours (un livre, un site, un forum, un collègue, une IA) se cite dans un commentaire, juste avant le code emprunté :</p>
+<pre><code><span class="c1"># Source : réponse de l'utilisateur « mathfan42 » sur un forum de programmation,</span>
+<span class="c1">#          fil « Python sample standard deviation », consulté le 2026-11-20.</span>
+<span class="c1">#          https://forum.exemple.org/q/15389768   (exemple fictif)</span>
+<span class="c1"># Modifications : noms de variables traduits; ajout du cas d'une liste</span>
+<span class="c1">#                 de moins de deux mesures.</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ecart_type</span><span class="p">(</span><span class="n">mesures</span><span class="p">):</span>
+    <span class="o">...</span>
+</code></pre>
+<p>Une bonne citation répond à quatre questions :</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Exemple</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Qui ou quoi?</td>
+<td>l'auteur, le site, le livre, l'outil d'IA</td>
+</tr>
+<tr>
+<td>Où?</td>
+<td>le lien, ou la référence complète</td>
+</tr>
+<tr>
+<td>Quand?</td>
+<td>la date de consultation : les pages changent</td>
+</tr>
+<tr>
+<td>Qu'as-tu changé?</td>
+<td>ce que tu as adapté, ajouté ou corrigé</td>
+</tr>
+</tbody>
+</table></div>
+<p>Citer ne te dispense pas de <strong>comprendre</strong>. Tu restes responsable de chaque ligne que tu remets, citée ou non.</p>
+<div class="admonition note">
+<p class="admonition-title">Les licences</p>
+<p>Le code publié en ligne a souvent une <strong>licence</strong> (MIT, GPL, Creative Commons…) qui dit comment on peut le réutiliser. Pour un travail scolaire, la citation suffit presque toujours. Dans un projet professionnel ou publié, la licence devient importante : vérifie-la.</p>
+</div>
+<h2 id="lia-generative-un-outil-a-verifier">L'IA générative : un outil à vérifier</h2>
+<p>Les assistants d'IA écrivent du code en quelques secondes. Ils sont utiles, et ils se trompent : ils produisent du code <strong>plausible</strong>, qui s'exécute souvent sans erreur, mais qui peut être faux. En sciences, un résultat faux qui a l'air juste est le pire des cas.</p>
+<h3 id="la-regle-du-cours">La règle du cours</h3>
+<p>Elle n'a pas changé depuis la première semaine (<a href="../index.html#ia">Politique sur l'IA</a>) :</p>
+<ul>
+<li><strong>Permis</strong> : demander à l'IA d'expliquer une notion, un message d'erreur ou un exemple.</li>
+<li><strong>Non permis</strong> : lui faire écrire le code d'un exercice, d'un labo ou d'une évaluation.</li>
+</ul>
+<p>Dans tes cours suivants et au travail, la règle sera différente : l'IA écrira peut-être une partie de ton code. Ce cours t'a donné ce qu'il faut pour la surveiller : planifier, faire une trace, tester, valider.</p>
+<h3 id="verifier-le-code-dune-ia">Vérifier le code d'une IA</h3>
+<p>Voici une fonction qu'un assistant d'IA a produite pour la demande « écris une fonction Python qui calcule l'écart type d'un échantillon de mesures ». Elle a l'air correcte. Teste-la sur un cas dont tu connais la réponse : l'écart type de 2, 4, 4, 4, 5, 5, 7, 9 vaut environ 2.138.</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">import math
+
+# Code produit par un assistant d&#x27;IA (non vérifié)
+def ecart_type(mesures):
+    moyenne = sum(mesures) / len(mesures)
+    somme = 0
+    for x in mesures:
+        somme = somme + (x - moyenne) ** 2
+    return math.sqrt(somme / len(mesures))
+
+resultat = ecart_type([2, 4, 4, 4, 5, 5, 7, 9])
+print(&quot;Résultat :&quot;, resultat)
+print(&quot;Attendu  : environ 2.138&quot;)
+assert abs(resultat - 2.138) &lt; 0.001, &quot;L&#x27;écart type ne correspond pas au cas connu&quot;</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<p>Le test échoue : la fonction divise par n au lieu de n − 1. C'est l'écart type d'une <strong>population</strong>, pas d'un échantillon (chapitre 8). L'erreur est subtile, l'IA ne l'a pas signalée, et le code s'exécute sans aucun message. Seul un test sur un cas connu la révèle.</p>
+<div class="admonition essaie">
+<p class="admonition-title">Essaie-le</p>
+<p>Corrige la fonction pour que le test passe. Ajoute ensuite un deuxième test : l'écart type de [10, 10, 10] doit valoir 0.</p>
+</div>
+<p>La même démarche s'applique à tout code que tu n'as pas écrit :</p>
+<ol>
+<li><strong>Lis-le</strong> ligne par ligne. Une ligne que tu ne comprends pas est une ligne que tu ne peux pas remettre.</li>
+<li><strong>Fais une trace</strong> sur un petit exemple.</li>
+<li><strong>Teste-le</strong> sur des cas connus, et sur des cas limites : liste vide, une seule valeur, valeurs négatives, valeur égale au seuil.</li>
+<li><strong>Valide</strong> le résultat : unités, ordre de grandeur, bon sens physique.</li>
+</ol>
+<h3 id="declarer-lusage-de-lia">Déclarer l'usage de l'IA</h3>
+<p>Quand l'IA est permise, son usage se déclare comme une citation, avec en plus la <strong>requête</strong> utilisée et ce que <strong>tu as vérifié</strong> :</p>
+<pre><code><span class="c1"># Code initial produit par un assistant d'IA, le 2026-11-20.</span>
+<span class="c1"># Requête : « écris une fonction Python qui calcule l'écart type d'un échantillon ».</span>
+<span class="c1"># Vérification : testé sur [2, 4, 4, 4, 5, 5, 7, 9] (2.138) et [10, 10, 10] (0).</span>
+<span class="c1"># Correction : division par n - 1 au lieu de n.</span>
+</code></pre>
+<h2 id="exemple-complet-un-rapport-fiable">Exemple complet : un rapport fiable</h2>
+<h3 id="planifier">Planifier</h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Réponse</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Intrant</td>
+<td>le fichier <code>capteur.csv</code> (heure, température en °C), avec des mesures manquantes et des codes d'erreur</td>
+</tr>
+<tr>
+<td>Extrants</td>
+<td>le nombre de mesures retenues et rejetées, la moyenne, l'écart type, un graphique des mesures retenues</td>
+</tr>
+<tr>
+<td>Traitements</td>
+<td>lire en gardant les données brutes; appliquer les règles de rejet; calculer les statistiques; tracer</td>
+</tr>
+<tr>
+<td>Tests</td>
+<td>l'écart type validé sur un cas connu avant d'être utilisé</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="coder">Coder</h3>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">import csv
+import math
+import matplotlib.pyplot as plt
+
+def ecart_type(mesures):
+    moyenne = sum(mesures) / len(mesures)
+    somme = 0
+    for x in mesures:
+        somme = somme + (x - moyenne) ** 2
+    return math.sqrt(somme / (len(mesures) - 1))
+
+assert abs(ecart_type([2, 4, 4, 4, 5, 5, 7, 9]) - 2.138) &lt; 0.001
+assert ecart_type([10, 10, 10]) == 0
+
+heures = []
+temperatures = []
+nb_rejetees = 0
+with open(&quot;capteur.csv&quot;) as fichier:
+    lecteur = csv.reader(fichier)
+    next(lecteur)
+    for ligne in lecteur:
+        if ligne[1] != &quot;NA&quot; and -40 &lt;= float(ligne[1]) &lt;= 50:
+            heures.append(int(ligne[0]))
+            temperatures.append(float(ligne[1]))
+        else:
+            nb_rejetees = nb_rejetees + 1
+
+moyenne = sum(temperatures) / len(temperatures)
+print(len(temperatures), &quot;mesures retenues,&quot;, nb_rejetees, &quot;rejetées&quot;)
+print(f&quot;Moyenne : {moyenne:.2f} °C, écart type : {ecart_type(temperatures):.2f} °C&quot;)
+
+plt.plot(heures, temperatures, &quot;o&quot;)
+plt.xlabel(&quot;Heure (h)&quot;)
+plt.ylabel(&quot;Température (°C)&quot;)
+plt.title(f&quot;Station du cégep ({nb_rejetees} mesures rejetées)&quot;)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<h3 id="verifier">Vérifier</h3>
+<p>Le graphique a des <strong>trous</strong> aux heures rejetées : c'est honnête. Relier les points ou remplir les trous ferait croire qu'on a mesuré ce qu'on n'a pas mesuré. Le titre rappelle le nombre de mesures rejetées, et la fonction empruntée est testée avant d'être utilisée.</p>
+<h2 id="pieges-frequents">Pièges fréquents</h2>
+<ul>
+<li>Modifier la liste des données brutes pendant le nettoyage, au lieu d'en construire une nouvelle.</li>
+<li>Rejeter une mesure parce qu'elle dérange le résultat, plutôt que selon une règle fixée d'avance.</li>
+<li>Remplacer une valeur manquante par une valeur inventée, sans le dire.</li>
+<li>Remettre du code emprunté sans le citer, ou du code qu'on ne peut pas expliquer.</li>
+<li>Faire confiance à du code parce qu'il s'exécute sans erreur.</li>
+</ul>
+<h2 id="autoquiz">Autoquiz</h2>
+<ol>
+<li>Pourquoi faut-il garder les données brutes intactes?</li>
+<li>Quand a-t-on le droit de rejeter une mesure?</li>
+<li>Quelles sont les quatre questions auxquelles répond une bonne citation?</li>
+<li>Dans ce cours, peut-on demander à une IA d'expliquer un message d'erreur? D'écrire le code d'un labo?</li>
+<li>Un code produit par une IA s'exécute sans erreur. Qu'est-ce que ça prouve?</li>
+</ol>
+<h2 id="vocabulaire">Vocabulaire</h2>
+<div class="vocab"><span>démarche</span><span>données brutes</span><span>nettoyage</span><span>règle de rejet</span><span>falsification</span><span>reproductible</span><span>traçabilité</span><span>citation</span><span>plagiat</span><span>licence</span><span>IA générative</span><span>cas connu</span></div>
+<h2 id="exercices">Exercices préparatoires</h2><p>Écris ton code dans chaque exercice : remplace les <code>None</code> par ta réponse, puis clique sur <strong>Vérifier</strong>. La vérification te dit si ta réponse est bonne, sans la montrer. Ton travail est sauvegardé automatiquement dans ce navigateur.</p>
+<section class="exo" id="exo-13-1" data-id="13.1" data-checks="[[&quot;len(brutes)&quot;, &quot;594bca8d3977&quot;], [&quot;brutes[2]&quot;, &quot;5a9f59b1d129&quot;], [&quot;len(propres)&quot;, &quot;5592eacdc0c4&quot;], [&quot;nb_rejetees&quot;, &quot;7a284f128e61&quot;], [&quot;round(moyenne, 2)&quot;, &quot;516da23efa8f&quot;]]">
+  <div class="exo-head"><h3>Exercice 13.1 — Garder les données brutes</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Un capteur de pression écrit −999 quand une mesure échoue. Construis une <strong>nouvelle</strong> liste <code>propres</code>, sans les −999, compte-les dans <code>nb_rejetees</code>, puis calcule <code>moyenne</code>, la moyenne des mesures retenues. La liste <code>brutes</code> ne doit pas changer.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 13.1 — Garder les données brutes">brutes = [101.2, 101.4, -999, 101.1, 100.9, -999, 101.3, 101.0]   # kPa
+
+propres = []
+nb_rejetees = 0
+moyenne = None</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-13-2" data-id="13.2" data-checks="[[&quot;nettoyer(essai, 0, 10)&quot;, &quot;ec5e0beb8a6f&quot;], [&quot;essai&quot;, &quot;2fea286ca7ba&quot;], [&quot;nettoyer([], 0, 10)&quot;, &quot;4f53cda18c2b&quot;], [&quot;nettoyer([-45.0, 12.5, 51.0, -40.0], -40, 50)&quot;, &quot;c5fb77279223&quot;], [&quot;nettoyer([7, 8], 0, 5)&quot;, &quot;4f53cda18c2b&quot;]]">
+  <div class="exo-head"><h3>Exercice 13.2 — Une règle de rejet en fonction</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Écris la fonction <code>nettoyer(mesures, minimum, maximum)</code>, qui <strong>retourne une nouvelle liste</strong> contenant seulement les mesures comprises entre <code>minimum</code> et <code>maximum</code>, bornes incluses. Elle ne doit <strong>pas</strong> modifier la liste reçue : la liste <code>essai</code> est vérifiée après l'appel.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 13.2 — Une règle de rejet en fonction">def nettoyer(mesures, minimum, maximum):
+    pass   # remplace cette ligne
+
+essai = [5, -1, 20, 3, 10]
+print(nettoyer(essai, 0, 10))     # [5, 3, 10]</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-13-3" data-id="13.3" data-checks="[[&quot;nb_manquantes&quot;, &quot;7a284f128e61&quot;], [&quot;nb_hors_plage&quot;, &quot;7a284f128e61&quot;], [&quot;len(retenues)&quot;, &quot;374f1f5ffcaa&quot;], [&quot;min(retenues)&quot;, &quot;6066c298aaf8&quot;], [&quot;max(retenues)&quot;, &quot;7eee9525c86f&quot;]]">
+  <div class="exo-head"><h3>Exercice 13.3 — Un fichier imparfait</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Le fichier <code>capteur.csv</code> contient deux colonnes : l'heure et la température (°C). Certaines mesures valent <code>NA</code> (manquantes); d'autres sont hors de la plage plausible, de −40 à 50 °C. Compte <code>nb_manquantes</code> et <code>nb_hors_plage</code>, et range les températures retenues, en nombres, dans <code>retenues</code>.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 13.3 — Un fichier imparfait">import csv
+
+nb_manquantes = 0
+nb_hors_plage = 0
+retenues = []</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-13-4" data-id="13.4" data-checks="[[&quot;round(ecart_type([2, 4, 4, 4, 5, 5, 7, 9]), 3)&quot;, &quot;5314b236cc1b&quot;], [&quot;ecart_type([10, 10, 10])&quot;, &quot;297d62f39fae&quot;], [&quot;round(ecart_type([9.81, 9.79, 9.62, 9.85]), 4)&quot;, &quot;5a4278220f08&quot;], [&quot;round(ecart_type([1, 2]), 4)&quot;, &quot;e1f45dd1266e&quot;]]">
+  <div class="exo-head"><h3>Exercice 13.4 — Corriger le code d&#x27;une IA, 1</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Un assistant d'IA a produit cette fonction, censée retourner l'écart type d'un <strong>échantillon</strong> (division par n − 1). Teste-la sur le cas connu [2, 4, 4, 4, 5, 5, 7, 9], dont l'écart type vaut environ 2.138, puis corrige-la. Garde le même nom.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 13.4 — Corriger le code d&#x27;une IA, 1">import math
+
+# Code produit par un assistant d&#x27;IA (non vérifié)
+def ecart_type(mesures):
+    moyenne = sum(mesures) / len(mesures)
+    somme = 0
+    for x in mesures:
+        somme = somme + (x - moyenne) ** 2
+    return math.sqrt(somme / len(mesures))
+
+print(ecart_type([2, 4, 4, 4, 5, 5, 7, 9]))</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-13-5" data-id="13.5" data-checks="[[&quot;premier_depassement([3, 8, 12], 10)&quot;, &quot;7a284f128e61&quot;], [&quot;premier_depassement([15, 2], 10)&quot;, &quot;297d62f39fae&quot;], [&quot;premier_depassement([1, 2, 3], 10)&quot;, &quot;dc937b598926&quot;], [&quot;premier_depassement([], 10)&quot;, &quot;dc937b598926&quot;], [&quot;premier_depassement([10, 10.5], 10)&quot;, &quot;64e4b892473f&quot;]]">
+  <div class="exo-head"><h3>Exercice 13.5 — Corriger le code d&#x27;une IA, 2</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Cette fonction, aussi produite par une IA, doit retourner l'<strong>indice</strong> de la première valeur strictement plus grande que le seuil, ou <code>None</code> s'il n'y en a aucune. Elle s'exécute sans erreur. Fais la trace de l'appel <code>premier_depassement([3, 8, 12], 10)</code>, trouve l'erreur et corrige-la.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 13.5 — Corriger le code d&#x27;une IA, 2"># Code produit par un assistant d&#x27;IA (non vérifié)
+def premier_depassement(valeurs, seuil):
+    for i in range(len(valeurs)):
+        if valeurs[i] &gt; seuil:
+            return i
+        else:
+            return None
+
+print(premier_depassement([3, 8, 12], 10))</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-13-6" data-id="13.6" data-checks="[[&quot;float(volume)&quot;, &quot;47f120a19b2b&quot;], [&quot;int(debit_max)&quot;, &quot;bbb5c22ec243&quot;], [&quot;int(heure_max)&quot;, &quot;594bca8d3977&quot;]]">
+  <div class="exo-head"><h3>Exercice 13.6 — Révision : le volume d&#x27;une crue</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Pendant une crue, on mesure le débit d'une rivière (m³/s) à des instants irréguliers (h). Avec NumPy, convertis les instants en secondes, puis calcule par la méthode des trapèzes le volume d'eau écoulé, en m³, dans <code>volume</code>. Garde aussi le débit maximal dans <code>debit_max</code> et l'instant où il survient, en heures, dans <code>heure_max</code>.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 13.6 — Révision : le volume d&#x27;une crue">import numpy as np
+heures = np.array([0, 2, 5, 8, 12, 18, 24])           # h
+debits = np.array([42, 65, 130, 210, 175, 96, 58])     # m³/s
+
+volume = None
+debit_max = None
+heure_max = None</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-13-7" data-id="13.7" data-checks="[[&quot;t_moitie&quot;, &quot;37fdd43125fe&quot;]]">
+  <div class="exo-head"><h3>Exercice 13.7 — Révision : une culture de bactéries</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Une culture de bactéries suit le modèle logistique : dN/dt = r N (1 − N/K), avec N₀ = 100 bactéries, r = 0.5 par heure et K = 10 000. Avec la méthode d'Euler et Δt = 0.01 h, trouve <code>t_moitie</code>, le premier instant où N atteint ou dépasse K/2. Calcule l'instant au pas <code>i</code> par <code>round(i * dt, 10)</code>.</p>
+<p>Valide ton résultat : la solution exacte vaut ln((K − N₀) / N₀) / r, soit environ 9.19 h.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 13.7 — Révision : une culture de bactéries">r = 0.5
+K = 10000
+dt = 0.01
+N = 100
+t_moitie = None</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+  <div class="enclasse"><p><strong>En classe : Labo 13.</strong> Quiz d'entrée, démonstration, atelier en équipe et labo individuel. Le code d'accès est donné au début de la séance.</p><a class="btn ghost" href="../labos/labo13.html">Page du labo 13</a></div>
+  <h2 id="remise">Remise sur LÉA</h2>
+  <div class="travail">
+    <label class="nom"><span>Ton nom (prénom et nom)</span><input id="nom-etudiant" type="text" autocomplete="name"></label>
+    <div><p class="progression"></p><div class="barre" aria-hidden="true"><span></span></div></div>
+    <ol>
+      <li>Clique sur <strong>Télécharger mon rapport</strong>. Le fichier contient ton code, tes fiches et le résultat de chaque vérification.</li>
+      <li>Dépose ce fichier dans le travail du chapitre 13 sur LÉA.</li>
+    </ol>
+    <div class="actions"><button class="btn telecharger" type="button">Télécharger mon rapport</button>
+      <label class="btn ghost">Importer un rapport<input class="importer" type="file" accept=".py,.txt" hidden></label></div>
+    <p id="msg-import" aria-live="polite"></p>
+    <p class="note">Ton travail est sauvegardé automatiquement, mais seulement dans <em>ce</em> navigateur, sur <em>cet</em> appareil. Pour continuer ailleurs, télécharge ton rapport et importe-le sur l'autre appareil.</p>
+  </div>
+  <nav class="pager" aria-label="Chapitres"><a class="btn ghost" href="ch12.html">← Chapitre 12</a><a class="btn ghost" href="../#calendrier">Calendrier →</a></nav>
+</article>
+<aside class="toc" aria-label="Dans ce chapitre">
+  <p>Dans ce chapitre</p>
+  <ol><li><a href="#objectifs">Objectifs</a></li><li><a href="#revision-la-demarche-complete">Révision : la démarche complète</a></li><li><a href="#lintegrite-des-donnees">L'intégrité des données</a></li><li><a href="#citer-le-code">Citer le code</a></li><li><a href="#lia-generative-un-outil-a-verifier">L'IA générative : un outil à vérifier</a></li><li><a href="#exemple-complet-un-rapport-fiable">Exemple complet : un rapport fiable</a></li><li><a href="#pieges-frequents">Pièges fréquents</a></li><li><a href="#autoquiz">Autoquiz</a></li><li><a href="#vocabulaire">Vocabulaire</a></li><li><a href="#exercices">Exercices préparatoires</a></li><li><a href="#remise">Remise sur LÉA</a></li></ol>
+  <div class="cta"><p class="progression"></p><div class="barre" aria-hidden="true"><span></span></div><a class="btn" href="#remise">Remise sur LÉA</a><a class="btn ghost" href="../#recettes">Recettes</a></div>
+</aside>
+</div>
+<script type="application/json" id="fichiers-donnees">{"capteur.csv": "heure,temperature_c\n0,-3.2\n1,-3.6\n2,-4.1\n3,-4.4\n4,NA\n5,-5.0\n6,-4.8\n7,-3.9\n8,-2.1\n9,-0.4\n10,1.2\n11,-999\n12,3.1\n13,3.8\n14,4.0\n15,85.0\n16,2.9\n17,1.5\n18,0.2\n19,NA\n20,-1.3\n21,-1.9\n22,-2.4\n23,-2.8\n"}</script>
+<script src="../assets/cours.js?v=65bf887f"></script>
+</body>
+</html>

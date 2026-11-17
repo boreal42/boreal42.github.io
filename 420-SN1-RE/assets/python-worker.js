@@ -84,7 +84,7 @@ def _verifier(ns, checks):
         except Exception as e:
             res.append([nom, False, f"{type(e).__name__}: {e}", "L'appel a provoqué une erreur. Vérifie les paramètres de ta fonction."])
             continue
-        if v is None:
+        if v is None and _empreinte(None) != h:
             res.append([nom, False, "None", "Ta fonction ne retourne rien. As-tu utilisé print() au lieu de return?"])
             continue
         ok = _empreinte(v) == h

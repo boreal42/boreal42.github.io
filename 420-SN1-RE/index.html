@@ -462,9 +462,23 @@ const CHAPITRES = [
    avant:["Lire le chapitre en exécutant les exemples (environ 45 min)","Faire les 5 exercices préparatoires, autocorrigés (environ 45 min)","Réviser les chapitres 1 à 10 pour l'évaluation 3","Déposer le rapport du chapitre sur LÉA avant le cours"],
    labos:["Évaluation 3 (60 min, chapitres 1 à 10)","Démonstration : corriger un mauvais graphique","Mini-labo : pendule, courbe de titrage"],
    vocab:["Matplotlib","plot","axe","étiquette","unité","titre","légende","modèle","mesure"],
-   ensuite:"Pour la semaine 12 : lire le chapitre 12 (à venir)."},
-  {n:12, sem:12, titre:"Méthodes numériques", notions:"Bissection, méthode des trapèzes, méthode d'Euler", labo:"Chute avec frottement de l'air"},
-  {n:13, sem:13, titre:"Problème intégrateur", notions:"Révision, intégrité des données, citation du code, usage de l'IA", labo:"Épreuve finale à blanc"}
+   ensuite:"Pour la semaine 12 : lire le chapitre 12 et faire les exercices préparatoires 12.1 à 12.10."},
+  {n:12, sem:12, titre:"Méthodes numériques", notions:"bissection, méthode des trapèzes, méthode d'Euler, validation", 
+   labo:"Chute avec frottement de l'air", ready:true,
+   probleme:"Une parachutiste saute d'un avion; l'air la freine selon dv/dt = g − (c/m) v². Quelle est sa vitesse après 10 s? Quelle distance a-t-elle parcourue? Avec une boucle et quelques lignes de Python, on obtient la réponse avec la précision voulue.",
+   objectifs:["Trouver la racine d'une équation par bissection","Calculer l'aire sous des mesures par la méthode des trapèzes","Simuler une évolution dans le temps par la méthode d'Euler","Valider une méthode numérique sur un cas connu"],
+   avant:["Lire le chapitre en exécutant les exemples (environ 1 h)","Faire les exercices préparatoires 12.1 à 12.10, autocorrigés (environ 1 h 30)","Déposer le rapport du chapitre sur LÉA avant le cours"],
+   labos:["Démonstration : valider Euler sur la chute libre","Atelier en équipe : le saut de la parachutiste","Labo : travail d'une force, bissection, ouverture du parachute"],
+   vocab:["méthode numérique","racine","bissection","tolérance","trapèze","pas de temps","Euler","validation","convergence"],
+   ensuite:"Pour la semaine 13 : lire le chapitre 13 et faire les exercices préparatoires 13.1 à 13.7."},
+  {n:13, sem:13, titre:"Problème intégrateur", notions:"révision, intégrité des données, citation du code, usage de l'IA",
+   labo:"La crue de la rivière : problème intégrateur", ready:true,
+   probleme:"Une équipe remet un rapport dont le programme fonctionne. Mais deux mesures manquantes ont été inventées, une fonction vient d'un forum sans citation, et une autre, produite par une IA, donne un mauvais résultat. Le rapport ne vaut plus rien. Qu'est-ce qui rend un travail scientifique fiable?",
+   objectifs:["Appliquer la démarche complète, du problème au résultat validé","Nettoyer des données sans les altérer, avec des règles de rejet explicites","Citer correctement du code qui ne vient pas de toi","Vérifier le code produit par une IA et en déclarer l'usage"],
+   avant:["Lire le chapitre en exécutant les exemples (environ 1 h)","Faire les 7 exercices préparatoires, autocorrigés (environ 1 h 30)","Commencer la révision pour l'épreuve finale","Déposer le rapport du chapitre sur LÉA avant le cours"],
+   labos:["Démonstration : auditer un rapport qui contient trois fautes","Atelier en équipe : la crue de la rivière","Labo : trois problèmes de révision, dans l'esprit de l'épreuve finale"],
+   vocab:["données brutes","règle de rejet","falsification","reproductible","citation","plagiat","licence","IA générative","cas connu"],
+   ensuite:"Semaines 14 et 15 : épreuve finale (55 %)."}
 ];
 
 const nav = document.getElementById("nav-chapitres");

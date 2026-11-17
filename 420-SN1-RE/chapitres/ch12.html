@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="fr-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ch. 12 · Méthodes numériques · 420-SN1-RE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/lecture.css?v=65bf887f">
+</head>
+<body data-chapitre="12">
+<header class="topbar"><div class="in">
+  <a class="home" href="../#chapitre-12"><span>420-SN1-RE</span>Programmation en sciences</a>
+  <span class="chap">Chapitre 12 · Semaine 12</span>
+</div></header>
+<div class="layout">
+<article>
+  <p class="eyebrow">Chapitre 12 · Semaine 12</p>
+  <h1>Méthodes numériques</h1>
+  <div class="prep">
+    <div><h2>À faire avant le cours</h2><ol><li>Lis ce chapitre et exécute les exemples (environ 1 h).</li><li>Fais les exercices préparatoires 12.1 à 12.10, au bas de la page (environ 1 h 30).</li><li>Télécharge ton rapport et remets-le sur LÉA avant le cours.</li></ol></div>
+    <a class="btn" href="#exercices">Aller aux exercices</a>
+  </div>
+  <p class="aide">Tout le code de cette page s'exécute dans ton navigateur : clique sur <strong>▶ Exécuter</strong>. Tu peux modifier les exemples librement; <strong>Réinitialiser</strong> remet le code d'origine. Raccourci : Maj + Entrée.</p>
+<div class="admonition probleme">
+<p class="admonition-title">Problème d'ouverture</p>
+<p>Une parachutiste saute d'un avion. L'air la freine de plus en plus à mesure qu'elle accélère : sa vitesse obéit à l'équation dv/dt = g − (c/m) v². Quelle sera sa vitesse après 10 s? Quelle distance aura-t-elle parcourue?</p>
+<p>Avec les outils du cégep, ces questions sont difficiles à résoudre à la main. Avec une boucle et quelques lignes de Python, on obtient la réponse avec la précision qu'on veut. C'est le rôle des <strong>méthodes numériques</strong>.</p>
+</div>
+<h2 id="objectifs">Objectifs</h2>
+<ol>
+<li>Trouver la racine d'une équation par la méthode de la <strong>bissection</strong>.</li>
+<li>Calculer l'aire sous une courbe, ou sous des mesures, par la méthode des <strong>trapèzes</strong>.</li>
+<li>Simuler un phénomène qui évolue dans le temps par la méthode d'<strong>Euler</strong>.</li>
+<li>Valider une méthode numérique : la comparer à un cas connu et vérifier que l'erreur diminue quand on raffine.</li>
+</ol>
+<h2 id="pourquoi-des-methodes-numeriques">Pourquoi des méthodes numériques?</h2>
+<p>Trois situations reviennent sans cesse en sciences :</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Situation</th>
+<th>Exemple</th>
+<th>Méthode du chapitre</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Une équation qu'on ne sait pas isoler</td>
+<td>x³ − 2x − 5 = 0, cos(x) = x</td>
+<td>Bissection</td>
+</tr>
+<tr>
+<td>Une aire sous une courbe, ou sous des <strong>mesures</strong></td>
+<td>la distance parcourue, à partir de vitesses mesurées</td>
+<td>Trapèzes</td>
+</tr>
+<tr>
+<td>Une grandeur dont on connaît seulement le <strong>taux de variation</strong></td>
+<td>dT/dt = −k (T − T<sub>a</sub>), dv/dt = g − (c/m) v²</td>
+<td>Euler</td>
+</tr>
+</tbody>
+</table></div>
+<p>Une méthode numérique ne donne pas la réponse exacte : elle donne une <strong>approximation</strong>, aussi précise qu'on le veut, au prix de plus de calculs. Ce sont les ordinateurs qui font ces calculs.</p>
+<h2 id="la-bissection-trouver-une-racine">La bissection : trouver une racine</h2>
+<p>On cherche x tel que f(x) = 0. Si f(a) et f(b) ont des <strong>signes contraires</strong>, et que f est continue, la courbe traverse zéro entre a et b.</p>
+<p>L'idée : couper l'intervalle en deux, garder la moitié où le signe change, et recommencer jusqu'à ce que l'intervalle soit assez petit.</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">def f(x):
+    return x ** 3 - 2 * x - 5
+
+a = 2
+b = 3
+print(&quot;f(a) =&quot;, f(a), &quot; f(b) =&quot;, f(b))    # signes contraires : une racine entre 2 et 3
+
+while b - a &gt; 0.000001:
+    m = (a + b) / 2
+    if f(a) * f(m) &lt;= 0:     # le signe change entre a et m
+        b = m
+    else:                    # le signe change entre m et b
+        a = m
+
+print(&quot;Racine :&quot;, (a + b) / 2)
+print(&quot;Vérification : f =&quot;, f((a + b) / 2))</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<div class="admonition note">
+<p class="admonition-title">Pourquoi f(a) × f(m) ≤ 0?</p>
+<p>Le produit de deux nombres est négatif seulement s'ils sont de signes contraires. C'est une façon compacte de tester « le signe change entre a et m ».</p>
+</div>
+<p>À chaque tour, l'intervalle est coupé en deux. Partir d'un intervalle de largeur 1 et descendre sous 0.000001 prend donc 20 tours, puisque 2²⁰ dépasse un million. La bissection est lente mais <strong>toujours fiable</strong>, à condition de partir d'un intervalle où le signe change.</p>
+<div class="admonition piege">
+<p class="admonition-title">Piège : un intervalle sans changement de signe</p>
+<p>Si f(a) et f(b) ont le même signe, la bissection ne trouve rien de valable : elle converge vers une des bornes. Vérifie toujours le signe de f(a) × f(b) avant de commencer.</p>
+</div>
+<h2 id="en-fonction-reutilisable">En fonction réutilisable</h2>
+<p>Une fonction peut recevoir <strong>une autre fonction</strong> en paramètre. On écrit la bissection une seule fois, et on l'utilise pour n'importe quelle équation.</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">import math
+
+def bissection(f, a, b, tolerance):
+    while b - a &gt; tolerance:
+        m = (a + b) / 2
+        if f(a) * f(m) &lt;= 0:
+            b = m
+        else:
+            a = m
+    return (a + b) / 2
+
+def g(x):
+    return math.cos(x) - x      # cos(x) = x  ⟺  cos(x) − x = 0
+
+print(bissection(g, 0, 1, 0.000001))</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<p>Remarque : on passe <code>g</code>, <strong>sans parenthèses</strong>. Avec <code>g()</code>, on passerait le résultat d'un appel, pas la fonction.</p>
+<h2 id="les-trapezes-laire-sous-des-mesures">Les trapèzes : l'aire sous des mesures</h2>
+<p>L'aire sous la courbe de la vitesse donne la distance parcourue. Avec des mesures, on n'a que quelques points : on les relie par des segments, et on additionne les aires des <strong>trapèzes</strong> ainsi formés.</p>
+<p>L'aire d'un trapèze entre deux mesures vaut :</p>
+<p>aire = (y₁ + y₂) / 2 × (x₂ − x₁)</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">temps = [0, 2, 4, 6, 8, 10]                  # s
+vitesses = [0, 4.1, 7.9, 12.2, 15.8, 20.1]   # m/s
+
+distance = 0
+for i in range(len(temps) - 1):
+    largeur = temps[i + 1] - temps[i]
+    hauteur_moyenne = (vitesses[i] + vitesses[i + 1]) / 2
+    distance = distance + hauteur_moyenne * largeur
+
+print(&quot;Distance parcourue :&quot;, round(distance, 2), &quot;m&quot;)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<p>La boucle s'arrête à <code>len(temps) - 1</code> : six mesures forment <strong>cinq</strong> trapèzes. Les mesures n'ont pas besoin d'être régulières : chaque trapèze a sa propre largeur.</p>
+<div class="admonition essaie">
+<p class="admonition-title">Essaie-le</p>
+<p>Avec une fonction connue, on peut mesurer l'erreur. L'aire exacte sous y = x² entre 0 et 3 vaut 9. Calcule-la par les trapèzes avec 4, puis 40 intervalles, en construisant les listes avec <code>np.linspace</code> : l'erreur diminue environ 100 fois quand on prend 10 fois plus d'intervalles.</p>
+</div>
+<h2 id="euler-simuler-levolution-dans-le-temps">Euler : simuler l'évolution dans le temps</h2>
+<p>Souvent, la physique donne seulement le <strong>taux de variation</strong> d'une grandeur. Par exemple, la loi de refroidissement de Newton :</p>
+<p>dT/dt = −k (T − T<sub>a</sub>)</p>
+<p>La méthode d'Euler avance par petits pas de temps Δt. Pendant un pas, on suppose que le taux reste constant :</p>
+<p>T<sub>nouveau</sub> = T + (taux) × Δt</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">import math
+
+T = 90          # °C, température initiale
+T_a = 20        # °C, température de la pièce
+k = 0.1         # 1/min
+dt = 1          # min
+duree = 10      # min
+
+nb_pas = round(duree / dt)
+for i in range(nb_pas):
+    taux = -k * (T - T_a)
+    T = T + taux * dt
+
+exact = T_a + (90 - T_a) * math.exp(-k * duree)
+print(&quot;Euler :&quot;, round(T, 3), &quot;°C&quot;)
+print(&quot;Exact :&quot;, round(exact, 3), &quot;°C&quot;)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<div class="admonition note">
+<p class="admonition-title">Pourquoi round(duree / dt)?</p>
+<p>Avec dt = 0.1, <code>duree / dt</code> donne parfois 99.99999999999999 au lieu de 100 (chapitre 2). <code>round()</code> donne le bon nombre de pas; <code>int()</code> en perdrait un.</p>
+</div>
+<h2 id="valider-une-methode-numerique">Valider une méthode numérique</h2>
+<p>Une méthode numérique se valide toujours sur un <strong>cas dont on connaît la réponse</strong>, avant de l'utiliser sur un cas inconnu. Pour le refroidissement, la solution exacte est T(t) = T<sub>a</sub> + (T₀ − T<sub>a</sub>) e<sup>−kt</sup>.</p>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">import math
+
+def refroidir(T0, T_a, k, dt, duree):
+    T = T0
+    for i in range(round(duree / dt)):
+        T = T - k * (T - T_a) * dt
+    return T
+
+exact = 20 + 70 * math.exp(-0.1 * 10)
+for dt in [1, 0.1, 0.01]:
+    erreur = abs(refroidir(90, 20, 0.1, dt, 10) - exact)
+    print(f&quot;dt = {dt:5} min   erreur = {erreur:.4f} °C&quot;)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<p>Chaque fois que Δt est divisé par 10, l'erreur est divisée par 10 environ. C'est la signature de la méthode d'Euler. Cette vérification te donne confiance : sur le problème de la parachutiste, dont on ne connaît pas la réponse, un petit Δt donnera un résultat fiable.</p>
+<div class="admonition piege">
+<p class="admonition-title">Piège : un pas de temps trop grand</p>
+<p>Avec Δt = 30 min, Euler donne T = 90 − 0.1 × 70 × 30 = −120 °C : un café plus froid que la pièce! Un résultat qui viole le bon sens physique signale un pas trop grand. Diminue Δt jusqu'à ce que le résultat ne change presque plus.</p>
+</div>
+<h2 id="exemple-complet-la-vitesse-de-la-parachutiste">Exemple complet : la vitesse de la parachutiste</h2>
+<h3 id="planifier">Planifier</h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Réponse</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Intrants</td>
+<td>m = 80 kg, c = 0.25 kg/m, g = 9.81 m/s², Δt = 0.01 s, durée 10 s</td>
+</tr>
+<tr>
+<td>Extrant</td>
+<td>la vitesse après 10 s (m/s)</td>
+</tr>
+<tr>
+<td>Traitements</td>
+<td>partir de v = 0; à chaque pas, calculer dv/dt = g − (c/m) v², puis avancer v de dv/dt × Δt</td>
+</tr>
+<tr>
+<td>Validation</td>
+<td>sans frottement (c = 0), on doit retrouver v = g t = 98.1 m/s</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="coder">Coder</h3>
+<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">def vitesse_finale(m, c, dt, duree):
+    g = 9.81
+    v = 0
+    for i in range(round(duree / dt)):
+        a = g - (c / m) * v ** 2
+        v = v + a * dt
+    return v
+
+print(&quot;Validation, sans frottement :&quot;, round(vitesse_finale(80, 0, 0.01, 10), 2), &quot;m/s&quot;)
+print(&quot;Avec frottement :&quot;, round(vitesse_finale(80, 0.25, 0.01, 10), 2), &quot;m/s&quot;)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
+<h3 id="verifier">Vérifier</h3>
+<p>Sans frottement, on retrouve 98.1 m/s : le programme est validé sur un cas connu. Avec frottement, la vitesse est bien plus petite et s'approche de la <strong>vitesse limite</strong> √(mg/c) ≈ 56 m/s. Le labo de cette semaine poursuit ce problème.</p>
+<h2 id="pieges-frequents">Pièges fréquents</h2>
+<ul>
+<li>Lancer la bissection sur un intervalle où f ne change pas de signe.</li>
+<li>Passer <code>f()</code> au lieu de <code>f</code> à une fonction qui attend une fonction.</li>
+<li>Faire une boucle <code>range(len(x))</code> pour les trapèzes : il y a un trapèze de moins que de mesures, et <code>x[i + 1]</code> déborde.</li>
+<li>Utiliser <code>int(duree / dt)</code> : un pas peut manquer.</li>
+<li>Choisir un Δt trop grand, ou ne jamais valider la méthode sur un cas connu.</li>
+</ul>
+<h2 id="autoquiz">Autoquiz</h2>
+<ol>
+<li>Quelle condition doit-on vérifier avant de lancer une bissection?</li>
+<li>Combien de tours faut-il pour réduire un intervalle de largeur 1 sous 0.001?</li>
+<li>Combien de trapèzes forment 8 mesures?</li>
+<li>Avec Euler, que se passe-t-il, environ, avec l'erreur quand on divise Δt par 10?</li>
+<li>Comment valide-t-on une méthode numérique?</li>
+</ol>
+<h2 id="vocabulaire">Vocabulaire</h2>
+<div class="vocab"><span>méthode numérique</span><span>approximation</span><span>racine</span><span>bissection</span><span>tolérance</span><span>intégrale</span><span>trapèze</span><span>pas de temps</span><span>Euler</span><span>taux de variation</span><span>validation</span><span>convergence</span></div>
+<h2 id="exercices">Exercices préparatoires</h2><p>Écris ton code dans chaque exercice : remplace les <code>None</code> par ta réponse, puis clique sur <strong>Vérifier</strong>. La vérification te dit si ta réponse est bonne, sans la montrer. Ton travail est sauvegardé automatiquement dans ce navigateur.</p>
+<section class="exo" id="exo-12-1" data-id="12.1" data-checks="[[&quot;f(2)&quot;, &quot;bda18b9b9d65&quot;], [&quot;f(3)&quot;, &quot;a9317b68ac1e&quot;], [&quot;f(0)&quot;, &quot;6066c298aaf8&quot;], [&quot;intervalle_ok&quot;, &quot;3cbc87c7681f&quot;]]">
+  <div class="exo-head"><h3>Exercice 12.1 — Repérer un changement de signe</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Écris la fonction <code>f(x)</code>, qui retourne x³ − 2x − 5. Puis, dans <code>intervalle_ok</code>, mets <code>True</code> si f change de signe entre <code>a = 2</code> et <code>b = 3</code>, sinon <code>False</code>. Calcule-le avec le produit f(a) × f(b), sans l'écrire à la main.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 12.1 — Repérer un changement de signe">def f(x):
+    pass   # remplace cette ligne
+
+a = 2
+b = 3
+intervalle_ok = None</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-12-2" data-id="12.2" data-checks="[[&quot;m&quot;, &quot;1a5fd97b7ad1&quot;], [&quot;a&quot;, &quot;7a284f128e61&quot;], [&quot;b&quot;, &quot;1a5fd97b7ad1&quot;]]">
+  <div class="exo-head"><h3>Exercice 12.2 — Un tour de bissection, à la main</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Fais <strong>un seul</strong> tour de bissection sur f(x) = x³ − 2x − 5, à partir de <code>a = 2</code> et <code>b = 3</code> : calcule le milieu <code>m</code>, puis remplace <code>a</code> ou <code>b</code> par <code>m</code> selon l'endroit où le signe change. Ne fais pas de boucle.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 12.2 — Un tour de bissection, à la main">def f(x):
+    return x ** 3 - 2 * x - 5
+
+a = 2
+b = 3
+m = None</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-12-3" data-id="12.3" data-checks="[[&quot;round(bissection(f, 2, 3, 0.000001), 4)&quot;, &quot;8ff488536c85&quot;], [&quot;round(bissection(g, 0, 1, 0.000001), 4)&quot;, &quot;b6bf458370db&quot;], [&quot;round(bissection(g, -1, 2, 0.000001), 4)&quot;, &quot;b6bf458370db&quot;]]">
+  <div class="exo-head"><h3>Exercice 12.3 — La bissection en fonction</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Écris la fonction <code>bissection(f, a, b, tolerance)</code>, qui retourne le milieu du dernier intervalle, une fois sa largeur sous la tolérance. Elle sera appelée avec les fonctions <code>f</code> et <code>g</code> du départ, et avec d'autres intervalles.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 12.3 — La bissection en fonction">import math
+
+def f(x):
+    return x ** 3 - 2 * x - 5
+
+def g(x):
+    return math.cos(x) - x
+
+def bissection(f, a, b, tolerance):
+    pass   # remplace cette ligne
+
+print(bissection(f, 2, 3, 0.000001))</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-12-4" data-id="12.4" data-checks="[[&quot;nb_tours&quot;, &quot;4e8d15c2fb61&quot;], [&quot;round(racine, 2)&quot;, &quot;6c5685510358&quot;]]">
+  <div class="exo-head"><h3>Exercice 12.4 — Combien de tours?</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>On cherche √2, la racine positive de x² − 2, entre 0 et 2. Compte dans <code>nb_tours</code> le nombre de tours de bissection nécessaires pour que la largeur de l'intervalle passe sous 0.001, et garde l'approximation dans <code>racine</code>.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 12.4 — Combien de tours?">def h(x):
+    return x ** 2 - 2
+
+a = 0
+b = 2
+nb_tours = 0
+racine = None</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-12-5" data-id="12.5" data-checks="[[&quot;aire_trapeze(0, 2, 4, 6)&quot;, &quot;a9317b68ac1e&quot;], [&quot;aire_trapeze(1, 3, 1.5, 3)&quot;, &quot;510df013062f&quot;], [&quot;aire_trapeze(2, 0, 5, 10)&quot;, &quot;48919ab6fea1&quot;]]">
+  <div class="exo-head"><h3>Exercice 12.5 — L&#x27;aire d&#x27;un trapèze</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Écris la fonction <code>aire_trapeze(x1, y1, x2, y2)</code>, qui retourne l'aire du trapèze sous le segment qui relie (x1, y1) à (x2, y2).</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 12.5 — L&#x27;aire d&#x27;un trapèze">def aire_trapeze(x1, y1, x2, y2):
+    pass   # remplace cette ligne
+
+print(aire_trapeze(0, 2, 4, 6))     # 16.0</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-12-6" data-id="12.6" data-checks="[[&quot;trapezes([0, 1, 2], [0, 1, 4])&quot;, &quot;207cd6d1a9c3&quot;], [&quot;trapezes([0, 2, 3, 7], [5, 5, 1, 1])&quot;, &quot;c2d4e00a1a3c&quot;], [&quot;trapezes([1, 2], [3, 3])&quot;, &quot;207cd6d1a9c3&quot;], [&quot;round(trapezes([0, 0.5, 1.5, 2], [1, 2, 0, 4]), 3)&quot;, &quot;6ce59af83edd&quot;]]">
+  <div class="exo-head"><h3>Exercice 12.6 — La méthode des trapèzes</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Écris la fonction <code>trapezes(x, y)</code>, qui retourne l'aire sous des mesures, données par deux listes de même longueur. Les x ne sont pas forcément réguliers.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 12.6 — La méthode des trapèzes">def trapezes(x, y):
+    pass   # remplace cette ligne
+
+print(trapezes([0, 1, 2], [0, 1, 4]))     # 3.0</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-12-7" data-id="12.7" data-checks="[[&quot;energie_J&quot;, &quot;a1e8fe4e6024&quot;], [&quot;round(energie_Wh, 2)&quot;, &quot;663882d09236&quot;]]">
+  <div class="exo-head"><h3>Exercice 12.7 — L&#x27;énergie consommée</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Un wattmètre mesure la puissance (W) d'un appareil à différents instants (s). L'énergie consommée, en joules, est l'aire sous la courbe de la puissance. Calcule-la dans <code>energie_J</code>, puis convertis-la en wattheures dans <code>energie_Wh</code> (1 Wh = 3600 J).</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 12.7 — L&#x27;énergie consommée">temps = [0, 60, 120, 300, 600, 900, 1200]            # s
+puissance = [0, 850, 1200, 1180, 1210, 640, 0]        # W
+
+energie_J = None
+energie_Wh = None</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-12-8" data-id="12.8" data-checks="[[&quot;T1&quot;, &quot;746c2c9c8712&quot;], [&quot;T2&quot;, &quot;1eff312f214e&quot;]]">
+  <div class="exo-head"><h3>Exercice 12.8 — Deux pas d&#x27;Euler, à la main</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Un café à 90 °C refroidit dans une pièce à 20 °C : dT/dt = −0.1 (T − 20), en °C/min. Avec Δt = 1 min, calcule <code>T1</code>, la température après un pas, puis <code>T2</code>, après deux pas. Sans boucle.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 12.8 — Deux pas d&#x27;Euler, à la main">T0 = 90
+dt = 1
+T1 = None
+T2 = None</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-12-9" data-id="12.9" data-checks="[[&quot;round(refroidir(90, 20, 0.1, 1, 2), 3)&quot;, &quot;1eff312f214e&quot;], [&quot;round(refroidir(90, 20, 0.1, 1, 10), 3)&quot;, &quot;f625c6635485&quot;], [&quot;round(refroidir(90, 20, 0.1, 0.1, 10), 3)&quot;, &quot;70216a6ce861&quot;], [&quot;round(refroidir(5, 22, 0.05, 0.5, 30), 3)&quot;, &quot;ca8a1fdc5f2f&quot;], [&quot;refroidir(40, 20, 0.3, 1, 0)&quot;, &quot;571138d8db61&quot;]]">
+  <div class="exo-head"><h3>Exercice 12.9 — Euler en fonction</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>Écris la fonction <code>refroidir(T0, T_a, k, dt, duree)</code>, qui applique la méthode d'Euler à dT/dt = −k (T − T<sub>a</sub>) et retourne la température après <code>duree</code>. Utilise <code>round(duree / dt)</code> pour le nombre de pas.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 12.9 — Euler en fonction">def refroidir(T0, T_a, k, dt, duree):
+    pass   # remplace cette ligne
+
+print(refroidir(90, 20, 0.1, 1, 2))    # 76.7</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+<section class="exo" id="exo-12-10" data-id="12.10" data-checks="[[&quot;round(exact, 3)&quot;, &quot;b5658dea2b58&quot;], [&quot;round(erreur_1, 3)&quot;, &quot;61b9a4bd0c0f&quot;], [&quot;round(erreur_01, 3)&quot;, &quot;3231c1c65a5a&quot;], [&quot;round(rapport, 1)&quot;, &quot;a01a8049cfd1&quot;]]">
+  <div class="exo-head"><h3>Exercice 12.10 — Valider la méthode</h3><span class="badge">À faire</span></div>
+  <div class="enonce"><p>La solution exacte du refroidissement est T(t) = T<sub>a</sub> + (T₀ − T<sub>a</sub>) e<sup>−kt</sup>. Pour le café (90 °C, pièce à 20 °C, k = 0.1, après 10 min), calcule l'erreur absolue d'Euler avec Δt = 1 min dans <code>erreur_1</code>, puis avec Δt = 0.1 min dans <code>erreur_01</code>. Garde dans <code>rapport</code> le quotient <code>erreur_1 / erreur_01</code>.</p></div>
+  
+  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 12.10 — Valider la méthode">import math
+
+def refroidir(T0, T_a, k, dt, duree):
+    T = T0
+    for i in range(round(duree / dt)):
+        T = T - k * (T - T_a) * dt
+    return T
+
+exact = None
+erreur_1 = None
+erreur_01 = None
+rapport = None</textarea>
+    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
+    <output></output><div class="verdict" aria-live="polite"></div></div>
+</section>
+  <div class="enclasse"><p><strong>En classe : Labo 12.</strong> Quiz d'entrée, démonstration, atelier en équipe et labo individuel. Le code d'accès est donné au début de la séance.</p><a class="btn ghost" href="../labos/labo12.html">Page du labo 12</a></div>
+  <h2 id="remise">Remise sur LÉA</h2>
+  <div class="travail">
+    <label class="nom"><span>Ton nom (prénom et nom)</span><input id="nom-etudiant" type="text" autocomplete="name"></label>
+    <div><p class="progression"></p><div class="barre" aria-hidden="true"><span></span></div></div>
+    <ol>
+      <li>Clique sur <strong>Télécharger mon rapport</strong>. Le fichier contient ton code, tes fiches et le résultat de chaque vérification.</li>
+      <li>Dépose ce fichier dans le travail du chapitre 12 sur LÉA.</li>
+    </ol>
+    <div class="actions"><button class="btn telecharger" type="button">Télécharger mon rapport</button>
+      <label class="btn ghost">Importer un rapport<input class="importer" type="file" accept=".py,.txt" hidden></label></div>
+    <p id="msg-import" aria-live="polite"></p>
+    <p class="note">Ton travail est sauvegardé automatiquement, mais seulement dans <em>ce</em> navigateur, sur <em>cet</em> appareil. Pour continuer ailleurs, télécharge ton rapport et importe-le sur l'autre appareil.</p>
+  </div>
+  <nav class="pager" aria-label="Chapitres"><a class="btn ghost" href="ch11.html">← Chapitre 11</a><a class="btn ghost" href="ch13.html">Chapitre 13 →</a></nav>
+</article>
+<aside class="toc" aria-label="Dans ce chapitre">
+  <p>Dans ce chapitre</p>
+  <ol><li><a href="#objectifs">Objectifs</a></li><li><a href="#pourquoi-des-methodes-numeriques">Pourquoi des méthodes numériques?</a></li><li><a href="#la-bissection-trouver-une-racine">La bissection : trouver une racine</a></li><li><a href="#en-fonction-reutilisable">En fonction réutilisable</a></li><li><a href="#les-trapezes-laire-sous-des-mesures">Les trapèzes : l'aire sous des mesures</a></li><li><a href="#euler-simuler-levolution-dans-le-temps">Euler : simuler l'évolution dans le temps</a></li><li><a href="#valider-une-methode-numerique">Valider une méthode numérique</a></li><li><a href="#exemple-complet-la-vitesse-de-la-parachutiste">Exemple complet : la vitesse de la parachutiste</a></li><li><a href="#pieges-frequents">Pièges fréquents</a></li><li><a href="#autoquiz">Autoquiz</a></li><li><a href="#vocabulaire">Vocabulaire</a></li><li><a href="#exercices">Exercices préparatoires</a></li><li><a href="#remise">Remise sur LÉA</a></li></ol>
+  <div class="cta"><p class="progression"></p><div class="barre" aria-hidden="true"><span></span></div><a class="btn" href="#remise">Remise sur LÉA</a><a class="btn ghost" href="../#recettes">Recettes</a></div>
+</aside>
+</div>
+<script src="../assets/cours.js?v=65bf887f"></script>
+</body>
+</html>
