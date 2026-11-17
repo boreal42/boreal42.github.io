@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/lecture.css?v=65bf887f">
+<link rel="stylesheet" href="../assets/lecture.css?v=7e6251fa">
 </head>
 <body data-chapitre="1">
 <header class="topbar"><div class="in">
@@ -47,7 +47,7 @@
 <p>Modifie le code ci-dessus pour qu'il affiche ton prénom, puis exécute-le de nouveau.</p>
 </div>
 <h3 id="tout-se-passe-dans-le-site-du-cours">Tout se passe dans le site du cours</h3>
-<p>Chaque chapitre du cours est une page comme celle-ci. Les exemples de la théorie s'exécutent sur place, et les exercices, au bas de la page, aussi : tu écris ton code, tu l'exécutes, puis le bouton <strong>Vérifier</strong> te dit si ta réponse est bonne. Ton travail est sauvegardé automatiquement dans ton navigateur, et tu le remets sur LÉA sous forme de rapport. La <a href="../#recettes">recette</a> explique les détails.</p>
+<p>Chaque chapitre du cours est une page comme celle-ci. Les exemples de la théorie s'exécutent sur place, et les exercices, au bas de la page, aussi : tu écris ton code, tu l'exécutes, puis le bouton <strong>Vérifier</strong> te dit si ta réponse est bonne. Ton travail est sauvegardé automatiquement dans ton navigateur, et tu peux en télécharger une copie en notebook pour Google Colab. Seules les évaluations se remettent sur LÉA. Les <a href="../#recettes">recettes</a> expliquent les détails.</p>
 <h2 id="python-comme-calculatrice-scientifique">Python comme calculatrice scientifique</h2>
 <div class="tablewrap"><table>
 <thead>
@@ -294,27 +294,21 @@ print(aire)</textarea>
     <output></output><div class="verdict" aria-live="polite"></div></div>
 </section>
   <div class="enclasse"><p><strong>En classe : Labo 1.</strong> Quiz d'entrée, démonstration, atelier en équipe et labo individuel. Le code d'accès est donné au début de la séance.</p><a class="btn ghost" href="../labos/labo01.html">Page du labo 1</a></div>
-  <h2 id="remise">Remise sur LÉA</h2>
+  <h2 id="sauvegarde">Sauvegarder mon travail</h2>
   <div class="travail">
-    <label class="nom"><span>Ton nom (prénom et nom)</span><input id="nom-etudiant" type="text" autocomplete="name"></label>
     <div><p class="progression"></p><div class="barre" aria-hidden="true"><span></span></div></div>
-    <ol>
-      <li>Clique sur <strong>Télécharger mon rapport</strong>. Le fichier contient ton code, tes fiches et le résultat de chaque vérification.</li>
-      <li>Dépose ce fichier dans le travail du chapitre 1 sur LÉA.</li>
-    </ol>
-    <div class="actions"><button class="btn telecharger" type="button">Télécharger mon rapport</button>
-      <label class="btn ghost">Importer un rapport<input class="importer" type="file" accept=".py,.txt" hidden></label></div>
-    <p id="msg-import" aria-live="polite"></p>
-    <p class="note">Ton travail est sauvegardé automatiquement, mais seulement dans <em>ce</em> navigateur, sur <em>cet</em> appareil. Pour continuer ailleurs, télécharge ton rapport et importe-le sur l'autre appareil.</p>
+    <p>Ton travail est sauvegardé automatiquement dans <em>ce</em> navigateur, sur <em>cet</em> appareil. Il n'y a rien à remettre : arrive au cours avec tes exercices faits, et tes questions sur ceux qui résistent.</p>
+    <p>Pour garder une copie ailleurs, télécharge ton travail en notebook. Tu peux l'ouvrir dans Google Colab (<em>Fichier → Importer le notebook</em>), le déposer dans ton Google Drive, ou l'ouvrir dans Jupyter.</p>
+    <div class="actions"><button class="btn notebook" type="button">Télécharger en notebook (.ipynb)</button></div>
   </div>
   <nav class="pager" aria-label="Chapitres"><span></span><a class="btn ghost" href="ch02.html">Chapitre 2 →</a></nav>
 </article>
 <aside class="toc" aria-label="Dans ce chapitre">
   <p>Dans ce chapitre</p>
-  <ol><li><a href="#objectifs">Objectifs</a></li><li><a href="#ton-premier-programme">Ton premier programme</a></li><li><a href="#python-comme-calculatrice-scientifique">Python comme calculatrice scientifique</a></li><li><a href="#les-variables-en-bref">Les variables, en bref</a></li><li><a href="#la-demarche-planifier-coder-verifier">La démarche : planifier, coder, vérifier</a></li><li><a href="#predire-avant-dexecuter">Prédire avant d'exécuter</a></li><li><a href="#les-erreurs-sont-normales">Les erreurs sont normales</a></li><li><a href="#lia-generative-dans-ce-cours">L'IA générative dans ce cours</a></li><li><a href="#autoquiz">Autoquiz</a></li><li><a href="#vocabulaire">Vocabulaire</a></li><li><a href="#exercices">Exercices de départ</a></li><li><a href="#remise">Remise sur LÉA</a></li></ol>
-  <div class="cta"><p class="progression"></p><div class="barre" aria-hidden="true"><span></span></div><a class="btn" href="#remise">Remise sur LÉA</a><a class="btn ghost" href="../#recettes">Recettes</a></div>
+  <ol><li><a href="#objectifs">Objectifs</a></li><li><a href="#ton-premier-programme">Ton premier programme</a></li><li><a href="#python-comme-calculatrice-scientifique">Python comme calculatrice scientifique</a></li><li><a href="#les-variables-en-bref">Les variables, en bref</a></li><li><a href="#la-demarche-planifier-coder-verifier">La démarche : planifier, coder, vérifier</a></li><li><a href="#predire-avant-dexecuter">Prédire avant d'exécuter</a></li><li><a href="#les-erreurs-sont-normales">Les erreurs sont normales</a></li><li><a href="#lia-generative-dans-ce-cours">L'IA générative dans ce cours</a></li><li><a href="#autoquiz">Autoquiz</a></li><li><a href="#vocabulaire">Vocabulaire</a></li><li><a href="#exercices">Exercices de départ</a></li><li><a href="#sauvegarde">Sauvegarder mon travail</a></li></ol>
+  <div class="cta"><p class="progression"></p><div class="barre" aria-hidden="true"><span></span></div><a class="btn" href="#sauvegarde">Sauvegarder</a><a class="btn ghost" href="../#recettes">Recettes</a></div>
 </aside>
 </div>
-<script src="../assets/cours.js?v=65bf887f"></script>
+<script src="../assets/cours.js?v=7e6251fa"></script>
 </body>
 </html>

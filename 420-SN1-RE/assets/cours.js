@@ -351,6 +351,49 @@
     lecteur.readAsText(fichier);
   }
 
+  // ---------- Exportation en notebook (.ipynb), pour Google Colab ou Jupyter ----------
+  function notebook() {
+    const md = t => ({ cell_type: "markdown", metadata: {}, source: t });
+    const py = t => ({ cell_type: "code", metadata: {}, execution_count: null, outputs: [], source: t });
+    const titre = ((document.querySelector("article h1") || document.querySelector("h1") || {}).textContent || document.title).trim();
+    const n = exercices.filter(e => e.dataset.reussi === "1").length;
+    const cellules = [];
+    let entete = `# 420-SN1-RE · ${titre}\n\nCopie de ton travail, exportée du site du cours le ${new Date().toLocaleString("fr-CA")}.\n\n`
+      + `**Résultat sur le site :** ${n} / ${exercices.length} exercices réussis.`;
+    const q = etatQuiz();
+    if (q) entete += `\n\n**Quiz d'entrée :** ${q.score} / ${q.total}`;
+    const extras = Object.entries(lireExtras()).filter(([, v]) => v.trim());
+    if (extras.length) entete += "\n\n" + extras.map(([k, v]) => `**${k} :** ${v.trim()}`).join("\n\n");
+    entete += "\n\nLe bouton **Vérifier** n'existe que sur le site : pour valider une réponse, retourne sur la page du cours.";
+    cellules.push(md(entete));
+    let fichiers = FICHIERS;
+    try { const f = document.getElementById("fichiers-donnees"); if (f) fichiers = JSON.parse(f.textContent); } catch (e) {}
+    if (fichiers && Object.keys(fichiers).length) {
+      cellules.push(md("## Fichiers de données\n\nExécute d'abord ces cellules : elles recréent les fichiers utilisés par les exercices."));
+      Object.entries(fichiers).forEach(([nom, contenu]) => cellules.push(py(`%%writefile ${nom}\n${String(contenu).replace(/\n$/, "")}`)));
+    }
+    exercices.forEach(exo => {
+      const e = etatExo(exo);
+      const t = (exo.querySelector(".exo-head h3") || {}).textContent || exo.dataset.id;
+      const enonce = ((exo.querySelector(".enonce") || {}).innerText || "").trim();
+      let texte = `## ${t.trim()}\n\n${e.reussi ? "✅ Réussi sur le site." : "⬜ Pas encore réussi sur le site."}\n\n${enonce}`;
+      const f = Object.entries(e.fiche || {}).filter(([, v]) => v.trim());
+      if (f.length) texte += "\n\n**Fiche de planification**\n\n" + f.map(([k, v]) => `- **${k}** : ${v.trim()}`).join("\n");
+      cellules.push(md(texte));
+      cellules.push(py(e.code));
+    });
+    return { cells: cellules, metadata: { kernelspec: { name: "python3", display_name: "Python 3", language: "python" }, language_info: { name: "python" } }, nbformat: 4, nbformat_minor: 4 };
+  }
+  function telechargerNotebook() {
+    const blob = new Blob([JSON.stringify(notebook(), null, 1)], { type: "application/x-ipynb+json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `420-SN1-RE_${TYPE === "labo" ? "labo" + CHAPITRE.replace("L", "") : "ch" + CHAPITRE}.ipynb`;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  }
+  document.querySelectorAll(".notebook").forEach(b => b.addEventListener("click", telechargerNotebook));
+
   document.querySelectorAll(".telecharger").forEach(b => b.addEventListener("click", telecharger));
   document.querySelectorAll(".importer").forEach(inp => inp.addEventListener("change", () => {
     if (inp.files[0]) importer(inp.files[0], document.getElementById("msg-import"));

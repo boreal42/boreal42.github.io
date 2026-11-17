@@ -202,7 +202,7 @@ footer{margin-top:2rem;font-size:.82rem;color:var(--muted)}
           <div class="step">
             <span class="when">En classe · 1 h 50</span>
             <h3>Pratiquer</h3>
-            <p>Atelier en équipe, puis labo individuel, sur la page du labo. Remise du rapport de séance sur LÉA.</p>
+            <p>Atelier en équipe, puis labo individuel, sur la page du labo.</p>
           </div>
         </div>
 
@@ -291,7 +291,7 @@ footer{margin-top:2rem;font-size:.82rem;color:var(--muted)}
           <ol>
             <li>Ton code et tes fiches sont sauvegardés <strong>automatiquement</strong>, à chaque modification.</li>
             <li>La sauvegarde est dans <strong>ce navigateur, sur cet appareil</strong>. Un autre ordinateur, un autre navigateur ou une navigation privée ne la voient pas.</li>
-            <li>Si tu effaces l'historique de ton navigateur, la sauvegarde disparaît : télécharge ton rapport régulièrement.</li>
+            <li>Si tu effaces l'historique de ton navigateur, la sauvegarde disparaît. Pour garder une copie, télécharge ton travail en notebook (recette suivante).</li>
           </ol>
         </div>
 
@@ -305,21 +305,23 @@ footer{margin-top:2rem;font-size:.82rem;color:var(--muted)}
           </ol>
         </div>
 
-        <div class="recipe" id="recette-lea">
-          <h3>Remettre ton travail sur LÉA</h3>
+        <div class="recipe" id="recette-notebook">
+          <h3>Garder une copie de ton travail (notebook)</h3>
           <ol>
-            <li>Au bas de la page (chapitre, labo ou évaluation), écris ton nom dans la section <strong>Remise sur LÉA</strong>.</li>
-            <li>Clique sur <strong>Télécharger mon rapport</strong>. Tu obtiens un fichier <code>.py</code> qui contient ton code, tes fiches et le résultat de chaque vérification.</li>
-            <li>Dans LÉA, ouvre le travail correspondant et dépose ce fichier. Dépose le fichier tel quel, sans le modifier.</li>
+            <li>Au bas d'un chapitre ou d'un labo, clique sur <strong>Télécharger en notebook (.ipynb)</strong>. Le fichier contient les énoncés, ton code, tes fiches et l'état de chaque exercice.</li>
+            <li>Ouvre-le dans <strong>Google Colab</strong> (<em>Fichier → Importer le notebook</em>) ou dépose-le dans ton Google Drive. Il s'ouvre aussi dans Jupyter.</li>
+            <li>S'il y a des fichiers de données, exécute d'abord les cellules du début : elles les recréent.</li>
+            <li>Le bouton <strong>Vérifier</strong> n'existe que sur le site. La copie est la tienne; elle ne se réimporte pas dans le site.</li>
           </ol>
         </div>
 
-        <div class="recipe" id="recette-appareil">
-          <h3>Continuer sur un autre appareil</h3>
+        <div class="recipe" id="recette-lea">
+          <h3>Remettre une évaluation sur LÉA</h3>
           <ol>
-            <li>Sur le premier appareil, télécharge ton rapport.</li>
-            <li>Sur le second, ouvre la page du même chapitre ou du même labo et clique sur <strong>Importer un rapport</strong>, au bas de la page.</li>
-            <li>Choisis ton fichier : ton code, tes fiches et tes réussites reviennent.</li>
+            <li>Seules les <strong>évaluations</strong> se remettent sur LÉA. Les chapitres et les labos n'ont rien à remettre.</li>
+            <li>Au bas de la page de l'évaluation, écris ton nom dans la section <strong>Remise sur LÉA</strong>.</li>
+            <li>Clique sur <strong>Télécharger mon rapport</strong>. Tu obtiens un fichier <code>.py</code> qui contient tes réponses, ta planification et ton code.</li>
+            <li>Dans LÉA, ouvre le travail de l'évaluation et dépose ce fichier tel quel, sans le modifier, avant la fin de l'épreuve.</li>
           </ol>
         </div>
 
@@ -727,7 +729,7 @@ const CHAPITRES = [
    labo:"Gaz parfaits, tir d'un projectile, lumière du Soleil", ready:true,
    probleme:"Une balle de 0.5 kg roule à 3 m/s au sommet d'une rampe de 2 m. Quelle est son énergie mécanique? Tu sais le calculer à la main. Ici, tu écris un programme qui le fait pour n'importe quelle masse, vitesse et hauteur, et qui présente le résultat avec ses unités.",
    objectifs:["Créer et modifier des variables aux noms clairs","Distinguer int, float, str et bool, et convertir de l'un à l'autre","Écrire des expressions arithmétiques exactes","Utiliser le module math, angles en radians compris","Lire au clavier et afficher avec des f-strings","Reconnaître TypeError, ValueError et NameError"],
-   avant:["Lire le chapitre en exécutant les exemples (environ 1 h)","Faire les exercices préparatoires 2.1 à 2.10, autocorrigés (environ 1 h 30)","Déposer le rapport du chapitre sur LÉA avant le cours"],
+   avant:["Lire le chapitre en exécutant les exemples (environ 1 h)","Faire les exercices préparatoires 2.1 à 2.10, autocorrigés (environ 1 h 30)"],
    labos:["Labo 2.1 (essentiel) : gaz parfaits, version interactive","Labo 2.2 (intermédiaire) : portée et hauteur d'un projectile","Labo 2.3 (défi) : le temps de trajet de la lumière du Soleil"],
    vocab:["affectation","constante","type","int","float","str","bool","conversion","expression","module","import","f-string"],
    ensuite:"Pour la semaine 3 : lire le chapitre 3 et faire les exercices préparatoires 3.1 à 3.10."},
@@ -735,7 +737,7 @@ const CHAPITRES = [
    labo:"Racines d'une équation du second degré, classification de triangles", ready:true,
    probleme:"Ton labo mesure le pH de 30 solutions. Pour chacune, il faut dire si elle est acide, neutre ou basique, et signaler les mesures impossibles d'une sonde mal calibrée. Le programme doit choisir quoi faire selon la valeur.",
    objectifs:["Écrire des expressions logiques avec and, or, not","Choisir entre if, if/else et if/elif/else","Ordonner correctement une suite de conditions","Comparer des réels avec une tolérance","Construire un jeu d'essais qui passe par chaque branche et teste les bornes"],
-   avant:["Lire le chapitre en exécutant les exemples (environ 1 h)","Faire les exercices préparatoires 3.1 à 3.10, autocorrigés (environ 1 h 30)","Déposer le rapport du chapitre sur LÉA avant le cours"],
+   avant:["Lire le chapitre en exécutant les exemples (environ 1 h)","Faire les exercices préparatoires 3.1 à 3.10, autocorrigés (environ 1 h 30)"],
    labos:["Labo 3.1 (essentiel) : racines d'une équation du second degré","Labo 3.2 (intermédiaire) : quel triangle?","Labo 3.3 (défi) : est-il rectangle?"],
    vocab:["booléen","expression logique","condition","branche","bloc","indentation","tolérance","borne","erreur de logique"],
    ensuite:"Pour la semaine 4 : lire le chapitre 4. L'évaluation 1 (chapitres 1 à 3) a lieu pendant le labo de la semaine 4."},
@@ -743,7 +745,7 @@ const CHAPITRES = [
    labo:"Méthode de Héron, croissance bactérienne, refroidissement d'un café", eval:"Évaluation 1 · 10 %", ready:true,
    probleme:"Un échantillon de cobalt 60 de 80 g perd la moitié de sa masse tous les 5.27 ans. Combien de temps faut-il attendre pour qu'il en reste moins de 1 g? Le programme doit répéter un calcul tant que le seuil n'est pas atteint.",
    objectifs:["Écrire une boucle while qui s'arrête au bon moment","Utiliser un compteur et un accumulateur","Faire la trace d'exécution d'une boucle, tour par tour","Reconnaître et corriger une boucle infinie","Tester une boucle avec zéro tour, un tour et la borne"],
-   avant:["Lire le chapitre en exécutant les exemples (environ 1 h)","Faire les 5 exercices préparatoires, autocorrigés (environ 45 min)","Réviser les chapitres 1 à 3 pour l'évaluation 1","Déposer le rapport du chapitre sur LÉA avant le cours"],
+   avant:["Lire le chapitre en exécutant les exemples (environ 1 h)","Faire les 5 exercices préparatoires, autocorrigés (environ 45 min)","Réviser les chapitres 1 à 3 pour l'évaluation 1"],
    labos:["Évaluation 1 (60 min, chapitres 1 à 3)","Démonstration : la méthode de Héron","Mini-labo : croissance bactérienne, factorielle, refroidissement"],
    vocab:["boucle","while","itération","compteur","accumulateur","trace d'exécution","boucle infinie","borne"],
    ensuite:"Pour la semaine 5 : lire le chapitre 5 et faire ses exercices préparatoires."},
@@ -751,7 +753,7 @@ const CHAPITRES = [
    labo:"Monte-Carlo pour π, le pendule simple, nombres premiers, deux dés", ready:true,
    probleme:"Pour préparer un graphique, il faut calculer la position d'un objet en chute libre à chaque dixième de seconde, de 0 à 3 s : 31 calculs identiques. On sait d'avance combien de répétitions il faut : c'est le travail de la boucle for.",
    objectifs:["Écrire une boucle for avec range(), en choisissant début, fin et pas","Choisir entre for et while","Calculer une somme ou un produit dans une boucle for","Imbriquer deux boucles","Simuler un phénomène aléatoire avec random"],
-   avant:["Lire le chapitre en exécutant les exemples (environ 1 h)","Faire les exercices préparatoires 5.1 à 5.10, autocorrigés (environ 1 h 30)","Déposer le rapport du chapitre sur LÉA avant le cours"],
+   avant:["Lire le chapitre en exécutant les exemples (environ 1 h)","Faire les exercices préparatoires 5.1 à 5.10, autocorrigés (environ 1 h 30)"],
    labos:["Démonstration : estimer π au hasard (Monte-Carlo)","Atelier en équipe : le pendule simple","Labo : températures, nombres premiers, deux dés"],
    vocab:["for","range","pas","série","boucles imbriquées","random","graine (seed)","simulation"],
    ensuite:"Pour la semaine 6 : lire le chapitre 6 et faire les exercices préparatoires 6.1 à 6.10."},
@@ -759,7 +761,7 @@ const CHAPITRES = [
    labo:"Boîte à outils de chimie, nombres premiers, PGCD", ready:true,
    probleme:"Dans tes labos, tu recalcules sans cesse les mêmes choses : vitesse moyenne, énergie, conversions. Une fonction donne un nom à un calcul : on l'écrit et on la teste une fois, puis on l'utilise partout. C'est aussi l'outil pour décomposer un gros problème.",
    objectifs:["Définir une fonction avec def, des paramètres et return","Distinguer return et print()","Comprendre la portée des variables","Documenter une fonction avec une docstring","Décomposer un problème en fonctions testées séparément"],
-   avant:["Lire le chapitre en exécutant les exemples (environ 1 h)","Faire les exercices préparatoires 6.1 à 6.10, autocorrigés (environ 1 h 30)","Déposer le rapport du chapitre sur LÉA avant le cours"],
+   avant:["Lire le chapitre en exécutant les exemples (environ 1 h)","Faire les exercices préparatoires 6.1 à 6.10, autocorrigés (environ 1 h 30)"],
    labos:["Démonstration : décomposer le tir d'un projectile","Atelier en équipe : la boîte à outils de chimie","Labo : conversions, nombres premiers"],
    vocab:["def","paramètre","argument","return","None","valeur par défaut","portée","docstring","décomposition"],
    ensuite:"Pour la semaine 7 : lire le chapitre 7. L'évaluation 2 (chapitres 1 à 6) a lieu pendant le cours de la semaine 7."},
@@ -767,7 +769,7 @@ const CHAPITRES = [
    labo:"Écart relatif et qualité de mesures, tests qui débusquent une erreur", eval:"Évaluation 2 · 15 %", ready:true,
    probleme:"Tes fonctions sont utiles, mais comment les réutiliser sans les recopier, et comment être sûr qu'elles sont justes après une modification? Les modules les rangent; les tests automatisés vérifient tout le jeu d'essais en une seule exécution.",
    objectifs:["Importer un module de trois façons","Utiliser math, random et statistics","Comprendre ce qu'est un module maison","Écrire des tests automatisés avec assert","Tester des résultats réels avec une tolérance"],
-   avant:["Lire le chapitre en exécutant les exemples (environ 1 h)","Faire les 5 exercices préparatoires, autocorrigés (environ 45 min)","Réviser les chapitres 1 à 6 pour l'évaluation 2","Déposer le rapport du chapitre sur LÉA avant le cours"],
+   avant:["Lire le chapitre en exécutant les exemples (environ 1 h)","Faire les 5 exercices préparatoires, autocorrigés (environ 45 min)","Réviser les chapitres 1 à 6 pour l'évaluation 2"],
    labos:["Évaluation 2 (60 min, chapitres 1 à 6)","Démonstration : écrire les tests avant la fonction","Mini-labo : écart relatif, statistiques de mesures"],
    vocab:["module","import","statistics","module maison","assert","test automatisé","tolérance"],
    ensuite:"Pour la semaine 8 : lire le chapitre 8 et faire ses exercices préparatoires."},
@@ -775,7 +777,7 @@ const CHAPITRES = [
    labo:"Périodes du pendule de la classe, moyenne mobile, tri", ready:true,
    probleme:"Dix équipes ont mesuré g au laboratoire. Il faut la moyenne, l'écart type, les mesures aberrantes, puis la moyenne sans elles. Avec une variable par mesure, il faudrait tout réécrire pour 30 équipes; une liste range toutes les mesures sous un seul nom.",
    objectifs:["Créer une liste, accéder à ses éléments par leur indice et la modifier","Parcourir une liste avec for, avec ou sans indice","Construire une liste avec append()","Calculer des statistiques sur une liste","Rechercher des éléments et filtrer une liste"],
-   avant:["Lire le chapitre en exécutant les exemples (environ 1 h)","Faire les exercices préparatoires 8.1 à 8.10, autocorrigés (environ 1 h 30)","Déposer le rapport du chapitre sur LÉA avant le cours"],
+   avant:["Lire le chapitre en exécutant les exemples (environ 1 h)","Faire les exercices préparatoires 8.1 à 8.10, autocorrigés (environ 1 h 30)"],
    labos:["Démonstration : lisser des données bruitées (moyenne mobile)","Atelier en équipe : les périodes du pendule de la classe","Labo : inverser, moyenne mobile, trier sans sort()"],
    vocab:["liste","indice","élément","len","append","parcours","moyenne","écart type","filtrage","aberrante"],
    ensuite:"Pour la semaine 9 : lire le chapitre 9 et faire les exercices préparatoires 9.1 à 9.10."},
@@ -783,7 +785,7 @@ const CHAPITRES = [
    labo:"Station météo du cégep, pH neutre, point chaud d'une plaque", ready:true,
    probleme:"Ton titrage a produit 41 mesures de pH, enregistrées dans un fichier CSV. Recopier ces nombres à la main? Hors de question. Il faut lire le fichier, ranger ses valeurs en lignes et colonnes, puis écrire un rapport.",
    objectifs:["Créer un tableau 2D et accéder à une case avec deux indices","Parcourir un tableau 2D par ligne et par colonne","Lire un fichier texte et un fichier CSV","Écrire des résultats dans un fichier","Analyser des données réelles"],
-   avant:["Lire le chapitre en exécutant les exemples (environ 1 h)","Faire les exercices préparatoires 9.1 à 9.10, autocorrigés (environ 1 h 30)","Déposer le rapport du chapitre sur LÉA avant le cours"],
+   avant:["Lire le chapitre en exécutant les exemples (environ 1 h)","Faire les exercices préparatoires 9.1 à 9.10, autocorrigés (environ 1 h 30)"],
    labos:["Démonstration : du fichier météo à un rapport CSV","Atelier en équipe : 24 heures de la station météo","Labo : table de multiplication, pH neutre, point chaud"],
    vocab:["tableau 2D","ligne","colonne","fichier","open","with","csv","en-tête","écriture"],
    ensuite:"Pour la semaine 10 : lire le chapitre 10 et faire les exercices préparatoires 10.1 à 10.10."},
@@ -791,7 +793,7 @@ const CHAPITRES = [
    labo:"La sonde qui tombe : déboguer, puis vectoriser", ready:true,
    probleme:"Ta simulation donne une altitude de −3000 m au lieu de 3000 m, sans aucun message d'erreur. Comment trouver l'erreur sans tout réécrire au hasard? Ensuite, NumPy fait en une ligne ce qu'une boucle fait en cinq.",
    objectifs:["Distinguer les erreurs de syntaxe, d'exécution et de logique","Lire un message d'erreur","Appliquer une méthode de débogage en cinq étapes","Calculer sur des tableaux NumPy entiers","Utiliser linspace, les statistiques et les masques de NumPy"],
-   avant:["Lire le chapitre en exécutant les exemples (environ 1 h)","Faire les exercices préparatoires 10.1 à 10.10, autocorrigés (environ 1 h 30)","Déposer le rapport du chapitre sur LÉA avant le cours"],
+   avant:["Lire le chapitre en exécutant les exemples (environ 1 h)","Faire les exercices préparatoires 10.1 à 10.10, autocorrigés (environ 1 h 30)"],
    labos:["Démonstration : déboguer à voix haute","Atelier en équipe : la sonde qui tombe","Labo : moyenne pondérée, vitesses avec NumPy"],
    vocab:["erreur de logique","traceback","débogage","NumPy","tableau","linspace","vectoriser","masque"],
    ensuite:"Pour la semaine 11 : lire le chapitre 11. L'évaluation 3 (chapitres 1 à 10) a lieu pendant le cours de la semaine 11."},
@@ -799,7 +801,7 @@ const CHAPITRES = [
    labo:"Pendule : mesures et modèle, courbe de titrage", eval:"Évaluation 3 · 20 %", ready:true,
    probleme:"Un tableau de 41 valeurs de pH ne dit presque rien au premier coup d'œil. En graphique, on voit tout de suite la forme de la courbe, le saut et le point d'équivalence. En sciences, presque tout résultat se communique par un graphique.",
    objectifs:["Tracer une courbe et des points de mesure","Donner un titre et des axes avec unités","Superposer mesures et modèle, avec une légende","Tracer des données lues dans un fichier"],
-   avant:["Lire le chapitre en exécutant les exemples (environ 45 min)","Faire les 5 exercices préparatoires, autocorrigés (environ 45 min)","Réviser les chapitres 1 à 10 pour l'évaluation 3","Déposer le rapport du chapitre sur LÉA avant le cours"],
+   avant:["Lire le chapitre en exécutant les exemples (environ 45 min)","Faire les 5 exercices préparatoires, autocorrigés (environ 45 min)","Réviser les chapitres 1 à 10 pour l'évaluation 3"],
    labos:["Évaluation 3 (60 min, chapitres 1 à 10)","Démonstration : corriger un mauvais graphique","Mini-labo : pendule, courbe de titrage"],
    vocab:["Matplotlib","plot","axe","étiquette","unité","titre","légende","modèle","mesure"],
    ensuite:"Pour la semaine 12 : lire le chapitre 12 et faire les exercices préparatoires 12.1 à 12.10."},
@@ -807,7 +809,7 @@ const CHAPITRES = [
    labo:"Chute avec frottement de l'air", ready:true,
    probleme:"Une parachutiste saute d'un avion; l'air la freine selon dv/dt = g − (c/m) v². Quelle est sa vitesse après 10 s? Quelle distance a-t-elle parcourue? Avec une boucle et quelques lignes de Python, on obtient la réponse avec la précision voulue.",
    objectifs:["Trouver la racine d'une équation par bissection","Calculer l'aire sous des mesures par la méthode des trapèzes","Simuler une évolution dans le temps par la méthode d'Euler","Valider une méthode numérique sur un cas connu"],
-   avant:["Lire le chapitre en exécutant les exemples (environ 1 h)","Faire les exercices préparatoires 12.1 à 12.10, autocorrigés (environ 1 h 30)","Déposer le rapport du chapitre sur LÉA avant le cours"],
+   avant:["Lire le chapitre en exécutant les exemples (environ 1 h)","Faire les exercices préparatoires 12.1 à 12.10, autocorrigés (environ 1 h 30)"],
    labos:["Démonstration : valider Euler sur la chute libre","Atelier en équipe : le saut de la parachutiste","Labo : travail d'une force, bissection, ouverture du parachute"],
    vocab:["méthode numérique","racine","bissection","tolérance","trapèze","pas de temps","Euler","validation","convergence"],
    ensuite:"Pour la semaine 13 : lire le chapitre 13 et faire les exercices préparatoires 13.1 à 13.7."},
@@ -815,7 +817,7 @@ const CHAPITRES = [
    labo:"La crue de la rivière : problème intégrateur", ready:true,
    probleme:"Une équipe remet un rapport dont le programme fonctionne. Mais deux mesures manquantes ont été inventées, une fonction vient d'un forum sans citation, et une autre, produite par une IA, donne un mauvais résultat. Le rapport ne vaut plus rien. Qu'est-ce qui rend un travail scientifique fiable?",
    objectifs:["Appliquer la démarche complète, du problème au résultat validé","Nettoyer des données sans les altérer, avec des règles de rejet explicites","Citer correctement du code qui ne vient pas de toi","Vérifier le code produit par une IA et en déclarer l'usage"],
-   avant:["Lire le chapitre en exécutant les exemples (environ 1 h)","Faire les 7 exercices préparatoires, autocorrigés (environ 1 h 30)","Commencer la révision pour l'épreuve finale","Déposer le rapport du chapitre sur LÉA avant le cours"],
+   avant:["Lire le chapitre en exécutant les exemples (environ 1 h)","Faire les 7 exercices préparatoires, autocorrigés (environ 1 h 30)","Commencer la révision pour l'épreuve finale"],
    labos:["Démonstration : auditer un rapport qui contient trois fautes","Atelier en équipe : la crue de la rivière","Labo : trois problèmes de révision, dans l'esprit de l'épreuve finale"],
    vocab:["données brutes","règle de rejet","falsification","reproductible","citation","plagiat","licence","IA générative","cas connu"],
    ensuite:"Semaines 14 et 15 : épreuve finale (55 %)."}
@@ -876,7 +878,7 @@ function renderChapitre(c){
       <div class="card"><h3>Laboratoire</h3><ul>${c.labos.map(x => `<li>${x}</li>`).join("")}</ul><p style="margin-top:.6rem;font-size:.9rem">Chaque exercice : fiche de planification, code, puis le bouton Vérifier.</p></div>
       <div class="card"><h3>Vocabulaire</h3><div class="vocab">${c.vocab.map(x => `<span>${x}</span>`).join("")}</div></div>
     </div>
-    <div class="callout"><strong>Remise :</strong> au bas de la page du chapitre, télécharge ton rapport et dépose-le sur LÉA (<a href="#recettes">recette</a>). ${c.ensuite}</div>
+    <div class="callout"><strong>Ensuite :</strong> ${c.ensuite}</div>
     ${navLinks}</div>`;
 }
 
