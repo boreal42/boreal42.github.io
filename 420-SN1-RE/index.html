@@ -129,7 +129,7 @@ tr.exam td{background:var(--signal-soft)}
 .recipe{margin-top:1.6rem;padding-top:1.2rem;border-top:1px solid var(--rule)}
 .recipe ol{padding-left:1.2rem}
 .recipe h3{margin-bottom:.4rem}
-h2.groupe-recettes{margin-top:2.4rem}
+h2.groupe-protocoles{margin-top:2.4rem}
 span.ch{font-size:.75em;font-weight:400;color:var(--muted, #667)}
 .rule-ok{color:var(--ok);font-weight:600}
 .rule-no{color:var(--signal);font-weight:600}
@@ -171,7 +171,7 @@ footer{margin-top:2rem;font-size:.82rem;color:var(--muted)}
       </nav>
       <nav class="navgroup" aria-label="Outils">
         <p class="label">Outils</p>
-        <a href="#recettes"><span class="n">↳</span>Recettes</a>
+        <a href="#protocoles"><span class="n">↳</span>Protocoles</a>
         <a href="#aide-memoire"><span class="n">≡</span>Aide-mémoire</a>
       </nav>
     </div>
@@ -277,25 +277,25 @@ footer{margin-top:2rem;font-size:.82rem;color:var(--muted)}
       </div>
     </section>
 
-    <!-- RECETTES -->
-    <section class="view" id="v-recettes" aria-labelledby="t-rec" hidden>
+    <!-- PROTOCOLES -->
+    <section class="view" id="v-protocoles" aria-labelledby="t-rec" hidden>
       <div class="sheet prose">
         <p class="eyebrow">Marches à suivre</p>
-        <h1 id="t-rec">Recettes</h1>
-        <p class="lead">Les gestes qui reviennent pendant toute la session, en quelques étapes. Le chapitre où chaque recette apparaît est indiqué entre parenthèses.</p>
+        <h1 id="t-rec">Protocoles</h1>
+        <p class="lead">Les gestes qui reviennent pendant toute la session, en quelques étapes. Le chapitre où chaque protocole apparaît est indiqué entre parenthèses.</p>
 
-        <h2 class="groupe-recettes">Utiliser le site</h2>
+        <h2 class="groupe-protocoles">Utiliser le site</h2>
 
-        <div class="recipe" id="recette-sauvegarde">
+        <div class="recipe protocole" id="protocole-sauvegarde">
           <h3>Où est sauvegardé mon travail?</h3>
           <ol>
             <li>Ton code et tes fiches sont sauvegardés <strong>automatiquement</strong>, à chaque modification.</li>
             <li>La sauvegarde est dans <strong>ce navigateur, sur cet appareil</strong>. Un autre ordinateur, un autre navigateur ou une navigation privée ne la voient pas.</li>
-            <li>Si tu effaces l'historique de ton navigateur, la sauvegarde disparaît. Pour garder une copie, télécharge ton travail en notebook (recette suivante).</li>
+            <li>Si tu effaces l'historique de ton navigateur, la sauvegarde disparaît. Pour garder une copie, télécharge ton travail en notebook (protocole suivant).</li>
           </ol>
         </div>
 
-        <div class="recipe" id="recette-code">
+        <div class="recipe protocole" id="protocole-code">
           <h3>Ouvrir un labo ou une évaluation</h3>
           <ol>
             <li>Ouvre la page à partir du chapitre de la semaine (bouton <strong>Labo</strong>) ou du lien donné en classe.</li>
@@ -305,7 +305,7 @@ footer{margin-top:2rem;font-size:.82rem;color:var(--muted)}
           </ol>
         </div>
 
-        <div class="recipe" id="recette-notebook">
+        <div class="recipe protocole" id="protocole-notebook">
           <h3>Garder une copie de ton travail (notebook)</h3>
           <ol>
             <li>Au bas d'un chapitre ou d'un labo, clique sur <strong>Télécharger en notebook (.ipynb)</strong>. Le fichier contient les énoncés, ton code, tes fiches et l'état de chaque exercice.</li>
@@ -315,10 +315,10 @@ footer{margin-top:2rem;font-size:.82rem;color:var(--muted)}
           </ol>
         </div>
 
-        <div class="recipe" id="recette-aide">
+        <div class="recipe protocole" id="protocole-aide">
           <h3>Demander de l'aide</h3>
           <ol>
-            <li>Avant d'écrire, essaie la recette <em>Déboguer en cinq étapes</em> : relis le message d'erreur, fais la trace, ajoute des <code>print()</code>.</li>
+            <li>Avant d'écrire, applique le protocole <em>Déboguer en cinq étapes</em> : relis le message d'erreur, fais la trace, ajoute des <code>print()</code>.</li>
             <li>Toujours bloqué? Au bas de la page, clique sur <strong>Télécharger en notebook (.ipynb)</strong>.</li>
             <li>Envoie le fichier à ton enseignant par <strong>MIO</strong>, en pièce jointe.</li>
             <li>Dans ton message, précise le <strong>numéro de l'exercice</strong>, ce que tu as <strong>essayé</strong> et ce qui se passe (le message d'erreur, ou le résultat obtenu au lieu du résultat attendu).</li>
@@ -326,7 +326,7 @@ footer{margin-top:2rem;font-size:.82rem;color:var(--muted)}
           <p>C'est toi qui es responsable de ton apprentissage : le site ne transmet rien à l'enseignant. Un message précis, avec ton notebook, reçoit une réponse précise.</p>
         </div>
 
-        <div class="recipe" id="recette-lea">
+        <div class="recipe protocole" id="protocole-lea">
           <h3>Remettre une évaluation sur LÉA</h3>
           <ol>
             <li>Seules les <strong>évaluations</strong> se remettent sur LÉA. Les chapitres et les labos n'ont rien à remettre.</li>
@@ -336,9 +336,9 @@ footer{margin-top:2rem;font-size:.82rem;color:var(--muted)}
           </ol>
         </div>
 
-        <h2 class="groupe-recettes">Résoudre un problème</h2>
+        <h2 class="groupe-protocoles">Résoudre un problème</h2>
 
-        <div class="recipe" id="recette-planifier">
+        <div class="recipe protocole" id="protocole-planifier">
           <h3>Planifier un programme <span class="ch">(ch. 1)</span></h3>
           <ol>
             <li>Lis l'énoncé et note les grandeurs, avec leurs <strong>unités</strong>.</li>
@@ -349,7 +349,7 @@ footer{margin-top:2rem;font-size:.82rem;color:var(--muted)}
           </ol>
         </div>
 
-        <div class="recipe" id="recette-essais">
+        <div class="recipe protocole" id="protocole-essais">
           <h3>Bâtir un jeu d'essais <span class="ch">(ch. 3 et 4)</span></h3>
           <ol>
             <li>Une condition : au moins un cas par <strong>branche</strong>, plus un cas exactement sur chaque <strong>borne</strong> (<code>&gt;</code> ou <code>&gt;=</code>?).</li>
@@ -359,7 +359,7 @@ footer{margin-top:2rem;font-size:.82rem;color:var(--muted)}
           </ol>
         </div>
 
-        <div class="recipe" id="recette-trace">
+        <div class="recipe protocole" id="protocole-trace">
           <h3>Faire une trace d'exécution <span class="ch">(ch. 4)</span></h3>
           <ol>
             <li>Fais un tableau avec une colonne par variable, plus une colonne « Affichage ».</li>
@@ -373,7 +373,7 @@ a = a + b      # a=9  b=6
 print(a, b)    # affiche : 9 6</pre>
         </div>
 
-        <div class="recipe" id="recette-fonction">
+        <div class="recipe protocole" id="protocole-fonction">
           <h3>Écrire et tester une fonction <span class="ch">(ch. 6 et 7)</span></h3>
           <ol>
             <li>Choisis un nom qui dit ce que la fonction calcule, et ses paramètres (les intrants).</li>
@@ -388,7 +388,7 @@ assert energie_cinetique(2, 3) == 9
 assert abs(energie_cinetique(0.1, 1.5) - 0.1125) &lt; 0.000001</pre>
         </div>
 
-        <div class="recipe" id="recette-erreur">
+        <div class="recipe protocole" id="protocole-erreur">
           <h3>Lire un message d'erreur <span class="ch">(ch. 2)</span></h3>
           <ol>
             <li>Lis la <strong>dernière ligne</strong> du message : elle donne le type d'erreur.</li>
@@ -398,7 +398,7 @@ assert abs(energie_cinetique(0.1, 1.5) - 0.1125) &lt; 0.000001</pre>
           </ol>
         </div>
 
-        <div class="recipe" id="recette-deboguer">
+        <div class="recipe protocole" id="protocole-deboguer">
           <h3>Déboguer en cinq étapes <span class="ch">(ch. 10)</span></h3>
           <ol>
             <li><strong>Reproduire</strong> : trouve un cas précis qui donne un mauvais résultat, et note le résultat attendu.</li>
@@ -409,9 +409,9 @@ assert abs(energie_cinetique(0.1, 1.5) - 0.1125) &lt; 0.000001</pre>
           </ol>
         </div>
 
-        <h2 class="groupe-recettes">Travailler avec des données</h2>
+        <h2 class="groupe-protocoles">Travailler avec des données</h2>
 
-        <div class="recipe" id="recette-csv">
+        <div class="recipe protocole" id="protocole-csv">
           <h3>Lire un fichier CSV <span class="ch">(ch. 9)</span></h3>
           <ol>
             <li>Ouvre le fichier avec <code>with open(...)</code> : il sera fermé automatiquement.</li>
@@ -432,7 +432,7 @@ with open("donnees.csv") as fichier:
 print(len(temps), temps[0], valeurs[-1])</pre>
         </div>
 
-        <div class="recipe" id="recette-nettoyer">
+        <div class="recipe protocole" id="protocole-nettoyer">
           <h3>Nettoyer des données honnêtement <span class="ch">(ch. 13)</span></h3>
           <ol>
             <li>Garde les données brutes <strong>intactes</strong> : construis une <em>nouvelle</em> liste nettoyée.</li>
@@ -442,7 +442,7 @@ print(len(temps), temps[0], valeurs[-1])</pre>
           </ol>
         </div>
 
-        <div class="recipe" id="recette-graphique">
+        <div class="recipe protocole" id="protocole-graphique">
           <h3>Faire un graphique scientifique <span class="ch">(ch. 11)</span></h3>
           <ol>
             <li>Les <strong>mesures</strong> en points (<code>"o"</code>), un <strong>modèle</strong> en ligne continue.</li>
@@ -458,7 +458,7 @@ plt.title("Chute d'une bille")
 plt.legend()</pre>
         </div>
 
-        <div class="recipe" id="recette-valider">
+        <div class="recipe protocole" id="protocole-valider">
           <h3>Valider un résultat <span class="ch">(ch. 2, 10 et 12)</span></h3>
           <ol>
             <li><strong>Unités</strong> : le résultat a-t-il la bonne unité?</li>
@@ -468,9 +468,9 @@ plt.legend()</pre>
           </ol>
         </div>
 
-        <h2 class="groupe-recettes">Intégrité</h2>
+        <h2 class="groupe-protocoles">Intégrité</h2>
 
-        <div class="recipe" id="recette-citer">
+        <div class="recipe protocole" id="protocole-citer">
           <h3>Citer du code qui ne vient pas de toi <span class="ch">(ch. 13)</span></h3>
           <ol>
             <li>Juste avant le code emprunté, écris un commentaire qui dit <strong>qui ou quoi</strong> (auteur, site, livre, outil), <strong>où</strong> (lien ou référence), <strong>quand</strong> (date de consultation) et <strong>ce que tu as changé</strong>.</li>
@@ -480,7 +480,7 @@ plt.legend()</pre>
 # Modifications : ajout du cas d'une liste vide.</pre>
         </div>
 
-        <div class="recipe" id="recette-ia">
+        <div class="recipe protocole" id="protocole-ia">
           <h3>Vérifier du code produit par une IA <span class="ch">(ch. 13)</span></h3>
           <ol>
             <li>Dans ce cours, l'IA peut <strong>expliquer</strong>; elle n'écrit pas le code d'un exercice, d'un labo ou d'une évaluation (<a href="#ia">politique sur l'IA</a>).</li>
@@ -644,7 +644,7 @@ with open("mesures.txt") as fichier:        # lire
 
 with open("rapport.txt", "w") as fichier:   # écrire (remplace le fichier!)
     fichier.write(f"Moyenne : {moyenne:.2f}\n")</pre>
-        <p class="prose"><code>texte.split(",")</code> découpe un texte en liste; <code>texte.strip()</code> enlève les espaces et le saut de ligne. Pour un CSV, voir la recette <em>Lire un fichier CSV</em>.</p>
+        <p class="prose"><code>texte.split(",")</code> découpe un texte en liste; <code>texte.strip()</code> enlève les espaces et le saut de ligne. Pour un CSV, voir le protocole <em>Lire un fichier CSV</em>.</p>
 
         <h2>NumPy <span class="ch">(ch. 10)</span></h2>
         <div class="tablewrap"><table>
@@ -699,7 +699,7 @@ for i in range(round(duree / dt)):       # Euler : dv/dt = taux
         <p class="prose">Utilise <code>round(duree / dt)</code>, pas <code>int()</code>, pour le nombre de pas. Valide toujours la méthode sur un cas connu, puis vérifie que le résultat ne change presque plus quand on diminue <code>dt</code> ou la tolérance.</p>
 
         <h2>Intégrité <span class="ch">(ch. 13)</span></h2>
-        <p class="prose">Données brutes intactes; règles de rejet fixées d'avance et écrites dans le code; rejets comptés et rapportés; aucune valeur inventée. Code emprunté cité (qui, où, quand, ce qui a changé). Usage de l'IA déclaré et vérifié. Voir les recettes <em>Nettoyer des données</em>, <em>Citer du code</em> et <em>Vérifier du code produit par une IA</em>.</p>
+        <p class="prose">Données brutes intactes; règles de rejet fixées d'avance et écrites dans le code; rejets comptés et rapportés; aucune valeur inventée. Code emprunté cité (qui, où, quand, ce qui a changé). Usage de l'IA déclaré et vérifié. Voir les protocoles <em>Nettoyer des données</em>, <em>Citer du code</em> et <em>Vérifier du code produit par une IA</em>.</p>
 
         <h2>Messages d'erreur fréquents <span class="ch">(ch. 2 et 10)</span></h2>
         <div class="tablewrap"><table>
@@ -715,7 +715,7 @@ for i in range(round(duree / dt)):       # Euler : dv/dt = taux
             <tr><td><code>FileNotFoundError</code></td><td>Nom de fichier mal écrit, ou fichier absent.</td></tr>
             <tr><td><code>AttributeError</code></td><td>Méthode qui n'existe pas pour ce type, par exemple <code>append</code> sur un nombre.</td></tr>
             <tr><td><code>AssertionError</code></td><td>Un test <code>assert</code> a échoué : le résultat n'est pas celui attendu.</td></tr>
-            <tr><td><em>Aucun message, mauvais résultat</em></td><td>Erreur de logique : fais la trace et suis la recette <em>Déboguer en cinq étapes</em>.</td></tr>
+            <tr><td><em>Aucun message, mauvais résultat</em></td><td>Erreur de logique : fais la trace et suis le protocole <em>Déboguer en cinq étapes</em>.</td></tr>
           </tbody>
         </table></div>
       </div>
@@ -893,9 +893,10 @@ function renderChapitre(c){
     ${navLinks}</div>`;
 }
 
-const VIEWS = ["accueil","calendrier","ia","recettes","aide-memoire"];
+const VIEWS = ["accueil","calendrier","ia","protocoles","aide-memoire"];
 function route(){
-  const h = (location.hash || "#accueil").slice(1);
+  let h = (location.hash || "#accueil").slice(1);
+  if (h === "recettes") h = "protocoles";          // anciens liens
   let viewId = "v-accueil", current = "#accueil";
   const m = h.match(/^chapitre-(\d+)$/);
   if (m){
