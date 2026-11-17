@@ -44,8 +44,8 @@ a:focus-visible,button:focus-visible,textarea:focus-visible{outline:3px solid va
 
 .topbar{position:sticky;top:0;z-index:5;background:var(--sheet);border-bottom:1px solid var(--rule)}
 .topbar .in{max-width:1180px;margin:0 auto;padding:.6rem 16px;display:flex;gap:1rem;align-items:center;justify-content:space-between;flex-wrap:wrap}
-.topbar a.home{text-decoration:none;color:var(--ink);font-family:var(--font-display);font-weight:700}
-.topbar a.home span{font-family:var(--font-mono);font-weight:400;color:var(--accent);font-size:.85rem;margin-right:.5rem}
+.topbar .home{text-decoration:none;color:var(--ink);font-family:var(--font-display);font-weight:700}
+.topbar .home span{font-family:var(--font-mono);font-weight:400;color:var(--accent);font-size:.85rem;margin-right:.5rem}
 .topbar .chap{font-family:var(--font-mono);font-size:.82rem;color:var(--muted)}
 
 .layout{max-width:1180px;margin:0 auto;padding:2rem 16px 4rem;display:grid;grid-template-columns:minmax(0,1fr) 240px;gap:2.5rem;align-items:start}

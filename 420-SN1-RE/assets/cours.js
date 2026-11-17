@@ -440,6 +440,15 @@
         verrou.hidden = true;
         document.querySelectorAll(".apres-verrou").forEach(e => { e.hidden = false; });
         stock.ecrire(CHAPITRE + ":code", normaliserCode(code));
+        // Mode examen : une épreuve ouverte avec son code ferme le reste du site dans ce navigateur (voir garde.js).
+        if (TYPE === "evaluation" && !silencieux) {
+          try {
+            const duree = Number(document.body.dataset.duree || 70) * 60000;
+            const actuel = JSON.parse(localStorage.getItem("420sn1re:examen") || "null");
+            if (!actuel || actuel.url !== location.pathname || Date.now() > actuel.fin)
+              localStorage.setItem("420sn1re:examen", JSON.stringify({ url: location.pathname, fin: Date.now() + duree }));
+          } catch (e) {}
+        }
         init();
         document.dispatchEvent(new Event("contenu-ouvert"));
         if (location.hash) { const cible = document.getElementById(location.hash.slice(1)); if (cible) cible.scrollIntoView(); }
