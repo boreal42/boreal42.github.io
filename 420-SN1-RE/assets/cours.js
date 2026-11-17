@@ -1,7 +1,8 @@
 // 420-SN1-RE — Python dans la page : exemples, exercices vérifiés, sauvegarde et rapport.
 (function () {
   "use strict";
-  const CHAPITRE = document.body.dataset.chapitre || "";
+  const CHAPITRE_PAGE = document.body.dataset.chapitre || "";
+  let CHAPITRE = CHAPITRE_PAGE;   // + lettre de version (A, B, C) pour les épreuves en plusieurs versions
   const TYPE = document.body.dataset.type || "chapitre";
   const CLE = "420sn1re:";
 
@@ -274,8 +275,10 @@
   // ---------- Progression, nom, rapport, importation ----------
   const champNom = document.getElementById("nom-etudiant");
   if (champNom) {
-    champNom.value = stock.lire("nom") || "";
-    champNom.addEventListener("input", () => stock.ecrire("nom", champNom.value.trim()));
+    // Dans une épreuve, le nom est propre à la page : sur un poste partagé, il ne doit pas venir de l'étudiant précédent.
+    const cleNom = TYPE === "evaluation" ? CHAPITRE + ":nom" : "nom";
+    champNom.value = stock.lire(cleNom) || "";
+    champNom.addEventListener("input", () => stock.ecrire(cleNom, champNom.value.trim()));
   }
 
   function majProgression() {
@@ -431,17 +434,37 @@
   if (verrou && !(window.crypto && crypto.subtle)) {
     verrou.querySelector(".msg").textContent = "Ce navigateur ne peut pas ouvrir le labo. Utilise une version récente de Chrome, Firefox, Edge ou Safari.";
   } else if (verrou) {
-    const paquet = JSON.parse(document.getElementById("labo-chiffre").textContent);
+    // Un seul paquet, ou une liste de paquets (une version par groupe, chacune avec son code).
+    const lu = JSON.parse(document.getElementById("labo-chiffre").textContent);
+    const paquets = Array.isArray(lu) ? lu : [lu];
+    // Postes partagés : une épreuve ouverte par un autre étudiant, il y a plus longtemps que sa durée,
+    // est effacée de ce navigateur (travail et code mémorisé) avant d'ouvrir la page.
+    if (TYPE === "evaluation") {
+      const debut = stock.lire(CHAPITRE_PAGE + ":ouverture");
+      const limite = (Number(document.body.dataset.duree || 70) + 20) * 60000;
+      if (debut && Date.now() - debut > limite) {
+        try {
+          Object.keys(localStorage).filter(k => k.startsWith(CLE + CHAPITRE_PAGE)).forEach(k => localStorage.removeItem(k));
+        } catch (e) {}
+      }
+    }
     const form = verrou.querySelector("form");
     const champ = verrou.querySelector("input");
     const msg = verrou.querySelector(".msg");
     const ouvrir = async (code, silencieux) => {
       try {
-        const html = await dechiffrer(code, paquet);
+        let html = null;
+        for (const p of paquets) {
+          try { html = await dechiffrer(code, p); break; } catch (e) { /* essaie la version suivante */ }
+        }
+        if (html === null) throw new Error("code");
         document.getElementById("contenu-labo").innerHTML = html;
+        const version = document.querySelector("#contenu-labo [data-version]");
+        CHAPITRE = CHAPITRE_PAGE + (version ? version.dataset.version : "");
         verrou.hidden = true;
         document.querySelectorAll(".apres-verrou").forEach(e => { e.hidden = false; });
-        stock.ecrire(CHAPITRE + ":code", normaliserCode(code));
+        stock.ecrire(CHAPITRE_PAGE + ":code", normaliserCode(code));
+        if (TYPE === "evaluation" && !silencieux && !stock.lire(CHAPITRE_PAGE + ":ouverture")) stock.ecrire(CHAPITRE_PAGE + ":ouverture", Date.now());
         // Mode examen : une épreuve ouverte avec son code ferme le reste du site dans ce navigateur (voir garde.js).
         if (TYPE === "evaluation" && !silencieux) {
           try {
@@ -459,7 +482,7 @@
       }
     };
     form.addEventListener("submit", e => { e.preventDefault(); msg.textContent = "Ouverture…"; ouvrir(champ.value, false); });
-    const connu = stock.lire(CHAPITRE + ":code");
+    const connu = stock.lire(CHAPITRE_PAGE + ":code");
     if (connu) ouvrir(connu, true);
   } else {
     init();
