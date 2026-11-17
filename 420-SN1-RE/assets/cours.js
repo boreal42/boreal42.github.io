@@ -434,6 +434,8 @@
   if (verrou && !(window.crypto && crypto.subtle)) {
     verrou.querySelector(".msg").textContent = "Ce navigateur ne peut pas ouvrir le labo. Utilise une version récente de Chrome, Firefox, Edge ou Safari.";
   } else if (verrou) {
+    // Les chapitres s'ouvrent avec le code du cours, retenu une fois pour tout le site (partagé avec l'accueil).
+    const CLE_CODE = document.body.dataset.verrou === "site" ? "site:code" : CHAPITRE_PAGE + ":code";
     // Un seul paquet, ou une liste de paquets (une version par groupe, chacune avec son code).
     const lu = JSON.parse(document.getElementById("labo-chiffre").textContent);
     const paquets = Array.isArray(lu) ? lu : [lu];
@@ -463,7 +465,7 @@
         CHAPITRE = CHAPITRE_PAGE + (version ? version.dataset.version : "");
         verrou.hidden = true;
         document.querySelectorAll(".apres-verrou").forEach(e => { e.hidden = false; });
-        stock.ecrire(CHAPITRE_PAGE + ":code", normaliserCode(code));
+        stock.ecrire(CLE_CODE, normaliserCode(code));
         if (TYPE === "evaluation" && !silencieux && !stock.lire(CHAPITRE_PAGE + ":ouverture")) stock.ecrire(CHAPITRE_PAGE + ":ouverture", Date.now());
         // Mode examen : une épreuve ouverte avec son code ferme le reste du site dans ce navigateur (voir garde.js).
         if (TYPE === "evaluation" && !silencieux) {
@@ -479,11 +481,12 @@
         if (location.hash) { const cible = document.getElementById(location.hash.slice(1)); if (cible) cible.scrollIntoView(); }
       } catch (e) {
         if (!silencieux) { msg.textContent = "Ce code ne fonctionne pas. Vérifie-le avec ton enseignant."; champ.select(); }
+        verrou.hidden = false;
       }
     };
     form.addEventListener("submit", e => { e.preventDefault(); msg.textContent = "Ouverture…"; ouvrir(champ.value, false); });
-    const connu = stock.lire(CHAPITRE_PAGE + ":code");
-    if (connu) ouvrir(connu, true);
+    const connu = stock.lire(CLE_CODE);
+    if (connu) { verrou.hidden = true; ouvrir(connu, true); }
   } else {
     init();
   }

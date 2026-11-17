@@ -3,285 +3,31 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
 <title>Ch. 11 · Graphiques avec Matplotlib · 420-SN1-RE</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/lecture.css?v=57b7cda2">
-<script src="../assets/garde.js?v=57b7cda2"></script>
+<link rel="stylesheet" href="../assets/lecture.css?v=a47b0165">
+<script src="../assets/garde.js?v=a47b0165"></script>
 </head>
-<body data-chapitre="11">
+<body data-chapitre="11" data-verrou="site">
 <header class="topbar"><div class="in">
   <a class="home" href="../#chapitre-11"><span>420-SN1-RE</span>Programmation en sciences</a>
   <span class="chap">Chapitre 11 · Semaine 11</span>
 </div></header>
-<div class="layout">
-<article>
-  <p class="eyebrow">Chapitre 11 · Semaine 11</p>
-  <h1>Graphiques avec Matplotlib</h1>
-  <div class="prep">
-    <div><h2>À faire avant le cours</h2><ol><li>Lis ce chapitre et exécute les exemples (environ 45 min).</li><li>Fais les 5 exercices préparatoires 11.1 à 11.5, au bas de la page (environ 45 min).</li><li>Révise les chapitres 1 à 10 : l'évaluation 3 a lieu pendant le cours.</li></ol></div>
-    <a class="btn" href="#exercices">Aller aux exercices</a>
+<div class="layout"><article>
+  <div id="verrou" class="verrou">
+    <h2>Code du cours</h2>
+    <p>Ce site est réservé aux étudiants du cours. Entre le code du cours, donné par ton enseignant à la première séance. Ton navigateur le retiendra.</p>
+    <form><label for="code-acces">Code du cours</label>
+      <div class="ligne"><input id="code-acces" type="text" autocomplete="off" spellcheck="false" required><button class="btn" type="submit">Entrer</button></div>
+      <p class="msg" aria-live="polite"></p></form>
   </div>
-  <p class="aide">Tout le code de cette page s'exécute dans ton navigateur : clique sur <strong>▶ Exécuter</strong>. Tu peux modifier les exemples librement; <strong>Réinitialiser</strong> remet le code d'origine. Raccourci : Maj + Entrée.</p>
-<div class="admonition probleme">
-<p class="admonition-title">Problème d'ouverture</p>
-<p>Un tableau de 41 valeurs de pH ne dit presque rien au premier coup d'œil. La même chose en graphique montre tout de suite la forme de la courbe, le saut et le point d'équivalence. En sciences, presque tout résultat se communique par un graphique.</p>
-<p><strong>Matplotlib</strong> est la bibliothèque de graphiques de Python. Dans ce cours, chaque graphique s'affiche directement sous ton code.</p>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Semaine d'évaluation</p>
-<p>L'<strong>évaluation 3</strong> (chapitres 1 à 10) a lieu pendant le cours de cette semaine. Ce chapitre n'a donc que <strong>5 exercices préparatoires</strong>.</p>
-</div>
-<h2 id="objectifs">Objectifs</h2>
-<ol>
-<li>Tracer une courbe et un nuage de points avec Matplotlib.</li>
-<li>Donner à chaque graphique un titre et des axes avec leurs <strong>unités</strong>.</li>
-<li>Superposer des mesures (points) et un modèle (ligne), avec une légende.</li>
-<li>Tracer des données lues dans un fichier.</li>
-</ol>
-<h2 id="une-premiere-courbe">Une première courbe</h2>
-<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">import numpy as np
-import matplotlib.pyplot as plt
-
-t = np.linspace(0, 3, 31)          # s
-y = 0.5 * 9.81 * t ** 2            # m
-
-plt.plot(t, y)
-plt.xlabel(&quot;Temps (s)&quot;)
-plt.ylabel(&quot;Distance parcourue (m)&quot;)
-plt.title(&quot;Chute libre sans frottement&quot;)
-plt.grid(True)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
-<p><code>plt.plot(x, y)</code> relie les points (x, y) par des segments. Les deux listes ou tableaux doivent avoir la <strong>même longueur</strong>.</p>
-<div class="admonition piege">
-<p class="admonition-title">Piège : un graphique sans unités</p>
-<p>Un axe sans unité est incomplet, comme une mesure sans unité. Écris toujours l'unité entre parenthèses : <code>"Temps (s)"</code>, <code>"Pression (kPa)"</code>.</p>
-</div>
-<h2 id="points-ou-ligne">Points ou ligne?</h2>
-<div class="tablewrap"><table>
-<thead>
-<tr>
-<th>Ce qu'on représente</th>
-<th>Style</th>
-<th>Exemple</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Des <strong>mesures</strong> expérimentales</td>
-<td>des points, sans les relier</td>
-<td><code>plt.plot(t, y, "o")</code> ou <code>plt.scatter(t, y)</code></td>
-</tr>
-<tr>
-<td>Un <strong>modèle</strong> ou une fonction</td>
-<td>une ligne continue</td>
-<td><code>plt.plot(t, y)</code></td>
-</tr>
-</tbody>
-</table></div>
-<p>Relier des mesures par des segments laisse croire qu'on connaît les valeurs entre les mesures, ce qui est faux.</p>
-<h2 id="mesures-et-modele-sur-le-meme-graphique">Mesures et modèle sur le même graphique</h2>
-<p>C'est le graphique le plus courant en laboratoire : il montre si le modèle théorique décrit bien les mesures. Chaque appel à <code>plt.plot</code> ajoute une courbe; <code>label=</code> donne son nom dans la légende.</p>
-<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">import numpy as np
-import matplotlib.pyplot as plt
-
-# Mesures : position d&#x27;une bille en chute (m)
-t_mesures = np.array([0.0, 0.1, 0.2, 0.3, 0.4, 0.5])
-y_mesures = np.array([0.00, 0.06, 0.19, 0.45, 0.77, 1.24])
-
-# Modèle : y = ½ g t²
-t_modele = np.linspace(0, 0.5, 100)
-y_modele = 0.5 * 9.81 * t_modele ** 2
-
-plt.plot(t_mesures, y_mesures, &quot;o&quot;, label=&quot;Mesures&quot;)
-plt.plot(t_modele, y_modele, label=&quot;Modèle : y = ½gt²&quot;)
-plt.xlabel(&quot;Temps (s)&quot;)
-plt.ylabel(&quot;Position (m)&quot;)
-plt.title(&quot;Chute d&#x27;une bille&quot;)
-plt.legend()</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
-<div class="admonition essaie">
-<p class="admonition-title">Essaie-le</p>
-<p>Remplace 9.81 par 9.0 dans le modèle : la courbe s'éloigne des points. Comparer visuellement un modèle aux mesures, c'est la base de l'analyse de données expérimentales.</p>
-</div>
-<h2 id="plusieurs-courbes-et-leurs-styles">Plusieurs courbes et leurs styles</h2>
-<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">import numpy as np
-import matplotlib.pyplot as plt
-
-g = 9.81
-v0 = 20
-for angle in [30, 45, 60]:
-    theta = np.radians(angle)
-    duree = 2 * v0 * np.sin(theta) / g
-    t = np.linspace(0, duree, 50)
-    x = v0 * np.cos(theta) * t
-    y = v0 * np.sin(theta) * t - 0.5 * g * t ** 2
-    plt.plot(x, y, label=f&quot;{angle}°&quot;)
-
-plt.xlabel(&quot;Distance horizontale (m)&quot;)
-plt.ylabel(&quot;Hauteur (m)&quot;)
-plt.title(&quot;Trajectoires selon l&#x27;angle de tir&quot;)
-plt.legend()
-plt.grid(True)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
-<p>Quelques options de style : <code>"o"</code> (points), <code>"--"</code> (tirets), <code>"r"</code> (rouge), <code>"o--"</code> (points reliés par des tirets). Matplotlib choisit une couleur différente pour chaque courbe.</p>
-<h2 id="exemple-complet-la-courbe-de-titrage">Exemple complet : la courbe de titrage</h2>
-<h3 id="planifier">Planifier</h3>
-<div class="tablewrap"><table>
-<thead>
-<tr>
-<th>Question</th>
-<th>Réponse</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Intrant</td>
-<td>le fichier <code>titrage.csv</code> (volume en mL, pH)</td>
-</tr>
-<tr>
-<td>Extrant</td>
-<td>le graphique du pH en fonction du volume, avec le point d'équivalence indiqué</td>
-</tr>
-<tr>
-<td>Traitements</td>
-<td>lire le fichier (chapitre 9); trouver le plus grand saut de pH; tracer les mesures; marquer l'équivalence d'une ligne verticale</td>
-</tr>
-</tbody>
-</table></div>
-<h3 id="coder">Coder</h3>
-<div class="runner"><textarea spellcheck="false" aria-label="Code Python modifiable">import csv
-import numpy as np
-import matplotlib.pyplot as plt
-
-volumes = []
-phs = []
-with open(&quot;titrage.csv&quot;) as fichier:
-    lecteur = csv.reader(fichier)
-    next(lecteur)
-    for ligne in lecteur:
-        volumes.append(float(ligne[0]))
-        phs.append(float(ligne[1]))
-volumes = np.array(volumes)
-phs = np.array(phs)
-
-pentes = np.diff(phs) / np.diff(volumes)
-i = pentes.argmax()
-v_eq = (volumes[i] + volumes[i + 1]) / 2
-
-plt.plot(volumes, phs, &quot;o-&quot;, label=&quot;Mesures&quot;)
-plt.axvline(v_eq, linestyle=&quot;--&quot;, color=&quot;gray&quot;, label=f&quot;Équivalence ≈ {v_eq} mL&quot;)
-plt.xlabel(&quot;Volume de NaOH ajouté (mL)&quot;)
-plt.ylabel(&quot;pH&quot;)
-plt.title(&quot;Titrage de HCl par NaOH&quot;)
-plt.legend()
-plt.grid(True)</textarea><div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="reset" type="button">Réinitialiser</button><span class="status" aria-live="polite"></span></div><output></output></div>
-<h3 id="verifier">Vérifier</h3>
-<p>La ligne verticale tombe au milieu du saut, à 12.25 mL. Ici, on relie les mesures d'un trait léger (<code>"o-"</code>) pour faire ressortir la forme de la courbe. C'est un choix courant pour une courbe de titrage, à condition que les points restent visibles.</p>
-<h2 id="pieges-frequents">Pièges fréquents</h2>
-<ul>
-<li>Un axe sans unité, ou un graphique sans titre.</li>
-<li>Deux tableaux de longueurs différentes dans <code>plt.plot(x, y)</code> : <code>ValueError</code>.</li>
-<li>Relier par une ligne des mesures expérimentales qu'on voulait montrer comme des points.</li>
-<li>Oublier <code>plt.legend()</code> après avoir donné des <code>label=</code>.</li>
-<li>Tracer <code>y</code> en fonction de <code>x</code> alors qu'on voulait l'inverse : le premier argument est l'axe horizontal.</li>
-</ul>
-<h2 id="autoquiz">Autoquiz</h2>
-<ol>
-<li>Quelle instruction ajoute la légende?</li>
-<li>Comment trace-t-on des points sans les relier?</li>
-<li>Pourquoi représenter les mesures par des points et le modèle par une ligne?</li>
-<li>Que doit contenir l'étiquette d'un axe, en plus du nom de la grandeur?</li>
-<li>Dans <code>plt.plot(a, b)</code>, quelle grandeur est sur l'axe horizontal?</li>
-</ol>
-<h2 id="vocabulaire">Vocabulaire</h2>
-<div class="vocab"><span>Matplotlib</span><span>pyplot</span><span>plot</span><span>scatter</span><span>axe</span><span>étiquette</span><span>unité</span><span>titre</span><span>légende</span><span>label</span><span>modèle</span><span>mesure</span></div>
-<h2 id="exercices">Exercices préparatoires</h2><p>Écris ton code dans chaque exercice : remplace les <code>None</code> par ta réponse, puis clique sur <strong>Vérifier</strong>. La vérification te dit si ta réponse est bonne, sans la montrer. Ton travail est sauvegardé automatiquement dans ce navigateur.</p>
-<section class="exo" id="exo-11-1" data-id="11.1" data-checks="[[&quot;len(plt.gca().lines)&quot;, &quot;64e4b892473f&quot;], [&quot;\&quot;(s)\&quot; in plt.gca().get_xlabel()&quot;, &quot;3cbc87c7681f&quot;], [&quot;\&quot;(m/s)\&quot; in plt.gca().get_ylabel()&quot;, &quot;3cbc87c7681f&quot;], [&quot;plt.gca().get_title() != \&quot;\&quot;&quot;, &quot;3cbc87c7681f&quot;]]">
-  <div class="exo-head"><h3>Exercice 11.1 — Une première courbe</h3><span class="badge">À faire</span></div>
-  <div class="enonce"><p>Trace la vitesse en fonction du temps. Ajoute un titre et des étiquettes d'axes <strong>avec les unités</strong> : le temps est en secondes et la vitesse en mètres par seconde, écrites <code>(s)</code> et <code>(m/s)</code>.</p></div>
-  
-  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 11.1 — Une première courbe">import matplotlib.pyplot as plt
-t = [0, 1, 2, 3, 4, 5]               # s
-v = [3, 5, 7, 9, 11, 13]             # m/s
-
-# Trace v en fonction de t ici</textarea>
-    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
-    <output></output><div class="verdict" aria-live="polite"></div></div>
-</section>
-<section class="exo" id="exo-11-2" data-id="11.2" data-checks="[[&quot;len(plt.gca().lines) + len(plt.gca().collections)&quot;, &quot;64e4b892473f&quot;], [&quot;all(l.get_linestyle() == \&quot;None\&quot; for l in plt.gca().lines)&quot;, &quot;3cbc87c7681f&quot;], [&quot;\&quot;(min)\&quot; in plt.gca().get_xlabel()&quot;, &quot;3cbc87c7681f&quot;], [&quot;\&quot;(\u00b0C)\&quot; in plt.gca().get_ylabel()&quot;, &quot;3cbc87c7681f&quot;]]">
-  <div class="exo-head"><h3>Exercice 11.2 — Des mesures, pas une ligne</h3><span class="badge">À faire</span></div>
-  <div class="enonce"><p>Ces températures sont des <strong>mesures</strong>. Trace-les sous forme de <strong>points</strong>, sans les relier. Axes : <code>(min)</code> et <code>(°C)</code>.</p></div>
-  
-  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 11.2 — Des mesures, pas une ligne">import matplotlib.pyplot as plt
-minutes = [0, 5, 10, 15, 20, 25, 30]
-temperatures = [82.0, 68.5, 57.9, 49.6, 43.1, 38.0, 34.2]
-
-# Trace les mesures ici</textarea>
-    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
-    <output></output><div class="verdict" aria-live="polite"></div></div>
-</section>
-<section class="exo" id="exo-11-3" data-id="11.3" data-checks="[[&quot;len(t_modele)&quot;, &quot;9fd94296c437&quot;], [&quot;float(T_modele[-1])&quot;, &quot;74b208c1c6c6&quot;], [&quot;len(plt.gca().lines)&quot;, &quot;7a284f128e61&quot;], [&quot;plt.gca().get_legend() is not None&quot;, &quot;3cbc87c7681f&quot;], [&quot;sorted(l.get_label() for l in plt.gca().lines)&quot;, &quot;18f2859aa594&quot;]]">
-  <div class="exo-head"><h3>Exercice 11.3 — Mesures et modèle</h3><span class="badge">À faire</span></div>
-  <div class="enonce"><p>Complète le graphique : les mesures en <strong>points</strong> (étiquette <code>"Mesures"</code>), le modèle de Newton en <strong>ligne</strong> (étiquette <code>"Modèle"</code>), puis la <strong>légende</strong>.</p>
-<p>Le modèle : T(t) = 20 + 62 e<sup>−0.06 t</sup>, calculé sur 100 instants entre 0 et 30 min.</p></div>
-  
-  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 11.3 — Mesures et modèle">import numpy as np
-import matplotlib.pyplot as plt
-minutes = np.array([0, 5, 10, 15, 20, 25, 30])
-temperatures = np.array([82.0, 68.5, 57.9, 49.6, 43.1, 38.0, 34.2])
-
-t_modele = None
-T_modele = None
-
-# Trace les mesures, le modèle et la légende
-
-plt.xlabel(&quot;Temps (min)&quot;)
-plt.ylabel(&quot;Température (°C)&quot;)</textarea>
-    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
-    <output></output><div class="verdict" aria-live="polite"></div></div>
-</section>
-<section class="exo" id="exo-11-4" data-id="11.4" data-checks="[[&quot;len(plt.gca().lines)&quot;, &quot;207cd6d1a9c3&quot;], [&quot;float(x_max)&quot;, &quot;5592eacdc0c4&quot;], [&quot;sorted(l.get_label() for l in plt.gca().lines)&quot;, &quot;44c4af98958e&quot;], [&quot;\&quot;(s)\&quot; in plt.gca().get_xlabel()&quot;, &quot;3cbc87c7681f&quot;], [&quot;\&quot;(cm)\&quot; in plt.gca().get_ylabel()&quot;, &quot;3cbc87c7681f&quot;]]">
-  <div class="exo-head"><h3>Exercice 11.4 — Trois courbes en boucle</h3><span class="badge">À faire</span></div>
-  <div class="enonce"><p>Trace la position d'un ressort, x(t) = A cos(2π t / T), pour trois amplitudes : 2, 4 et 6 cm, avec T = 1.5 s, sur 200 instants entre 0 et 3 s. Utilise une <strong>boucle</strong>; chaque courbe a pour étiquette <code>"A = 2 cm"</code>, <code>"A = 4 cm"</code>, etc. Ajoute la légende et les unités.</p>
-<p>Garde dans <code>x_max</code> la plus grande valeur de la <strong>dernière</strong> courbe calculée.</p></div>
-  
-  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 11.4 — Trois courbes en boucle">import numpy as np
-import matplotlib.pyplot as plt
-periode = 1.5                          # s
-t = np.linspace(0, 3, 200)             # s
-x_max = None</textarea>
-    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
-    <output></output><div class="verdict" aria-live="polite"></div></div>
-</section>
-<section class="exo" id="exo-11-5" data-id="11.5" data-checks="[[&quot;len(volumes)&quot;, &quot;3dc1256b48bf&quot;], [&quot;max(phs)&quot;, &quot;cdc7445b308c&quot;], [&quot;len(plt.gca().lines)&quot;, &quot;64e4b892473f&quot;], [&quot;\&quot;(mL)\&quot; in plt.gca().get_xlabel()&quot;, &quot;3cbc87c7681f&quot;], [&quot;len(plt.gca().lines[0].get_xdata()) if plt.gca().lines else 0&quot;, &quot;3dc1256b48bf&quot;]]">
-  <div class="exo-head"><h3>Exercice 11.5 — Tracer un fichier</h3><span class="badge">À faire</span></div>
-  <div class="enonce"><p>Le fichier <code>titrage.csv</code> contient deux colonnes : le volume de NaOH (mL) et le pH. Lis-le dans les listes <code>volumes</code> et <code>phs</code>, puis trace le pH en fonction du volume, avec les unités <code>(mL)</code> sur l'axe horizontal.</p></div>
-  
-  <div class="runner exo-runner"><textarea class="code" spellcheck="false" aria-label="Ton code pour Exercice 11.5 — Tracer un fichier">import csv
-import matplotlib.pyplot as plt
-
-volumes = []
-phs = []</textarea>
-    <div class="bar"><button class="run" type="button">▶ Exécuter</button><button class="check" type="button">Vérifier</button><button class="reset" type="button">Recommencer</button><span class="status" aria-live="polite"></span></div>
-    <output></output><div class="verdict" aria-live="polite"></div></div>
-</section>
-  <div class="enclasse"><p><strong>En classe : évaluation 3, puis Labo 11.</strong> L'évaluation (60 min, chapitres 1 à 10) ouvre la séance; suivent la démonstration et un labo court sur les graphiques. Les codes d'accès sont donnés en classe.</p><a class="btn ghost" href="../labos/labo11.html">Page du labo 11</a></div>
-  <h2 id="sauvegarde">Sauvegarder mon travail</h2>
-  <div class="travail">
-    <div><p class="progression"></p><div class="barre" aria-hidden="true"><span></span></div></div>
-    <p>Ton travail est sauvegardé automatiquement dans <em>ce</em> navigateur, sur <em>cet</em> appareil. Il n'y a rien à remettre : arrive au cours avec tes exercices faits, et tes questions sur ceux qui résistent.</p>
-    <p>Pour garder une copie ailleurs, télécharge ton travail en notebook. Ensuite, range-le dans ton <strong>OneDrive</strong>, ou ouvre-le dans <strong>Google Colab</strong> (<em>Fichier → Importer le notebook</em>), qui l'enregistre dans ton Google Drive et te permet de l'exécuter.</p>
-    <p class="note"><strong>Tu bloques?</strong> Télécharge ton notebook et envoie-le à ton enseignant par MIO, avec une phrase qui dit sur quel exercice tu bloques et ce que tu as essayé (<a href="../#protocoles">protocole</a>).</p>
-    <div class="actions"><button class="btn notebook" type="button">Télécharger en notebook (.ipynb)</button></div>
-  </div>
-  <nav class="pager" aria-label="Chapitres"><a class="btn ghost" href="ch10.html">← Chapitre 10</a><a class="btn ghost" href="ch12.html">Chapitre 12 →</a></nav>
-</article>
-<aside class="toc" aria-label="Dans ce chapitre">
-  <p>Dans ce chapitre</p>
-  <ol><li><a href="#objectifs">Objectifs</a></li><li><a href="#une-premiere-courbe">Une première courbe</a></li><li><a href="#points-ou-ligne">Points ou ligne?</a></li><li><a href="#mesures-et-modele-sur-le-meme-graphique">Mesures et modèle sur le même graphique</a></li><li><a href="#plusieurs-courbes-et-leurs-styles">Plusieurs courbes et leurs styles</a></li><li><a href="#exemple-complet-la-courbe-de-titrage">Exemple complet : la courbe de titrage</a></li><li><a href="#pieges-frequents">Pièges fréquents</a></li><li><a href="#autoquiz">Autoquiz</a></li><li><a href="#vocabulaire">Vocabulaire</a></li><li><a href="#exercices">Exercices préparatoires</a></li><li><a href="#sauvegarde">Sauvegarder mon travail</a></li></ol>
-  <div class="cta"><p class="progression"></p><div class="barre" aria-hidden="true"><span></span></div><a class="btn" href="#sauvegarde">Sauvegarder</a><a class="btn ghost" href="../#protocoles">Protocoles</a></div>
-</aside>
-</div>
+</article></div>
+<div id="contenu-labo"></div>
+<script type="application/json" id="labo-chiffre">{"sel": "3uZ0KM49TqHDFfLkjv4biw==", "iv": "vtuuAoJUWCFsWHfF", "iterations": 200000, "donnees": "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"}</script>
 <script type="application/json" id="fichiers-donnees">{"titrage.csv": "volume_ml,ph\n0.0,1.00\n0.5,1.03\n1.0,1.05\n1.5,1.08\n2.0,1.11\n2.5,1.14\n3.0,1.17\n3.5,1.20\n4.0,1.23\n4.5,1.27\n5.0,1.30\n5.5,1.34\n6.0,1.38\n6.5,1.42\n7.0,1.46\n7.5,1.51\n8.0,1.56\n8.5,1.62\n9.0,1.69\n9.5,1.76\n10.0,1.85\n10.5,1.95\n11.0,2.08\n11.5,2.26\n12.0,2.57\n12.5,7.00\n13.0,11.42\n13.5,11.72\n14.0,11.89\n14.5,12.01\n15.0,12.10\n15.5,12.17\n16.0,12.23\n16.5,12.29\n17.0,12.33\n17.5,12.37\n18.0,12.41\n18.5,12.44\n19.0,12.47\n19.5,12.50\n20.0,12.52\n"}</script>
-<script src="../assets/cours.js?v=57b7cda2"></script>
+<script src="../assets/cours.js?v=a47b0165"></script>
 </body>
 </html>
