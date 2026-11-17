@@ -850,9 +850,9 @@ CHAPITRES.forEach(c => {
   tr.innerHTML = `<td class="num">${c.sem}</td><td><a href="#chapitre-${c.n}">Ch. ${c.n} · ${c.titre}</a></td><td>${c.labo}</td><td>${c.eval ? `<span class="pill eval">${c.eval}</span>` : ""}</td>`;
   cal.appendChild(tr);
 });
-[["14","Épreuve finale, partie 1"],["15","Épreuve finale, partie 2"]].forEach(([s,t]) => {
+[["14","Épreuve finale, partie 1","Planification et cinq fonctions (3 h)","finale1"],["15","Épreuve finale, partie 2","Programme complet sur tes données, graphique, validation (3 h)","finale2"]].forEach(([s,t,d,f]) => {
   const tr = document.createElement("tr"); tr.className = "exam";
-  tr.innerHTML = `<td class="num">${s}</td><td>${t}</td><td>Problème scientifique complet</td><td><span class="pill eval">Épreuve finale · 55 %</span></td>`;
+  tr.innerHTML = `<td class="num">${s}</td><td><a href="evaluations/${f}.html">${t}</a></td><td>${d}</td><td><span class="pill eval">27.5 %</span></td>`;
   cal.appendChild(tr);
 });
 

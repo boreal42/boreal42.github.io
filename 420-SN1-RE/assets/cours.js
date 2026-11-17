@@ -53,7 +53,7 @@
     if (lourds.length) return "Chargement de " + lourds.join(" et ") + " (une seule fois, environ 10 secondes)…";
     return pyPret ? "Exécution…" : "Chargement de Python (quelques secondes)…";
   }
-  async function executerPy(code, espace, checks, valeurs) {
+  async function executerPy(code, espace, checks, valeurs, fichiers) {
     if (!worker) demarrer();
     try { await pretP; } catch (e) { worker.terminate(); worker = null; return { sortie: "", erreur: e.message }; }
     return new Promise(resolve => {
@@ -67,11 +67,13 @@
       // Délai généreux pour charger un module (numpy, matplotlib); le délai de 5 s commence avec l'exécution.
       const minuterie = setTimeout(depasse, 120000);
       attente.set(id, { resolve, minuterie, depasse });
-      worker.postMessage({ id, code, espace, checks, valeurs, fichiers: FICHIERS });
+      worker.postMessage({ id, code, espace, checks, valeurs, fichiers: fichiers || FICHIERS });
     });
   }
 
-  window.Cours = { executerPy, messageChargement: () => messageChargement() };
+  // Fichiers générés par la page (données personnalisées de l'épreuve finale).
+  function definirFichiers(f) { FICHIERS = Object.assign({}, FICHIERS || {}, f); }
+  window.Cours = { executerPy, definirFichiers, messageChargement: c => messageChargement(c) };
 
   function ajuster(t) { t.style.height = "auto"; t.style.height = t.scrollHeight + 4 + "px"; }
 
