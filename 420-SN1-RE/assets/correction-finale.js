@@ -164,7 +164,7 @@
     }
 
     const marque = ok => ok ? "✅" : "❌";
-    const montre = v => v === undefined ? "(rien)" : esc(typeof v === "string" ? v : typeof v === "number" ? String(Number(v.toPrecision(8))) : JSON.stringify(v));
+    const montre = v => v === undefined ? "(rien)" : esc(typeof v === "string" ? v : typeof v === "number" ? String(Number(v.toPrecision(8))) : typeof v === "boolean" ? (v ? "True" : "False") : JSON.stringify(v));
 
     function detailHtml(e, i) {
       const texte = e.texte.map(([k, v]) => `<p><strong>${esc(k.replace(cle.grille.prefixe, "").replace(/^ — /, "") || k)} :</strong><br>${esc(v || "(vide)").replace(/\n/g, "<br>")}</p>`).join("");

@@ -74,6 +74,7 @@
   // Fichiers générés par la page (données personnalisées de l'épreuve finale).
   function definirFichiers(f) { FICHIERS = Object.assign({}, FICHIERS || {}, f); }
   window.Cours = { executerPy, definirFichiers, messageChargement: c => messageChargement(c) };
+  // dechiffrer est ajouté plus bas (verrou des labos), pour l'auto-correction de l'épreuve à blanc.
 
   function ajuster(t) { t.style.height = "auto"; t.style.height = t.scrollHeight + 4 + "px"; }
 
@@ -425,6 +426,7 @@
     const clair = await crypto.subtle.decrypt({ name: "AES-GCM", iv: b64(paquet.iv) }, cle, b64(paquet.donnees));
     return new TextDecoder().decode(clair);
   }
+  window.Cours.dechiffrer = dechiffrer;
   const verrou = document.getElementById("verrou");
   if (verrou && !(window.crypto && crypto.subtle)) {
     verrou.querySelector(".msg").textContent = "Ce navigateur ne peut pas ouvrir le labo. Utilise une version récente de Chrome, Firefox, Edge ou Safari.";

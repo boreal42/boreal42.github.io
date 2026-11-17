@@ -27,9 +27,10 @@
         etat.textContent = "Impossible de générer tes données : avertis l'enseignant.";
         return;
       }
-      window.Cours.definirFichiers({ "sonde.csv": csv });
+      const nomFichier = source.dataset.fichier || "sonde.csv";
+      window.Cours.definirFichiers({ [nomFichier]: csv });
       const lignes = csv.trim().split("\n");
-      etat.innerHTML = `Tes données sont prêtes : le fichier <code>sonde.csv</code> contient ${lignes.length - 1} mesures, générées à partir du matricule <strong>${chiffres}</strong>.`;
+      etat.innerHTML = `Tes données sont prêtes : le fichier <code>${nomFichier}</code> contient ${lignes.length - 1} mesures, générées à partir du matricule <strong>${chiffres}</strong>.`;
       apercu.textContent = lignes.slice(0, 6).join("\n") + "\n...";
       apercu.hidden = false;
     }
