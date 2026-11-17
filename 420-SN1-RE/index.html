@@ -128,6 +128,9 @@ tr.exam td{background:var(--signal-soft)}
 .vocab span{font-family:var(--font-mono);font-size:.8rem;border:1px solid var(--rule);border-radius:5px;padding:.1rem .45rem;background:var(--sheet)}
 .recipe{margin-top:1.6rem;padding-top:1.2rem;border-top:1px solid var(--rule)}
 .recipe ol{padding-left:1.2rem}
+.recipe h3{margin-bottom:.4rem}
+h2.groupe-recettes{margin-top:2.4rem}
+span.ch{font-size:.75em;font-weight:400;color:var(--muted, #667)}
 .rule-ok{color:var(--ok);font-weight:600}
 .rule-no{color:var(--signal);font-weight:600}
 pre{font-family:var(--font-mono);font-size:.88rem;background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:.9rem 1rem;overflow-x:auto}
@@ -279,10 +282,12 @@ footer{margin-top:2rem;font-size:.82rem;color:var(--muted)}
       <div class="sheet prose">
         <p class="eyebrow">Marches à suivre</p>
         <h1 id="t-rec">Recettes</h1>
-        <p class="lead">Les gestes qui reviennent chaque semaine, en quelques étapes.</p>
+        <p class="lead">Les gestes qui reviennent pendant toute la session, en quelques étapes. Le chapitre où chaque recette apparaît est indiqué entre parenthèses.</p>
+
+        <h2 class="groupe-recettes">Utiliser le site</h2>
 
         <div class="recipe" id="recette-sauvegarde">
-          <h2>Où est sauvegardé mon travail?</h2>
+          <h3>Où est sauvegardé mon travail?</h3>
           <ol>
             <li>Ton code et tes fiches sont sauvegardés <strong>automatiquement</strong>, à chaque modification.</li>
             <li>La sauvegarde est dans <strong>ce navigateur, sur cet appareil</strong>. Un autre ordinateur, un autre navigateur ou une navigation privée ne la voient pas.</li>
@@ -290,36 +295,59 @@ footer{margin-top:2rem;font-size:.82rem;color:var(--muted)}
           </ol>
         </div>
 
-        <div class="recipe" id="recette-lea">
-          <h2>Remettre ton travail sur LÉA</h2>
+        <div class="recipe" id="recette-code">
+          <h3>Ouvrir un labo ou une évaluation</h3>
           <ol>
-            <li>Au bas de la page du chapitre, écris ton nom dans la section <strong>Remise sur LÉA</strong>.</li>
+            <li>Ouvre la page à partir du chapitre de la semaine (bouton <strong>Labo</strong>) ou du lien donné en classe.</li>
+            <li>Entre le <strong>code d'accès</strong> donné par l'enseignant au début de la séance. Les majuscules, les accents et les espaces ne comptent pas.</li>
+            <li>Le navigateur retient le code : la page s'ouvre directement à ta prochaine visite, sur le même appareil.</li>
+            <li>Pendant une évaluation, le bouton <strong>Vérifier</strong> n'existe pas : c'est à toi de tester ton code.</li>
+          </ol>
+        </div>
+
+        <div class="recipe" id="recette-lea">
+          <h3>Remettre ton travail sur LÉA</h3>
+          <ol>
+            <li>Au bas de la page (chapitre, labo ou évaluation), écris ton nom dans la section <strong>Remise sur LÉA</strong>.</li>
             <li>Clique sur <strong>Télécharger mon rapport</strong>. Tu obtiens un fichier <code>.py</code> qui contient ton code, tes fiches et le résultat de chaque vérification.</li>
-            <li>Dans LÉA, ouvre le travail du chapitre et dépose ce fichier.</li>
+            <li>Dans LÉA, ouvre le travail correspondant et dépose ce fichier. Dépose le fichier tel quel, sans le modifier.</li>
           </ol>
         </div>
 
         <div class="recipe" id="recette-appareil">
-          <h2>Continuer sur un autre appareil</h2>
+          <h3>Continuer sur un autre appareil</h3>
           <ol>
             <li>Sur le premier appareil, télécharge ton rapport.</li>
-            <li>Sur le second, ouvre la page du même chapitre et clique sur <strong>Importer un rapport</strong>, au bas de la page.</li>
+            <li>Sur le second, ouvre la page du même chapitre ou du même labo et clique sur <strong>Importer un rapport</strong>, au bas de la page.</li>
             <li>Choisis ton fichier : ton code, tes fiches et tes réussites reviennent.</li>
           </ol>
         </div>
 
-        <div class="recipe" id="recette-erreur">
-          <h2>Lire un message d'erreur</h2>
+        <h2 class="groupe-recettes">Résoudre un problème</h2>
+
+        <div class="recipe" id="recette-planifier">
+          <h3>Planifier un programme <span class="ch">(ch. 1)</span></h3>
           <ol>
-            <li>Lis la <strong>dernière ligne</strong> du message : elle donne le type d'erreur.</li>
-            <li>Repère la ligne de ton code indiquée par la flèche.</li>
-            <li>Cherche le type d'erreur dans l'aide-mémoire.</li>
-            <li>Corrige une seule chose, puis exécute de nouveau.</li>
+            <li>Lis l'énoncé et note les grandeurs, avec leurs <strong>unités</strong>.</li>
+            <li><strong>Intrants</strong> : les données que le programme reçoit.</li>
+            <li><strong>Extrant</strong> : le résultat attendu, et son unité.</li>
+            <li><strong>Traitements</strong> : les étapes, en français ou en pseudocode, dans l'ordre.</li>
+            <li><strong>Jeu d'essais</strong> : des cas dont tu connais la réponse, calculés à la main <em>avant</em> de coder.</li>
+          </ol>
+        </div>
+
+        <div class="recipe" id="recette-essais">
+          <h3>Bâtir un jeu d'essais <span class="ch">(ch. 3 et 4)</span></h3>
+          <ol>
+            <li>Une condition : au moins un cas par <strong>branche</strong>, plus un cas exactement sur chaque <strong>borne</strong> (<code>&gt;</code> ou <code>&gt;=</code>?).</li>
+            <li>Une boucle : un cas où elle ne tourne <strong>aucune</strong> fois, un où elle tourne <strong>une</strong> fois, et un où elle tourne plusieurs fois.</li>
+            <li>Une liste : la liste vide, une liste d'un seul élément, des valeurs négatives, des doublons.</li>
+            <li>Note pour chaque cas le résultat attendu, puis compare avec le résultat obtenu.</li>
           </ol>
         </div>
 
         <div class="recipe" id="recette-trace">
-          <h2>Faire une trace d'exécution</h2>
+          <h3>Faire une trace d'exécution <span class="ch">(ch. 4)</span></h3>
           <ol>
             <li>Fais un tableau avec une colonne par variable, plus une colonne « Affichage ».</li>
             <li>Exécute le programme à la main, une ligne à la fois.</li>
@@ -331,6 +359,122 @@ b = a * 2      # a=3  b=6
 a = a + b      # a=9  b=6
 print(a, b)    # affiche : 9 6</pre>
         </div>
+
+        <div class="recipe" id="recette-fonction">
+          <h3>Écrire et tester une fonction <span class="ch">(ch. 6 et 7)</span></h3>
+          <ol>
+            <li>Choisis un nom qui dit ce que la fonction calcule, et ses paramètres (les intrants).</li>
+            <li>Écris le corps, puis <strong><code>return</code></strong> le résultat. Pas de <code>print()</code> ni d'<code>input()</code> dans une fonction de calcul.</li>
+            <li>Sous la fonction, écris un <code>assert</code> par cas du jeu d'essais. Pour un réel, compare avec une tolérance.</li>
+            <li>Exécute : aucun message signifie que tous les tests passent.</li>
+          </ol>
+          <pre>def energie_cinetique(m, v):
+    return 0.5 * m * v ** 2
+
+assert energie_cinetique(2, 3) == 9
+assert abs(energie_cinetique(0.1, 1.5) - 0.1125) &lt; 0.000001</pre>
+        </div>
+
+        <div class="recipe" id="recette-erreur">
+          <h3>Lire un message d'erreur <span class="ch">(ch. 2)</span></h3>
+          <ol>
+            <li>Lis la <strong>dernière ligne</strong> du message : elle donne le type d'erreur.</li>
+            <li>Repère la ligne de ton code indiquée dans le message.</li>
+            <li>Cherche le type d'erreur dans l'aide-mémoire.</li>
+            <li>Corrige une seule chose, puis exécute de nouveau.</li>
+          </ol>
+        </div>
+
+        <div class="recipe" id="recette-deboguer">
+          <h3>Déboguer en cinq étapes <span class="ch">(ch. 10)</span></h3>
+          <ol>
+            <li><strong>Reproduire</strong> : trouve un cas précis qui donne un mauvais résultat, et note le résultat attendu.</li>
+            <li><strong>Lire</strong> : s'il y a un message, lis sa dernière ligne, puis la ligne de ton code en cause.</li>
+            <li><strong>Localiser</strong> : ajoute des <code>print(f"{i=} {total=}")</code> ou fais la trace pour trouver la <em>première</em> ligne où une valeur devient fausse.</li>
+            <li><strong>Corriger une seule chose</strong>, à partir d'une hypothèse, puis réexécuter.</li>
+            <li><strong>Retester tout le jeu d'essais</strong>, puis enlever les <code>print()</code> de débogage.</li>
+          </ol>
+        </div>
+
+        <h2 class="groupe-recettes">Travailler avec des données</h2>
+
+        <div class="recipe" id="recette-csv">
+          <h3>Lire un fichier CSV <span class="ch">(ch. 9)</span></h3>
+          <ol>
+            <li>Ouvre le fichier avec <code>with open(...)</code> : il sera fermé automatiquement.</li>
+            <li>Saute la ligne d'en-tête avec <code>next(lecteur)</code>.</li>
+            <li>Pour chaque ligne, convertis chaque colonne utile avec <code>float()</code> ou <code>int()</code> : le fichier ne contient que du texte.</li>
+            <li>Vérifie le résultat : le nombre de lignes lues, la première et la dernière valeur.</li>
+          </ol>
+          <pre>import csv
+
+temps = []
+valeurs = []
+with open("donnees.csv") as fichier:
+    lecteur = csv.reader(fichier)
+    next(lecteur)
+    for ligne in lecteur:
+        temps.append(float(ligne[0]))
+        valeurs.append(float(ligne[1]))
+print(len(temps), temps[0], valeurs[-1])</pre>
+        </div>
+
+        <div class="recipe" id="recette-nettoyer">
+          <h3>Nettoyer des données honnêtement <span class="ch">(ch. 13)</span></h3>
+          <ol>
+            <li>Garde les données brutes <strong>intactes</strong> : construis une <em>nouvelle</em> liste nettoyée.</li>
+            <li>Fixe les règles de rejet <strong>avant</strong> de regarder les résultats (valeur manquante, code d'erreur, plage physique) et écris-les dans le code.</li>
+            <li>Compte les mesures rejetées, par raison, et rapporte-les.</li>
+            <li>N'invente jamais de valeur pour remplacer une mesure manquante.</li>
+          </ol>
+        </div>
+
+        <div class="recipe" id="recette-graphique">
+          <h3>Faire un graphique scientifique <span class="ch">(ch. 11)</span></h3>
+          <ol>
+            <li>Les <strong>mesures</strong> en points (<code>"o"</code>), un <strong>modèle</strong> en ligne continue.</li>
+            <li>Un titre, et chaque axe avec sa grandeur et son <strong>unité</strong> : <code>"Temps (s)"</code>.</li>
+            <li>Une étiquette <code>label=</code> par courbe, puis <code>plt.legend()</code>.</li>
+            <li>Regarde le graphique : la forme et l'ordre de grandeur ont-ils du sens?</li>
+          </ol>
+          <pre>plt.plot(t_mesures, y_mesures, "o", label="Mesures")
+plt.plot(t_modele, y_modele, label="Modèle")
+plt.xlabel("Temps (s)")
+plt.ylabel("Position (m)")
+plt.title("Chute d'une bille")
+plt.legend()</pre>
+        </div>
+
+        <div class="recipe" id="recette-valider">
+          <h3>Valider un résultat <span class="ch">(ch. 2, 10 et 12)</span></h3>
+          <ol>
+            <li><strong>Unités</strong> : le résultat a-t-il la bonne unité?</li>
+            <li><strong>Ordre de grandeur</strong> : est-il plausible? Une vitesse de 3000 m/s pour une balle lancée, une température de −300 °C : non.</li>
+            <li><strong>Cas connu</strong> : le programme redonne-t-il une réponse connue (sans frottement, avec des valeurs simples)?</li>
+            <li><strong>Convergence</strong> (méthodes numériques) : diminue le pas ou la tolérance; le résultat doit presque ne plus changer.</li>
+          </ol>
+        </div>
+
+        <h2 class="groupe-recettes">Intégrité</h2>
+
+        <div class="recipe" id="recette-citer">
+          <h3>Citer du code qui ne vient pas de toi <span class="ch">(ch. 13)</span></h3>
+          <ol>
+            <li>Juste avant le code emprunté, écris un commentaire qui dit <strong>qui ou quoi</strong> (auteur, site, livre, outil), <strong>où</strong> (lien ou référence), <strong>quand</strong> (date de consultation) et <strong>ce que tu as changé</strong>.</li>
+            <li>Comprends chaque ligne : tu en restes responsable.</li>
+          </ol>
+          <pre># Source : manuel du cours de physique, section 4.2, consulté le 2026-11-20.
+# Modifications : ajout du cas d'une liste vide.</pre>
+        </div>
+
+        <div class="recipe" id="recette-ia">
+          <h3>Vérifier du code produit par une IA <span class="ch">(ch. 13)</span></h3>
+          <ol>
+            <li>Dans ce cours, l'IA peut <strong>expliquer</strong>; elle n'écrit pas le code d'un exercice, d'un labo ou d'une évaluation (<a href="#ia">politique sur l'IA</a>).</li>
+            <li>Ailleurs, quand elle est permise : <strong>lis</strong> le code ligne par ligne, <strong>fais une trace</strong> sur un petit exemple, <strong>teste</strong> des cas connus et des cas limites, puis <strong>valide</strong> le résultat.</li>
+            <li>Déclare l'usage : l'outil, la date, la requête, ce que tu as vérifié et ce que tu as corrigé.</li>
+          </ol>
+        </div>
       </div>
     </section>
 
@@ -339,9 +483,9 @@ print(a, b)    # affiche : 9 6</pre>
       <div class="sheet">
         <p class="eyebrow">Référence rapide</p>
         <h1 id="t-aide">Aide-mémoire</h1>
-        <p class="lead">Complété au fil des chapitres.</p>
+        <p class="lead">L'essentiel de la syntaxe de la session, sur une page. Le chapitre où chaque notion apparaît est indiqué entre parenthèses.</p>
 
-        <h2>Opérateurs arithmétiques</h2>
+        <h2>Opérateurs arithmétiques <span class="ch">(ch. 1 et 2)</span></h2>
         <div class="tablewrap"><table>
           <thead><tr><th>Opération</th><th>Symbole</th><th>Exemple</th><th>Résultat</th></tr></thead>
           <tbody>
@@ -354,15 +498,211 @@ print(a, b)    # affiche : 9 6</pre>
             <tr><td>Reste (modulo)</td><td><code>%</code></td><td><code>7 % 2</code></td><td class="num">1</td></tr>
           </tbody>
         </table></div>
-        <p class="prose">Priorités : parenthèses, puissances, multiplications et divisions, puis additions et soustractions. Le séparateur décimal est le point : <code>9.81</code>.</p>
+        <p class="prose">Priorités : parenthèses, puissances, multiplications et divisions, puis additions et soustractions. Le séparateur décimal est le <strong>point</strong> : <code>9.81</code>. Notation scientifique : <code>6.022e23</code>.</p>
 
-        <h2>Messages d'erreur fréquents</h2>
+        <h2>Types et conversions <span class="ch">(ch. 2)</span></h2>
+        <div class="tablewrap"><table>
+          <thead><tr><th>Type</th><th>Exemples</th><th>Convertir</th></tr></thead>
+          <tbody>
+            <tr><td><code>int</code> (entier)</td><td><code>3</code>, <code>-12</code></td><td><code>int("3")</code> → 3; <code>int(3.9)</code> → 3 (tronque)</td></tr>
+            <tr><td><code>float</code> (réel)</td><td><code>9.81</code>, <code>1e-3</code></td><td><code>float("9.81")</code> → 9.81</td></tr>
+            <tr><td><code>str</code> (texte)</td><td><code>"pH"</code>, <code>'NA'</code></td><td><code>str(42)</code> → <code>"42"</code></td></tr>
+            <tr><td><code>bool</code> (booléen)</td><td><code>True</code>, <code>False</code></td><td>résultat d'une comparaison</td></tr>
+          </tbody>
+        </table></div>
+        <p class="prose"><code>type(x)</code> donne le type d'une valeur. <code>round(x, 2)</code> arrondit à 2 décimales. <code>abs(x)</code> donne la valeur absolue.</p>
+
+        <h2>Afficher et lire <span class="ch">(ch. 2)</span></h2>
+        <pre>nom = input("Ton nom : ")              # input() donne toujours du texte
+masse = float(input("Masse (kg) : "))  # convertir avant de calculer
+print("Masse :", masse, "kg")
+print(f"Énergie : {E:.2f} J")          # f-string, 2 décimales
+print(f"{i=} {total=}")                # affiche i=3 total=14 (débogage)</pre>
+
+        <h2>Le module math <span class="ch">(ch. 2)</span></h2>
+        <div class="tablewrap"><table>
+          <thead><tr><th>Écriture</th><th>Sens</th></tr></thead>
+          <tbody>
+            <tr><td><code>math.sqrt(x)</code></td><td>racine carrée</td></tr>
+            <tr><td><code>math.pi</code>, <code>math.e</code></td><td>π, e</td></tr>
+            <tr><td><code>math.exp(x)</code>, <code>math.log(x)</code></td><td>e<sup>x</sup>, logarithme naturel (ln)</td></tr>
+            <tr><td><code>math.sin(x)</code>, <code>math.cos(x)</code>, <code>math.tan(x)</code></td><td>trigonométrie, x en <strong>radians</strong></td></tr>
+            <tr><td><code>math.radians(deg)</code></td><td>degrés → radians</td></tr>
+            <tr><td><code>math.isclose(a, b)</code></td><td>deux réels presque égaux</td></tr>
+          </tbody>
+        </table></div>
+
+        <h2>Comparaisons et logique <span class="ch">(ch. 3)</span></h2>
+        <div class="tablewrap"><table>
+          <thead><tr><th>Écriture</th><th>Sens</th><th>Écriture</th><th>Sens</th></tr></thead>
+          <tbody>
+            <tr><td><code>==</code></td><td>égal</td><td><code>!=</code></td><td>différent</td></tr>
+            <tr><td><code>&lt;</code>, <code>&lt;=</code></td><td>plus petit (ou égal)</td><td><code>&gt;</code>, <code>&gt;=</code></td><td>plus grand (ou égal)</td></tr>
+            <tr><td><code>and</code></td><td>les deux vraies</td><td><code>or</code></td><td>au moins une vraie</td></tr>
+            <tr><td><code>not</code></td><td>l'inverse</td><td><code>0 &lt;= x &lt;= 14</code></td><td>x entre 0 et 14, bornes incluses</td></tr>
+          </tbody>
+        </table></div>
+        <p class="prose">Ne compare pas deux réels avec <code>==</code> : <code>0.1 + 0.2 == 0.3</code> est faux. Utilise une tolérance : <code>abs(a - b) &lt; 0.000001</code>.</p>
+
+        <h2>Conditions <span class="ch">(ch. 3)</span></h2>
+        <pre>if ph &lt; 7:
+    nature = "acide"
+elif ph == 7:
+    nature = "neutre"
+else:
+    nature = "basique"</pre>
+        <p class="prose">Deux-points à la fin de chaque ligne <code>if</code>, <code>elif</code>, <code>else</code>; le bloc est <strong>indenté</strong> de 4 espaces. Python teste les branches dans l'ordre et exécute seulement la première qui est vraie.</p>
+
+        <h2>Boucles <span class="ch">(ch. 4 et 5)</span></h2>
+        <pre>n = 0                          # compteur
+total = 0                      # accumulateur
+while total &lt; 100:             # tant que la condition est vraie
+    n = n + 1
+    total = total + n
+
+for i in range(1, 6):          # i = 1, 2, 3, 4, 5
+    print(i, i ** 2)</pre>
+        <div class="tablewrap"><table>
+          <thead><tr><th>Écriture</th><th>Valeurs</th><th>Nombre</th></tr></thead>
+          <tbody>
+            <tr><td><code>range(5)</code></td><td>0, 1, 2, 3, 4</td><td class="num">5</td></tr>
+            <tr><td><code>range(1, 6)</code></td><td>1, 2, 3, 4, 5</td><td class="num">5</td></tr>
+            <tr><td><code>range(0, 20, 5)</code></td><td>0, 5, 10, 15</td><td class="num">4</td></tr>
+            <tr><td><code>range(10, 0, -2)</code></td><td>10, 8, 6, 4, 2</td><td class="num">5</td></tr>
+          </tbody>
+        </table></div>
+        <p class="prose">La fin de <code>range</code> est <strong>exclue</strong>. <code>for</code> quand on connaît le nombre de tours; <code>while</code> quand on s'arrête sur une condition. Une condition de <code>while</code> qui ne devient jamais fausse donne une boucle infinie : le site l'arrête après 5 secondes.</p>
+
+        <h2>Le hasard <span class="ch">(ch. 5)</span></h2>
+        <pre>import random
+random.seed(42)                # mêmes tirages à chaque exécution
+random.randint(1, 6)           # entier de 1 à 6, bornes incluses
+random.random()                # réel entre 0 et 1
+random.uniform(9.7, 9.9)       # réel entre 9.7 et 9.9</pre>
+
+        <h2>Fonctions <span class="ch">(ch. 6)</span></h2>
+        <pre>def vitesse(distance, temps=1.0):    # temps a une valeur par défaut
+    """Retourne la vitesse moyenne (m/s)."""
+    return distance / temps
+
+v = vitesse(100, 9.58)                # l'appel donne une valeur</pre>
+        <p class="prose"><code>return</code> renvoie une valeur à qui a appelé la fonction; <code>print()</code> ne fait que l'afficher. Une fonction sans <code>return</code> retourne <code>None</code>. Les variables créées dans une fonction n'existent pas en dehors (portée locale).</p>
+
+        <h2>Modules et tests <span class="ch">(ch. 7)</span></h2>
+        <pre>import math                         # math.sqrt(2)
+import statistics as st             # st.mean(L), st.median(L), st.stdev(L)
+from math import sqrt, pi           # sqrt(2), pi
+
+assert vitesse(100, 10) == 10
+assert abs(vitesse(1, 3) - 0.3333) &lt; 0.0001     # réel : tolérance</pre>
+
+        <h2>Listes <span class="ch">(ch. 8)</span></h2>
+        <div class="tablewrap"><table>
+          <thead><tr><th>Écriture</th><th>Sens</th></tr></thead>
+          <tbody>
+            <tr><td><code>L = [9.79, 9.83, 9.81]</code></td><td>créer une liste</td></tr>
+            <tr><td><code>L[0]</code>, <code>L[-1]</code></td><td>premier, dernier élément</td></tr>
+            <tr><td><code>L[1:3]</code></td><td>tranche : indices 1 et 2 (fin exclue)</td></tr>
+            <tr><td><code>L[2] = 9.80</code></td><td>modifier un élément</td></tr>
+            <tr><td><code>L.append(x)</code></td><td>ajouter à la fin</td></tr>
+            <tr><td><code>len(L)</code>, <code>sum(L)</code>, <code>min(L)</code>, <code>max(L)</code></td><td>taille, somme, minimum, maximum</td></tr>
+            <tr><td><code>L.index(max(L))</code></td><td>indice du maximum</td></tr>
+            <tr><td><code>x in L</code></td><td>x est-il dans la liste?</td></tr>
+          </tbody>
+        </table></div>
+        <pre>for x in mesures:                  # quand on a besoin des valeurs
+    ...
+for i in range(len(mesures)):      # quand on a besoin des indices
+    ...
+for i in range(len(L) - 1):        # pour comparer L[i] et L[i + 1]
+    ...</pre>
+
+        <h2>Tableaux 2D et fichiers <span class="ch">(ch. 9)</span></h2>
+        <pre>grille = [[1, 2, 3],
+          [4, 5, 6]]
+grille[1][2]                       # ligne 1, colonne 2 : 6
+for ligne in grille:
+    for valeur in ligne:
+        ...
+
+with open("mesures.txt") as fichier:        # lire
+    for ligne in fichier:
+        valeur = float(ligne.strip())
+
+with open("rapport.txt", "w") as fichier:   # écrire (remplace le fichier!)
+    fichier.write(f"Moyenne : {moyenne:.2f}\n")</pre>
+        <p class="prose"><code>texte.split(",")</code> découpe un texte en liste; <code>texte.strip()</code> enlève les espaces et le saut de ligne. Pour un CSV, voir la recette <em>Lire un fichier CSV</em>.</p>
+
+        <h2>NumPy <span class="ch">(ch. 10)</span></h2>
+        <div class="tablewrap"><table>
+          <thead><tr><th>Écriture</th><th>Sens</th></tr></thead>
+          <tbody>
+            <tr><td><code>import numpy as np</code></td><td>importer NumPy</td></tr>
+            <tr><td><code>a = np.array([1, 2, 3])</code></td><td>tableau à partir d'une liste</td></tr>
+            <tr><td><code>np.linspace(0, 1, 11)</code></td><td>11 valeurs de 0 à 1, bornes incluses</td></tr>
+            <tr><td><code>np.arange(0, 10, 2)</code></td><td>0, 2, 4, 6, 8 (fin exclue)</td></tr>
+            <tr><td><code>np.zeros(5)</code></td><td>5 zéros</td></tr>
+            <tr><td><code>a * 2</code>, <code>a + b</code>, <code>np.sqrt(a)</code></td><td>calcul sur tous les éléments, sans boucle</td></tr>
+            <tr><td><code>a.sum()</code>, <code>a.mean()</code>, <code>a.max()</code>, <code>a.argmax()</code></td><td>somme, moyenne, maximum, indice du maximum</td></tr>
+            <tr><td><code>a.std(ddof=1)</code></td><td>écart type d'échantillon (n − 1)</td></tr>
+            <tr><td><code>np.diff(a)</code></td><td>différences entre éléments voisins</td></tr>
+            <tr><td><code>a[a &gt; 5]</code></td><td>masque : les éléments plus grands que 5</td></tr>
+          </tbody>
+        </table></div>
+
+        <h2>Graphiques <span class="ch">(ch. 11)</span></h2>
+        <div class="tablewrap"><table>
+          <thead><tr><th>Écriture</th><th>Sens</th></tr></thead>
+          <tbody>
+            <tr><td><code>import matplotlib.pyplot as plt</code></td><td>importer Matplotlib</td></tr>
+            <tr><td><code>plt.plot(x, y)</code></td><td>courbe (ligne)</td></tr>
+            <tr><td><code>plt.plot(x, y, "o")</code> ou <code>plt.scatter(x, y)</code></td><td>points sans ligne</td></tr>
+            <tr><td><code>plt.plot(x, y, "--", label="Modèle")</code></td><td>style et nom dans la légende</td></tr>
+            <tr><td><code>plt.xlabel(...)</code>, <code>plt.ylabel(...)</code>, <code>plt.title(...)</code></td><td>axes (avec unités) et titre</td></tr>
+            <tr><td><code>plt.legend()</code>, <code>plt.grid(True)</code></td><td>légende, quadrillage</td></tr>
+            <tr><td><code>plt.axvline(x)</code>, <code>plt.axhline(y)</code></td><td>ligne verticale, horizontale</td></tr>
+            <tr><td><code>plt.subplot(1, 2, 1)</code></td><td>premier de deux graphiques côte à côte</td></tr>
+            <tr><td><code>plt.hist(L, bins=20)</code></td><td>histogramme</td></tr>
+          </tbody>
+        </table></div>
+
+        <h2>Méthodes numériques <span class="ch">(ch. 12)</span></h2>
+        <pre>def bissection(f, a, b, tolerance):      # racine de f entre a et b
+    while b - a &gt; tolerance:             # f(a) et f(b) de signes contraires!
+        m = (a + b) / 2
+        if f(a) * f(m) &lt;= 0:
+            b = m
+        else:
+            a = m
+    return (a + b) / 2
+
+aire = 0                                 # trapèzes : aire sous des mesures
+for i in range(len(x) - 1):
+    aire = aire + (y[i] + y[i + 1]) / 2 * (x[i + 1] - x[i])
+
+for i in range(round(duree / dt)):       # Euler : dv/dt = taux
+    taux = g - (c / m) * v ** 2
+    v = v + taux * dt</pre>
+        <p class="prose">Utilise <code>round(duree / dt)</code>, pas <code>int()</code>, pour le nombre de pas. Valide toujours la méthode sur un cas connu, puis vérifie que le résultat ne change presque plus quand on diminue <code>dt</code> ou la tolérance.</p>
+
+        <h2>Intégrité <span class="ch">(ch. 13)</span></h2>
+        <p class="prose">Données brutes intactes; règles de rejet fixées d'avance et écrites dans le code; rejets comptés et rapportés; aucune valeur inventée. Code emprunté cité (qui, où, quand, ce qui a changé). Usage de l'IA déclaré et vérifié. Voir les recettes <em>Nettoyer des données</em>, <em>Citer du code</em> et <em>Vérifier du code produit par une IA</em>.</p>
+
+        <h2>Messages d'erreur fréquents <span class="ch">(ch. 2 et 10)</span></h2>
         <div class="tablewrap"><table>
           <thead><tr><th>Message</th><th>Cause habituelle</th></tr></thead>
           <tbody>
-            <tr><td><code>SyntaxError</code></td><td>Virgule, parenthèse ou guillemet manquant : Python ne peut pas lire l'instruction.</td></tr>
-            <tr><td><code>NameError</code></td><td>Nom utilisé avant d'être créé, ou mal écrit (attention aux majuscules).</td></tr>
-            <tr><td><code>ZeroDivisionError</code></td><td>Division par zéro.</td></tr>
+            <tr><td><code>SyntaxError</code></td><td>Deux-points, parenthèse ou guillemet manquant, ou virgule décimale (<code>9,81</code>) : Python ne peut pas lire l'instruction.</td></tr>
+            <tr><td><code>IndentationError</code></td><td>Bloc mal indenté après <code>if</code>, <code>for</code>, <code>while</code> ou <code>def</code>.</td></tr>
+            <tr><td><code>NameError</code></td><td>Nom utilisé avant d'être créé, ou mal écrit (attention aux majuscules et aux accents), ou module non importé.</td></tr>
+            <tr><td><code>TypeError</code></td><td>Opération entre types incompatibles, souvent du texte lu par <code>input()</code> ou dans un fichier, non converti; ou mauvais nombre d'arguments à une fonction.</td></tr>
+            <tr><td><code>ValueError</code></td><td>Conversion impossible : <code>float("NA")</code>, <code>int("3.5")</code>, ou <code>math.sqrt(-1)</code>.</td></tr>
+            <tr><td><code>ZeroDivisionError</code></td><td>Division par zéro, par exemple la moyenne d'une liste vide.</td></tr>
+            <tr><td><code>IndexError</code></td><td>Indice hors de la liste : <code>L[len(L)]</code>, ou <code>L[i + 1]</code> au dernier tour d'une boucle.</td></tr>
+            <tr><td><code>FileNotFoundError</code></td><td>Nom de fichier mal écrit, ou fichier absent.</td></tr>
+            <tr><td><code>AttributeError</code></td><td>Méthode qui n'existe pas pour ce type, par exemple <code>append</code> sur un nombre.</td></tr>
+            <tr><td><code>AssertionError</code></td><td>Un test <code>assert</code> a échoué : le résultat n'est pas celui attendu.</td></tr>
+            <tr><td><em>Aucun message, mauvais résultat</em></td><td>Erreur de logique : fais la trace et suis la recette <em>Déboguer en cinq étapes</em>.</td></tr>
           </tbody>
         </table></div>
       </div>
