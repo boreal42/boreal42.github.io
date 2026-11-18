@@ -205,3 +205,13 @@ table.notes tr.detail td{background:var(--paper);padding:.3rem .8rem}
 .runner .figures:empty{display:none}
 .runner .figures{display:flex;flex-wrap:wrap;gap:.8rem;padding:.7rem 1.1rem;border-top:1px solid var(--rule);background:#fff}
 .runner .figures img{max-width:100%;height:auto;border-radius:4px}
+/* Aides à la compréhension (étudiants de première année) */
+.admonition.image{border-left-color:#7a5bb5;background:rgba(122,91,181,.08)}
+.admonition.image .admonition-title{color:#7a5bb5}
+.admonition.methode{border-left-color:var(--ok);background:transparent;border:1px solid var(--rule);border-left:4px solid var(--ok);border-radius:0 8px 8px 0}
+.admonition.methode .admonition-title{color:var(--ok)}
+details.reponse{margin:.6rem 0 1.2rem;border:1px solid var(--rule);border-radius:8px;padding:.5rem .9rem;background:var(--sheet,#fff)}
+details.reponse > summary{cursor:pointer;font-weight:600;color:var(--accent)}
+details.reponse[open] > summary{margin-bottom:.4rem}
+details.reponse p,details.reponse li{margin:.3rem 0}
+.pas-a-pas td:first-child{font-family:var(--font-mono,monospace);white-space:nowrap}
