@@ -436,6 +436,8 @@
   } else if (verrou) {
     // Les chapitres s'ouvrent avec le code du cours, retenu une fois pour tout le site (partagé avec l'accueil).
     const CLE_CODE = document.body.dataset.verrou === "site" ? "site:code" : CHAPITRE_PAGE + ":code";
+    const cadrePorte = document.body.dataset.verrou === "site" ? verrou.closest(".layout") : null;
+    const montrerPorte = oui => { verrou.hidden = !oui; if (cadrePorte) cadrePorte.style.display = oui ? "" : "none"; };
     // Un seul paquet, ou une liste de paquets (une version par groupe, chacune avec son code).
     const lu = JSON.parse(document.getElementById("labo-chiffre").textContent);
     const paquets = Array.isArray(lu) ? lu : [lu];
@@ -463,7 +465,7 @@
         document.getElementById("contenu-labo").innerHTML = html;
         const version = document.querySelector("#contenu-labo [data-version]");
         CHAPITRE = CHAPITRE_PAGE + (version ? version.dataset.version : "");
-        verrou.hidden = true;
+        montrerPorte(false);
         document.querySelectorAll(".apres-verrou").forEach(e => { e.hidden = false; });
         stock.ecrire(CLE_CODE, normaliserCode(code));
         if (TYPE === "evaluation" && !silencieux && !stock.lire(CHAPITRE_PAGE + ":ouverture")) stock.ecrire(CHAPITRE_PAGE + ":ouverture", Date.now());
@@ -481,12 +483,12 @@
         if (location.hash) { const cible = document.getElementById(location.hash.slice(1)); if (cible) cible.scrollIntoView(); }
       } catch (e) {
         if (!silencieux) { msg.textContent = "Ce code ne fonctionne pas. Vérifie-le avec ton enseignant."; champ.select(); }
-        verrou.hidden = false;
+        montrerPorte(true);
       }
     };
     form.addEventListener("submit", e => { e.preventDefault(); msg.textContent = "Ouverture…"; ouvrir(champ.value, false); });
     const connu = stock.lire(CLE_CODE);
-    if (connu) { verrou.hidden = true; ouvrir(connu, true); }
+    if (connu) { montrerPorte(false); ouvrir(connu, true); }
   } else {
     init();
   }
