@@ -20,7 +20,7 @@
       csvCourant = null;
       bouton.hidden = true;
       if (!chiffres || Number(chiffres) < 1 || Number(chiffres) > 999) {
-        etat.textContent = "Entrez votre numéro d'équipe (donné par l'enseignant) : vos données seront générées à partir de lui.";
+        etat.textContent = "Entrez votre numéro d'équipe (donné par le formateur) : vos données seront générées à partir de lui.";
         apercu.hidden = true;
         return;
       }
@@ -29,7 +29,7 @@
       if (num !== demande) return;          // une saisie plus récente a pris le relais
       const csv = r.valeurs && r.valeurs._csv;
       if (r.erreur || typeof csv !== "string") {
-        etat.textContent = "Impossible de générer vos données : avertissez l'enseignant.";
+        etat.textContent = "Impossible de générer vos données : avertissez le formateur.";
         return;
       }
       window.Cours.definirFichiers({ [nomFichier]: csv });

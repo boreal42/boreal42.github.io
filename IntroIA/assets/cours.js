@@ -138,7 +138,7 @@
     if (e.valide) {
       quiz.querySelectorAll("input").forEach(i => { i.disabled = true; });
       const bv = quiz.querySelector(".valider-quiz"); if (bv) bv.disabled = true;
-      quiz.querySelector(".score").textContent = `Résultat : ${e.score} / ${e.total}. Les réponses seront revues en classe.`;
+      quiz.querySelector(".score").textContent = `Résultat : ${e.score} / ${e.total}. Les réponses seront revues en séance.`;
     }
   }
   if (quiz) {
@@ -312,7 +312,7 @@
     const entete = [
       `# IntroIA · Introduction à l’intelligence artificielle`,
       `# Rapport ${TYPE === "labo" ? "du labo " + CHAPITRE.replace("L", "") : TYPE === "evaluation" ? "de l'évaluation " + CHAPITRE.replace("E", "") : TYPE === "projet" ? "du projet du module " + CHAPITRE.replace("P", "") : "du cours " + CHAPITRE}`,
-      `# Étudiant : ${nom || "(nom non indiqué)"}`,
+      `# Participant : ${nom || "(nom non indiqué)"}`,
       `# Généré le : ${date.toLocaleString("fr-CA")}`,
       ...(enEval ? [] : [`# Résultat : ${n} / ${exercices.length} exercices réussis`]),
       ...lignesQuiz,
@@ -482,7 +482,7 @@
         document.dispatchEvent(new Event("contenu-ouvert"));
         if (location.hash) { const cible = document.getElementById(location.hash.slice(1)); if (cible) cible.scrollIntoView(); }
       } catch (e) {
-        if (!silencieux) { msg.textContent = "Ce code ne fonctionne pas. Vérifie-le avec ton enseignant."; champ.select(); }
+        if (!silencieux) { msg.textContent = "Ce code ne fonctionne pas. Vérifie-le avec ton formateur."; champ.select(); }
         montrerPorte(true);
       }
     };

@@ -24,7 +24,7 @@
       if (num !== demande) return;          // une saisie plus récente a pris le relais
       const csv = r.valeurs && r.valeurs._csv;
       if (r.erreur || typeof csv !== "string") {
-        etat.textContent = "Impossible de générer tes données : avertis l'enseignant.";
+        etat.textContent = "Impossible de générer tes données : avertis le formateur.";
         return;
       }
       const nomFichier = source.dataset.fichier || "donnees.csv";

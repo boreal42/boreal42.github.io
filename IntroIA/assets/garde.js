@@ -33,7 +33,7 @@
       "<p>Pendant l'épreuve, le reste du site est fermé dans ce navigateur, jusqu'à " + fin + ". " +
       "L'aide-mémoire du cours se trouve au bas de la page de l'épreuve.</p>" +
       "<a class=\"btn\" href=\"" + examen.url + "\">Retour à l'épreuve</a>" +
-      "<details><summary>Enseignant : lever le mode examen</summary>" +
+      "<details><summary>Formateur : lever le mode examen</summary>" +
       "<form><input type=\"password\" autocomplete=\"off\" aria-label=\"Code de levée\"><button type=\"submit\">Lever</button> <span></span></form></details>";
     document.body.insertBefore(bloc, document.body.firstChild);
     bloc.querySelector("form").addEventListener("submit", function (e) {

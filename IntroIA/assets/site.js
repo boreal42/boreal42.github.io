@@ -29,7 +29,7 @@
       try { localStorage.setItem(CLE, JSON.stringify(normaliser(code))); } catch (e) {}
       afficher(html);
     } catch (e) {
-      if (!silencieux) { porte.querySelector(".msg").textContent = "Ce code ne fonctionne pas. Vérifie-le avec ton enseignant."; porte.querySelector("input").select(); }
+      if (!silencieux) { porte.querySelector(".msg").textContent = "Ce code ne fonctionne pas. Vérifie-le avec ton formateur."; porte.querySelector("input").select(); }
       porte.hidden = false;
     }
   }
