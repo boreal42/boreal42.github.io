@@ -127,6 +127,8 @@ onmessage = async e => {
   if (fichiers) for (const [nom, contenu] of Object.entries(fichiers)) { try { py.FS.writeFile(nom, contenu); } catch (err) {} }
   // Modules supplémentaires (numpy, matplotlib) : chargés au besoin, hors du délai d'exécution.
   try { await py.loadPackagesFromImports(code); } catch (err) {}
+  // NetworkX utilise SciPy pour certaines fonctions (PageRank, matrices) sans l'importer au premier niveau.
+  if (/\bnetworkx\b/.test(code)) { try { await py.loadPackage("scipy"); } catch (err) {} }
   // Modules absents de Pyodide (seaborn, arrow…) : installés avec micropip la première fois.
   try {
     const voulus = py.pyodide_py.code.find_imports(code).toJs();
