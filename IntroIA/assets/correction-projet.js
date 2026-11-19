@@ -32,6 +32,7 @@
 
   function demarrer() {
     const cle = JSON.parse(document.getElementById("cle-correction").textContent);
+    const avecCode = !!cle.generateur;      // projet du module 2 : code réexécuté; module 3 : rapport et grille seulement
     const entree = document.getElementById("rapports");
     const etat = document.getElementById("etat-correction");
     const zone = document.getElementById("resultats");
@@ -49,7 +50,7 @@
         if (!d) { equipes.push({ fichier: fichiers[i].name, invalide: true }); continue; }
         if (d.chapitre !== cle.chapitre) { equipes.push({ fichier: fichiers[i].name, invalide: true, raison: `ce rapport vient d'une autre page (${d.chapitre}), pas de ce projet` }); continue; }
         equipes.push(await corriger(d, fichiers[i].name, (k, n) => {
-          etat.textContent = `Rapport ${i + 1} / ${fichiers.length} (${fichiers[i].name}) : cas ${k} / ${n}… ${window.Cours.messageChargement("numpy pandas matplotlib")}`;
+          etat.textContent = `Rapport ${i + 1} / ${fichiers.length} (${fichiers[i].name}) : partie ${k} / ${n}… ${avecCode ? window.Cours.messageChargement("numpy pandas matplotlib") : ""}`;
         }));
       }
       etat.textContent = `${equipes.filter(e => !e.invalide).length} rapport(s) traité(s). Notez chaque critère dans le détail de chaque équipe, puis téléchargez les notes.`;
@@ -69,13 +70,13 @@
       const equipe = Number(String(extras["Équipe"] || "").replace(/\D/g, "")) || 0;
       const resultat = { fichier, membres: d.nom || "(membres absents)", equipe, cas: [], notes: {}, extras };
       blocs.forEach(b => { resultat.notes[b.id] = b.grille.map(() => null); });
-      if (!equipe) { resultat.alerte = "Numéro d'équipe absent : les données ne peuvent pas être régénérées, le code n'est pas réexécuté."; }
-      const fichiers = equipe ? await donnees(equipe) : null;
+      if (!equipe && avecCode) { resultat.alerte = "Numéro d'équipe absent : les données ne peuvent pas être régénérées, le code n'est pas réexécuté."; }
+      const fichiers = equipe && avecCode ? await donnees(equipe) : null;
       for (let k = 0; k < cle.cas.length; k++) {
         const c = cle.cas[k];
         progres(k + 1, cle.cas.length);
         const code = (d.exercices && d.exercices[c.id] && d.exercices[c.id].code) || "";
-        const vars = c.resultats.map(r => r[0]);
+        const vars = (c.resultats || []).map(r => r[0]);
         const info = { id: c.id, titre: c.titre, code, variables: [] };
         if (fichiers) {
           const ref = await window.Cours.executerPy(c.reference, null, null, vars, fichiers);
@@ -107,7 +108,9 @@
         if (e.invalide) return `<tr><td colspan="${blocs.length + 2}">${esc(e.fichier)} : ${esc(e.raison || "ce fichier n'est pas un rapport valide.")}</td></tr>`;
         const doublon = e.equipe && vus[e.equipe] > 1 ? ` <strong class="alerte">numéro d'équipe en double!</strong>` : "";
         const executes = e.cas.filter(c => c.code.trim() && !c.erreur && definis(c)).length;
-        return `<tr data-i="${i}"><td><strong>Équipe ${e.equipe || "?"}</strong>${doublon}<br><small>${esc(e.membres)}</small><br><small>${esc(e.fichier)} · ${executes} / ${e.cas.length} cas exécutés avec résultats</small></td>
+        const remplis = blocs.slice(0, -1).filter((b, k) => cle.cas[k].textes.some(t => (e.extras[t] || "").trim())).length;
+        const etatCas = avecCode ? `${executes} / ${e.cas.length} cas exécutés avec résultats` : `${remplis} / ${e.cas.length} parties rédigées`;
+        return `<tr data-i="${i}"><td><strong>Équipe ${e.equipe || "?"}</strong>${doublon}<br><small>${esc(e.membres)}</small><br><small>${esc(e.fichier)} · ${etatCas}</small></td>
           ${blocs.map(b => `<td class="num col-${b.id}">${noteBloc(e, b)} / ${b.max}</td>`).join("")}
           <td class="num total">${totalHtml(e)}</td></tr>
           <tr class="detail"><td colspan="${blocs.length + 2}">${detailHtml(e, i)}</td></tr>`;
@@ -140,6 +143,7 @@
         const vars = c.variables.length ? `<div class="tablewrap"><table><thead><tr><th>Résultat</th><th>Équipe</th><th>Référence</th><th>Écart</th></tr></thead><tbody>
             ${c.variables.map(x => `<tr><td><code>${esc(x.v)}</code><br><small>${esc(x.desc)}</small></td><td class="num">${montre(x.obtenu)}</td><td class="num">${montre(x.attendu)}</td><td>${pastille[x.ecart]}</td></tr>`).join("")}</tbody></table></div>` : "";
         const figures = (c.figures || []).map(f => `<img src="data:image/png;base64,${f}" alt="Graphique de l'équipe" style="max-width:48%;margin:.25em">`).join("");
+        if (!avecCode) return `<section><h4>${esc(c.titre)}</h4>${texteHtml(e, def.textes)}${grilleHtml(e, i, blocs[k])}</section>`;
         return `<section><h4>${esc(c.titre)}</h4>
           ${!c.code.trim() ? "<p class=\"alerte\">Aucun code remis pour ce cas.</p>" : c.erreur ? `<p class="alerte">Erreur à l'exécution : ${esc(c.erreur.split("\n").slice(-1)[0])}</p>` : e.alerte ? "" : definis(c) ? "<p>✅ Le code s'exécute sans erreur sur les données de l'équipe.</p>" : "<p class=\"alerte\">Le code s'exécute, mais ne définit aucun résultat clé (code de départ?).</p>"}
           ${c.erreurRef ? `<p><em>La solution de référence a échoué : ${esc(c.erreurRef.split("\n").slice(-1)[0])}</em></p>` : ""}

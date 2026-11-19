@@ -215,3 +215,15 @@ details.reponse > summary{cursor:pointer;font-weight:600;color:var(--accent)}
 details.reponse[open] > summary{margin-bottom:.4rem}
 details.reponse p,details.reponse li{margin:.3rem 0}
 .pas-a-pas td:first-child{font-family:var(--font-mono,monospace);white-space:nowrap}
+/* Projet du module 3 : interface de dessin d'un chiffre */
+.dessin-grille{display:flex;flex-wrap:wrap;gap:1.2rem;align-items:flex-start;margin:1rem 0}
+.dessin-grille canvas.dessin{width:280px;height:280px;background:#000;border:2px solid var(--accent);border-radius:8px;touch-action:none;cursor:crosshair}
+.dessin-grille canvas.apercu28{width:112px;height:112px;background:#000;border:1px solid var(--rule);image-rendering:pixelated}
+.dessin-cote{display:flex;flex-direction:column;gap:.6rem;min-width:240px;flex:1}
+.resultat-dessin{font-size:1.05rem}.resultat-dessin .chiffre-predit{font-size:1.8rem;color:var(--accent)}
+.barres{display:grid;gap:3px;max-width:360px}
+.proba{display:grid;grid-template-columns:1.2em 1fr 4.5em;align-items:center;gap:.4rem;font-family:var(--font-mono);font-size:.85rem}
+.proba i{display:block;height:.8rem;background:var(--accent);opacity:.35;border-radius:3px;min-width:1px}
+.proba.max i{opacity:1}
+.proba small{color:var(--muted);text-align:right}
+.etat-modele,.bilan-dessin{color:var(--muted);font-size:.92rem}
