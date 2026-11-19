@@ -15,7 +15,7 @@
   // ---------- Python ----------
   // ---------- Python, exécuté en arrière-plan (Web Worker) ----------
   // Un programme qui dépasse LIMITE_MS (boucle infinie) est arrêté : on détruit le worker et on en recrée un.
-  const LIMITE_MS = 5000;
+  const LIMITE_MS = 15000;
   const SCRIPT = document.currentScript ? document.currentScript.src : "";
   const URL_WORKER = SCRIPT.replace(/cours\.js/, "python-worker.js");
   let worker = null, pretP = null, pyPret = false, seq = 0;
@@ -63,7 +63,7 @@
         attente.delete(id);
         worker.terminate(); worker = null;
         attente.forEach(r => r.resolve({ sortie: "", erreur: "Exécution interrompue." })); attente.clear();
-        resolve({ sortie: "", erreur: `⏱ Ton programme tourne depuis plus de ${LIMITE_MS / 1000} secondes : il a été arrêté.\nAs-tu une boucle infinie? Vérifie que la condition de ton while finit par devenir fausse.` });
+        resolve({ sortie: "", erreur: `⏱ Ton programme tourne depuis plus de ${LIMITE_MS / 1000} secondes : il a été arrêté.\nAs-tu une boucle infinie? Sinon, réduis le calcul (moins d'époques, moins de données).` });
       };
       // Délai généreux pour charger un module (numpy, matplotlib); le délai de 5 s commence avec l'exécution.
       const minuterie = setTimeout(depasse, 120000);
