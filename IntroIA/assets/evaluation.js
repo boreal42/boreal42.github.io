@@ -15,7 +15,7 @@
       const chiffres = champ.value.replace(/\D/g, "");
       const num = ++demande;
       if (chiffres.length < 5) {
-        etat.textContent = "Entre ton matricule : tes données personnelles seront générées à partir de lui.";
+        etat.textContent = "Entre ton numéro de participant : tes données personnelles seront générées à partir de lui.";
         apercu.hidden = true;
         return;
       }
@@ -30,7 +30,7 @@
       const nomFichier = source.dataset.fichier || "donnees.csv";
       window.Cours.definirFichiers({ [nomFichier]: csv });
       const lignes = csv.trim().split("\n");
-      etat.innerHTML = `Tes données sont prêtes : le fichier <code>${nomFichier}</code> contient ${lignes.length - 1} mesures, générées à partir du matricule <strong>${chiffres}</strong>.`;
+      etat.innerHTML = `Tes données sont prêtes : le fichier <code>${nomFichier}</code> contient ${lignes.length - 1} mesures, générées à partir du numéro <strong>${chiffres}</strong>.`;
       apercu.textContent = lignes.slice(0, 6).join("\n") + "\n...";
       apercu.hidden = false;
     }

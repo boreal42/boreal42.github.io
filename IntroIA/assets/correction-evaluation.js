@@ -90,12 +90,12 @@
       }
 
       // Partie C : le programme, sur les données régénérées à partir du matricule.
-      const matricule = String((d.extras && d.extras.Matricule) || "").replace(/\D/g, "");
+      const matricule = String((d.extras && (d.extras["Numéro de participant"] || d.extras.Matricule)) || "").replace(/\D/g, "");
       detail.matricule = matricule;
       detail.code = ex(cle.programme.id);
       detail.refValeurs = {};
       if (matricule.length < 5) {
-        detail.alerte = "Matricule absent ou invalide : les données de l'étudiant ne peuvent pas être régénérées. Le programme et les questions personnalisées ne sont pas corrigés.";
+        detail.alerte = "Numéro de participant absent ou invalide : les données du participant ne peuvent pas être régénérées. Le programme et les questions personnalisées ne sont pas corrigés.";
       } else {
         const g = await window.Cours.executerPy(cle.generateur + `\n_csv = generer(${Number(matricule)})`, null, null, ["_csv"]);
         const fichiers = { [cle.fichier]: g.valeurs && g.valeurs._csv };
@@ -159,14 +159,14 @@
       const lignes = etudiants.map((e, i) => {
         if (e.invalide) return `<tr><td colspan="${colonnes.length + 2}">${esc(e.fichier)} : ${esc(e.raison || "ce fichier n'est pas un rapport valide.")}</td></tr>`;
         const t = total(e);
-        const doublon = e.matricule && vus[e.matricule] > 1 ? ` <strong class="alerte">matricule en double!</strong>` : "";
-        return `<tr data-i="${i}"><td><strong>${esc(e.nom)}</strong>${e.matricule ? `<br><small>matricule ${esc(e.matricule)}</small>` : ""}${doublon}<br><small>${esc(e.fichier)}</small></td>
+        const doublon = e.matricule && vus[e.matricule] > 1 ? ` <strong class="alerte">numéro en double!</strong>` : "";
+        return `<tr data-i="${i}"><td><strong>${esc(e.nom)}</strong>${e.matricule ? `<br><small>numéro ${esc(e.matricule)}</small>` : ""}${doublon}<br><small>${esc(e.fichier)}</small></td>
           ${colonnes.map(c => `<td class="num col-${c.id}">${e.sections[c.id]} / ${c.max}</td>`).join("")}
           <td class="num total"><strong>${t} / ${cle.total}</strong></td></tr>
           <tr class="detail"><td colspan="${colonnes.length + 2}">${detailHtml(e, i)}</td></tr>`;
       }).join("");
       zone.innerHTML = `<div class="actions"><button class="btn" id="csv" type="button">Télécharger les notes (CSV)</button></div>
-        <div class="tablewrap"><table class="notes"><thead><tr><th>Étudiant</th>${colonnes.map(c => `<th>${esc(c.titre)}</th>`).join("")}<th>Total</th></tr></thead><tbody>${lignes}</tbody></table></div>`;
+        <div class="tablewrap"><table class="notes"><thead><tr><th>Participant</th>${colonnes.map(c => `<th>${esc(c.titre)}</th>`).join("")}<th>Total</th></tr></thead><tbody>${lignes}</tbody></table></div>`;
       zone.querySelectorAll("input[data-c]").forEach(cb => cb.addEventListener("change", () => {
         const e = etudiants[cb.dataset.i]; e.coches[cb.dataset.g][cb.dataset.c] = cb.checked;
         const t = total(e); const tr = zone.querySelector(`tr[data-i="${cb.dataset.i}"]`);
@@ -183,7 +183,7 @@
       const prefixe = grilles[g].prefixe;
       const texte = e.textes[g].map(([k, v]) => `<p><strong>${esc(k.replace(prefixe, "").replace(/^ — /, "") || k)} :</strong><br>${esc(v || "(vide)").replace(/\n/g, "<br>")}</p>`).join("");
       const criteres = grilles[g].criteres.map(([lib, pts], k) => `<label class="critere"><input type="checkbox" data-i="${i}" data-g="${g}" data-c="${k}"${e.coches[g][k] ? " checked" : ""}> ${esc(lib)} (${pts} pts)</label>`).join("");
-      return `<section><h4>${esc(titre)} : texte de l'étudiant</h4>${texte || "<p>(vide)</p>"}<div class="criteres">${criteres}</div></section>`;
+      return `<section><h4>${esc(titre)} : texte du participant</h4>${texte || "<p>(vide)</p>"}<div class="criteres">${criteres}</div></section>`;
     }
 
     function detailHtml(e, i) {
@@ -191,20 +191,20 @@
       const fonctions = D.fonctions.map(f => `<h4>${esc(f.titre)} : ${f.reussis} test(s) réussi(s) sur ${f.essais.length}</h4>
           ${f.erreur ? `<p><em>Erreur à l'exécution : ${esc(f.erreur.split("\n").slice(-1)[0])}</em></p>` : ""}
           <ul>${f.essais.map(t => `<li>${marque(t.ok)} <code>${esc(t.libelle)}</code> → attendu ${montre(t.attendu)}, obtenu ${montre(t.obtenu)}${t.note || ""}</li>`).join("")}</ul>
-          <details><summary>Code de l'étudiant</summary><pre>${esc(f.code || "(vide)")}</pre></details>`).join("");
-      const programme = `<section><h4>Partie C — programme (données du matricule ${esc(D.matricule || "?")})</h4>
+          <details><summary>Code du participant</summary><pre>${esc(f.code || "(vide)")}</pre></details>`).join("");
+      const programme = `<section><h4>Partie C — programme (données du numéro ${esc(D.matricule || "?")})</h4>
           ${D.alerte ? `<p class="alerte">${esc(D.alerte)}</p>` : ""}
           ${D.erreur ? `<p><em>Erreur à l'exécution : ${esc(D.erreur.split("\n").slice(-1)[0])}</em></p>` : ""}
           <ul>${D.variables.map(v => `<li>${marque(v.ok)} <code>${esc(v.libelle)}</code> (${v.points} pts) → attendu ${montre(v.attendu)}, obtenu ${montre(v.obtenu)}</li>`).join("")}</ul>
           <h4>Partie C — graphique</h4><ul>${D.graphique.map(g => `<li>${marque(g.ok)} ${esc(g.libelle)} (${g.points} pts)</li>`).join("")}</ul>
-          <details><summary>Code de l'étudiant</summary><pre>${esc(D.code || "(vide)")}</pre></details></section>`;
+          <details><summary>Code du participant</summary><pre>${esc(D.code || "(vide)")}</pre></details></section>`;
       const questions = `<section><h4>Partie D — questions</h4><ul>${D.questions.map(q => `<li>${marque(q.ok)} ${esc(q.id)} (${q.points} pts) → réponse <code>${esc(q.valeur || "(vide)")}</code>, attendu ${montre(q.attendu)}</li>`).join("")}</ul></section>`;
       return `<details><summary>Détail</summary><div class="detail-grille">${grilleHtml(e, i, "planif", "Partie A — planification")}
         <section><h4>Partie B — fonctions</h4>${fonctions}</section>${programme}${questions}${grilleHtml(e, i, "justif", "Partie D — justification")}</div></details>`;
     }
 
     function csv() {
-      const entete = ["Nom", "Matricule", "Fichier", ...colonnes.map(c => `${c.titre} (/${c.max})`), `Total sur ${cle.total}`];
+      const entete = ["Nom", "Numéro", "Fichier", ...colonnes.map(c => `${c.titre} (/${c.max})`), `Total sur ${cle.total}`];
       const lignes = etudiants.filter(e => !e.invalide).map(e => {
         const t = total(e);
         return [e.nom, e.matricule, e.fichier, ...colonnes.map(c => e.sections[c.id]), t];

@@ -36,7 +36,7 @@
       csvCourant = csv;
       equipeCourante = Number(chiffres);
       const lignes = csv.trim().split("\n");
-      etat.innerHTML = `Vos données sont prêtes : le fichier <code>${nomFichier}</code> contient ${lignes.length - 1} étudiants, générés à partir du numéro d'équipe <strong>${equipeCourante}</strong>.`;
+      etat.innerHTML = `Vos données sont prêtes : le fichier <code>${nomFichier}</code> contient ${lignes.length - 1} participants, générés à partir du numéro d'équipe <strong>${equipeCourante}</strong>.`;
       apercu.textContent = lignes.slice(0, 6).join("\n") + "\n...";
       apercu.hidden = false;
       bouton.hidden = false;
