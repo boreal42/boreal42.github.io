@@ -5,7 +5,7 @@
   "use strict";
   var CLE = "introia:examen";
   // Empreinte SHA-256 du code de levée de l'enseignant (le code lui-même n'est pas dans le site).
-  var LEVEE = "4fad235daabd8ff4301ff8f530bdc3b345d0adaeb81aeb9fc62f8e7a9557947f";
+  var LEVEE = "26e6da6ee7a45e02273dd8a7851236628fcba533e06c3a3593938d332e7023eb";
   if (location.pathname.indexOf("/correction/") >= 0) return;
   var examen = null;
   try { examen = JSON.parse(localStorage.getItem(CLE) || "null"); } catch (e) { return; }

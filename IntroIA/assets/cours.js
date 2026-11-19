@@ -307,8 +307,8 @@
     donnees.quiz = etatQuiz();
     const n = exercices.filter(e => e.dataset.reussi === "1").length;
     const lignesExtras = Object.entries(extras).filter(([, v]) => v.trim()).map(([k, v]) => `# ${k} : ` + v.trim().replace(/\n/g, "\n#   "));
-    const lignesQuiz = donnees.quiz ? [enEval ? "# Partie A — Traces et prédictions" : `# Quiz d'entrée : ${donnees.quiz.score} / ${donnees.quiz.total}` + (donnees.quiz.valide ? "" : " (non validé)"),
-      ...donnees.quiz.reponses.map((r, i) => `#   ${enEval ? "A" : "Q"}${i + 1} ${enEval ? "" : (r.ok === true ? "✓" : r.ok === false ? "✗" : "·") + " "}${r.valeur}`)] : [];
+    const lignesQuiz = donnees.quiz ? [enEval ? "# Questions de validation" : `# Quiz d'entrée : ${donnees.quiz.score} / ${donnees.quiz.total}` + (donnees.quiz.valide ? "" : " (non validé)"),
+      ...donnees.quiz.reponses.map((r, i) => `#   ${enEval ? "V" : "Q"}${i + 1} ${enEval ? "" : (r.ok === true ? "✓" : r.ok === false ? "✗" : "·") + " "}${r.valeur}`)] : [];
     const entete = [
       `# IntroIA · Introduction à l’intelligence artificielle`,
       `# Rapport ${TYPE === "labo" ? "du labo " + CHAPITRE.replace("L", "") : TYPE === "evaluation" ? "de l'évaluation " + CHAPITRE.replace("E", "") : "du cours " + CHAPITRE}`,
