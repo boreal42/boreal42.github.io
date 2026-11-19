@@ -17,7 +17,23 @@ def _figures():
         images.append(base64.b64encode(tampon.getvalue()).decode())
     plt.close("all")
     return json.dumps(images)
+def _natif(v):
+    # Scalaires NumPy → types Python (repr identique d'une version de NumPy à l'autre).
+    if type(v).__module__ == "numpy" and hasattr(v, "item"):
+        try:
+            return v.item()
+        except (ValueError, TypeError):
+            return v
+    if isinstance(v, list):
+        return [_natif(x) for x in v]
+    if isinstance(v, tuple):
+        return tuple(_natif(x) for x in v)
+    if isinstance(v, dict):
+        return {_natif(k): _natif(x) for k, x in v.items()}
+    return v
+
 def _empreinte(v):
+    v = _natif(v)
     if isinstance(v, bool) or v is None:
         texte = repr(v)
     elif isinstance(v, (int, float)):
@@ -92,7 +108,7 @@ def _verifier(ns, checks):
     return json.dumps(res)
 `;
 const espaces = {};
-const SUPPLEMENTS = { seaborn: "seaborn", arrow: "arrow" };
+const SUPPLEMENTS = { seaborn: new URL("wheels/seaborn-0.13.2-py3-none-any.whl", self.location).href };
 const installes = new Set();
 let py = null;
 function nettoyerErreur(message) {
@@ -116,9 +132,9 @@ onmessage = async e => {
     const voulus = py.pyodide_py.code.find_imports(code).toJs();
     const manquants = voulus.filter(m => SUPPLEMENTS[m] && !installes.has(m));
     if (manquants.length) {
-      await py.loadPackage("micropip");
+      await py.loadPackage(["micropip", "numpy", "pandas", "matplotlib"]);
       const micropip = py.pyimport("micropip");
-      for (const m of manquants) { await micropip.install(SUPPLEMENTS[m]); installes.add(m); }
+      for (const m of manquants) { await micropip.install.callKwargs(SUPPLEMENTS[m], { deps: false }); installes.add(m); }
     }
   } catch (err) {}
   postMessage({ type: "debut", id });
