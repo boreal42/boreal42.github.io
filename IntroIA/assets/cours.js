@@ -289,7 +289,7 @@
   majProgression();
 
   function rapport() {
-    const enEval = TYPE === "evaluation";
+    const enEval = TYPE === "evaluation" || TYPE === "projet";
     const nom = (champNom && champNom.value.trim()) || "";
     const date = new Date();
     const donnees = { cours: "IntroIA", chapitre: CHAPITRE, nom, date: date.toISOString(), exercices: {} };
@@ -297,7 +297,7 @@
     exercices.forEach(exo => {
       const e = etatExo(exo);
       donnees.exercices[exo.dataset.id] = e;
-      let bloc = `# ${"=".repeat(60)}\n# ${enEval ? "Problème " + exo.dataset.id : "Exercice " + exo.dataset.id + " — " + (e.reussi ? "RÉUSSI" : "non réussi")}\n# ${"=".repeat(60)}\n`;
+      let bloc = `# ${"=".repeat(60)}\n# ${enEval ? (TYPE === "projet" ? "Cas " : "Problème ") + exo.dataset.id : "Exercice " + exo.dataset.id + " — " + (e.reussi ? "RÉUSSI" : "non réussi")}\n# ${"=".repeat(60)}\n`;
       const f = Object.entries(e.fiche).filter(([, v]) => v.trim());
       if (f.length) bloc += "# Fiche de planification\n" + f.map(([k, v]) => `#   ${k} : ` + v.trim().replace(/\n/g, "\n#     ")).join("\n") + "\n#\n";
       parties.push(bloc + e.code + "\n");
@@ -311,7 +311,7 @@
       ...donnees.quiz.reponses.map((r, i) => `#   ${enEval ? "V" : "Q"}${i + 1} ${enEval ? "" : (r.ok === true ? "✓" : r.ok === false ? "✗" : "·") + " "}${r.valeur}`)] : [];
     const entete = [
       `# IntroIA · Introduction à l’intelligence artificielle`,
-      `# Rapport ${TYPE === "labo" ? "du labo " + CHAPITRE.replace("L", "") : TYPE === "evaluation" ? "de l'évaluation " + CHAPITRE.replace("E", "") : "du cours " + CHAPITRE}`,
+      `# Rapport ${TYPE === "labo" ? "du labo " + CHAPITRE.replace("L", "") : TYPE === "evaluation" ? "de l'évaluation " + CHAPITRE.replace("E", "") : TYPE === "projet" ? "du projet du module " + CHAPITRE.replace("P", "") : "du cours " + CHAPITRE}`,
       `# Étudiant : ${nom || "(nom non indiqué)"}`,
       `# Généré le : ${date.toLocaleString("fr-CA")}`,
       ...(enEval ? [] : [`# Résultat : ${n} / ${exercices.length} exercices réussis`]),
@@ -328,7 +328,7 @@
     const blob = new Blob([rapport()], { type: "text/x-python;charset=utf-8" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
-    const prefixe = TYPE === "labo" ? "labo" + CHAPITRE.replace("L", "") : TYPE === "evaluation" ? "eval" + CHAPITRE.replace("E", "") : "ch" + CHAPITRE;
+    const prefixe = TYPE === "labo" ? "labo" + CHAPITRE.replace("L", "") : TYPE === "evaluation" ? "eval" + CHAPITRE.replace("E", "") : TYPE === "projet" ? "projet" + CHAPITRE.replace("P", "") : "ch" + CHAPITRE;
     a.download = `IntroIA_${prefixe}_${nom}.py`;
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(a.href), 2000);
