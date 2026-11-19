@@ -75,6 +75,47 @@
   // Fichiers générés par la page (données personnalisées de l'épreuve finale).
   function definirFichiers(f) { FICHIERS = Object.assign({}, FICHIERS || {}, f); }
   window.Cours = { executerPy, definirFichiers, messageChargement: c => messageChargement(c) };
+
+  // ---------- JavaScript et TypeScript, exécutés dans un autre Web Worker (js-worker.js) ----------
+  const URL_WORKER_JS = SCRIPT.replace(/cours\.js/, "js-worker.js");
+  let workerJS = null, seqJS = 0, tsCharge = false;
+  const attenteJS = new Map();
+  function demarrerJS() {
+    workerJS = new Worker(URL_WORKER_JS);
+    workerJS.onmessage = e => {
+      const m = e.data, r = attenteJS.get(m.id);
+      if (!r) return;
+      if (m.type === "debut") { clearTimeout(r.minuterie); r.minuterie = setTimeout(r.depasse, LIMITE_MS); }
+      else if (m.type === "resultat") { attenteJS.delete(m.id); clearTimeout(r.minuterie); r.resolve(m); }
+    };
+  }
+  function executerJS(code, lang, checks) {
+    if (!workerJS) demarrerJS();
+    return new Promise(resolve => {
+      const id = ++seqJS;
+      const depasse = () => {
+        attenteJS.delete(id); workerJS.terminate(); workerJS = null;
+        attenteJS.forEach(r => r.resolve({ sortie: "", erreur: "Exécution interrompue." })); attenteJS.clear();
+        resolve({ sortie: "", erreur: `⏱ Ton programme tourne depuis plus de ${LIMITE_MS / 1000} secondes : il a été arrêté.\nAs-tu une boucle infinie?` });
+      };
+      const minuterie = setTimeout(depasse, 120000);
+      attenteJS.set(id, { resolve, minuterie, depasse });
+      workerJS.postMessage({ id, code, lang, checks, fichiers: FICHIERS || {} });
+    });
+  }
+  // Un bloc (exemple ou exercice) en JavaScript ou TypeScript porte data-lang="js" ou "ts".
+  function langue(el) { const b = el.closest("[data-lang]"); return b ? b.dataset.lang : "py"; }
+  function executerBloc(el, code, espace, checks) {
+    const l = langue(el);
+    if (l === "py") return executerPy(code, espace, checks);
+    return executerJS(code, l, checks);
+  }
+  function messageBloc(el, code) {
+    const l = langue(el);
+    if (l === "ts" && !tsCharge) { tsCharge = true; return "Chargement de TypeScript (une seule fois, environ 10 secondes)…"; }
+    if (l !== "py") return "Exécution…";
+    return messageChargement(code);
+  }
   // dechiffrer est ajouté plus bas (verrou des labos), pour l'auto-correction de l'épreuve à blanc.
 
   function ajuster(t) { t.style.height = "auto"; t.style.height = t.scrollHeight + 4 + "px"; }
@@ -179,8 +220,8 @@
     const original = zone.value;
     const lancer = async () => {
       sortie.className = ""; sortie.textContent = "";
-      etat.textContent = messageChargement(zone.value);
-      const r = await executerPy(zone.value, "exemples");
+      etat.textContent = messageBloc(bloc, zone.value);
+      const r = await executerBloc(bloc, zone.value, "exemples");
       afficherFigures(bloc, r.figures);
       sortie.textContent = r.sortie + (r.erreur || "") || ((r.figures && r.figures.length) ? "" : "(aucun affichage)");
       sortie.className = r.erreur ? "err" : "";
@@ -236,8 +277,8 @@
 
     async function lancer(avecVerif) {
       sortie.className = ""; sortie.textContent = ""; verdict.innerHTML = "";
-      etat.textContent = messageChargement(zone.value);
-      const r = await executerPy(zone.value, null, avecVerif ? checks : null);
+      etat.textContent = messageBloc(exo, zone.value);
+      const r = await executerBloc(exo, zone.value, null, avecVerif ? checks : null);
       afficherFigures(exo.querySelector(".exo-runner"), r.figures);
       sortie.textContent = r.sortie + (r.erreur || "");
       if (r.erreur) sortie.className = "err";
@@ -386,7 +427,8 @@
       const f = Object.entries(e.fiche || {}).filter(([, v]) => v.trim());
       if (f.length) texte += "\n\n**Fiche de planification**\n\n" + f.map(([k, v]) => `- **${k}** : ${v.trim()}`).join("\n");
       cellules.push(md(texte));
-      cellules.push(py(e.code));
+      const l = langue(exo);
+      cellules.push(py(l === "py" ? e.code : `%%script node\n// ${l === "ts" ? "TypeScript : exécute ce code avec npx tsx, ou dans le site du cours" : "JavaScript"}\n${e.code}`));
     });
     return { cells: cellules, metadata: { kernelspec: { name: "python3", display_name: "Python 3", language: "python" }, language_info: { name: "python" } }, nbformat: 4, nbformat_minor: 4 };
   }

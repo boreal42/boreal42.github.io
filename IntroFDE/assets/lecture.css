@@ -227,3 +227,6 @@ details.reponse p,details.reponse li{margin:.3rem 0}
 .proba.max i{opacity:1}
 .proba small{color:var(--muted);text-align:right}
 .etat-modele,.bilan-dessin{color:var(--muted);font-size:.92rem}
+/* Langue d'un bloc de code (JavaScript, TypeScript) */
+.runner .langue{display:block;font-family:var(--font-mono);font-size:.72rem;color:var(--muted);padding:.45rem 1.1rem 0;text-transform:uppercase;letter-spacing:.06em}
+.runner[data-lang] textarea,.exo[data-lang] textarea.code{border-top:0}
