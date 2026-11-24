@@ -141,6 +141,113 @@
     maj();
   }
 
+
+  // ---------- Éditeur de flux simulé (miroir de outils/flux.py) ----------
+  function executerFlux(scn, etapes, cas) {
+    const blocs = Object.fromEntries(scn.blocs.map(b => [b.id, b]));
+    if (!etapes.length || !scn.declencheurs_ok.includes(etapes[0].b)) return ["non déclenché", "Le premier bloc doit être le bon déclencheur."];
+    const dispo = new Set();
+    for (const e of etapes.slice(1)) {
+      const b = blocs[e.b];
+      if (!b || b.genre === "declencheur") continue;
+      const manque = b.requiert.filter(r => !dispo.has(r));
+      if (manque.length) return ["erreur", `« ${b.libelle} » a besoin de : ${scn.donnees[manque[0]]}`];
+      if (b.genre === "charger") dispo.add(b.fournit);
+      else if (b.genre === "condition") {
+        if (!cas.verifs[b.id][e.p || ""]) {
+          const s = scn.sinon[e.s || ""];
+          if (!s) return ["erreur", `Choisis quoi faire si « ${b.libelle} » est faux.`];
+          if (s.issue === null) continue;
+          return [s.issue, b.libelle];
+        }
+      } else if (b.genre === "action") return [b.issue.replace("{niveau}", String(cas.niveau ?? "")), b.libelle];
+    }
+    return ["aucune issue", "Le flux se termine sans action."];
+  }
+  const GENRES_FLUX = [["declencheur", "Déclencheur"], ["charger", "Données"], ["condition", "Vérifications"], ["action", "Actions"], ["trace", "Journal"]];
+
+  function brancherFlux(exo, marquer, sauver, enEval) {
+    const scn = JSON.parse(exo.dataset.scenario);
+    const blocs = Object.fromEntries(scn.blocs.map(b => [b.id, b]));
+    const cache = exo.querySelector('textarea[data-k="flux"]');
+    const liste = exo.querySelector(".flux-etapes");
+    const verdict = exo.querySelector(".verdict");
+    const max = Number(exo.dataset.max || 18);
+    let etapes = [];
+    try { etapes = JSON.parse(cache.value || "[]"); } catch (e) { etapes = []; }
+    const optionsBlocs = '<option value="">— choisir un bloc —</option>' + GENRES_FLUX.map(([g, nom]) =>
+      `<optgroup label="${nom}">` + scn.blocs.filter(b => b.genre === g).map(b => `<option value="${b.id}">${esc(b.libelle)}</option>`).join("") + "</optgroup>").join("");
+    const optionsSinon = '<option value="">— si c\'est faux… —</option>' + Object.entries(scn.sinon).map(([k, s]) => `<option value="${k}">Sinon : ${esc(s.libelle)}</option>`).join("");
+    function ecrire() {
+      cache.value = JSON.stringify(etapes);
+      if (exo.dataset.reussi === "1") marquer(exo, false);
+      sauver(exo);
+    }
+    function dessiner() {
+      liste.innerHTML = etapes.map((e, i) => {
+        const b = blocs[e.b];
+        const params = b && b.params ? `<select class="f-param" aria-label="Réglage">${b.params.map(([v, l]) => `<option value="${v}"${e.p === v ? " selected" : ""}>${esc(l)}</option>`).join("")}</select>` : "";
+        const sinon = b && b.genre === "condition" ? `<select class="f-sinon" aria-label="Si c'est faux">${optionsSinon}</select>` : "";
+        return `<li class="flux-etape g-${b ? b.genre : "vide"}" data-i="${i}"><span class="f-num">${i + 1}</span>`
+          + `<div class="f-reglages"><select class="f-bloc" aria-label="Bloc de l'étape ${i + 1}">${optionsBlocs}</select>${params}${sinon}</div>`
+          + `<span class="f-outils"><button type="button" class="f-haut" title="Monter" aria-label="Monter">↑</button>`
+          + `<button type="button" class="f-bas" title="Descendre" aria-label="Descendre">↓</button>`
+          + `<button type="button" class="f-suppr" title="Supprimer" aria-label="Supprimer">✕</button></span></li>`;
+      }).join("");
+      liste.querySelectorAll(".flux-etape").forEach(li => {
+        const i = Number(li.dataset.i), e = etapes[i];
+        li.querySelector(".f-bloc").value = e.b || "";
+        const s = li.querySelector(".f-sinon"); if (s) s.value = e.s || "";
+        li.querySelector(".f-bloc").addEventListener("change", ev => {
+          const b = blocs[ev.target.value];
+          etapes[i] = { b: ev.target.value };
+          if (b && b.params) etapes[i].p = b.params[0][0];
+          dessiner(); ecrire();
+        });
+        const p = li.querySelector(".f-param"); if (p) p.addEventListener("change", ev => { e.p = ev.target.value; ecrire(); });
+        if (s) s.addEventListener("change", ev => { e.s = ev.target.value; ecrire(); });
+        li.querySelector(".f-haut").addEventListener("click", () => { if (i > 0) { [etapes[i - 1], etapes[i]] = [etapes[i], etapes[i - 1]]; dessiner(); ecrire(); } });
+        li.querySelector(".f-bas").addEventListener("click", () => { if (i < etapes.length - 1) { [etapes[i + 1], etapes[i]] = [etapes[i], etapes[i + 1]]; dessiner(); ecrire(); } });
+        li.querySelector(".f-suppr").addEventListener("click", () => { etapes.splice(i, 1); dessiner(); ecrire(); });
+      });
+      exo.querySelector(".ajouter").disabled = etapes.length >= max;
+    }
+    exo.querySelector(".ajouter").addEventListener("click", () => { if (etapes.length < max) { etapes.push({ b: "" }); dessiner(); ecrire(); } });
+    exo.querySelector(".executer").addEventListener("click", () => {
+      const traces = new Set(scn.blocs.filter(b => b.genre === "trace").map(b => b.id));
+      const journal = etapes.some(e => traces.has(e.b));
+      let ok = 0;
+      const lignes = scn.cas.map(c => {
+        const [issue, raison] = executerFlux(scn, etapes, c);
+        const bon = c.attendu !== undefined && issue === c.attendu;
+        if (bon) ok++;
+        return `<tr class="${c.attendu === undefined ? "" : bon ? "bon" : "faux"}"><td><strong>${esc(c.id)}</strong></td><td>${esc(issue)}</td><td>${esc(raison)}</td>`
+          + (c.attendu === undefined ? "" : `<td>${esc(c.attendu)}</td><td>${bon ? "✅" : "❌"}</td>`) + "</tr>";
+      }).join("");
+      const tete = "<tr><th>Cas</th><th>Issue obtenue</th><th>Décidé par</th>" + (enEval ? "" : "<th>Attendue</th><th></th>") + "</tr>";
+      let msg;
+      if (enEval) msg = `<p class="v-non">Résultat de ton flux sur les cas tests. À toi de juger si chaque issue est la bonne.${journal ? "" : " Attention : ton flux n'écrit rien au journal."}</p>`;
+      else if (ok === scn.cas.length && journal) msg = '<p class="v-oui"><strong>Exercice réussi.</strong> Ton flux donne la bonne issue pour tous les cas, et il laisse une trace.</p>';
+      else msg = `<p class="v-non">${ok} / ${scn.cas.length} cas donnent l'issue attendue.${journal ? "" : " Ton flux n'écrit rien au journal : ajoute un bloc Journal."} Les lignes en bleu sont à revoir.</p>`;
+      verdict.innerHTML = msg + `<div class="tablewrap"><table class="resultats-flux"><thead>${tete}</thead><tbody>${lignes}</tbody></table></div>`;
+      if (!enEval) { marquer(exo, ok === scn.cas.length && journal); sauver(exo); }
+    });
+    exo.querySelector(".reset").addEventListener("click", () => {
+      if (!window.confirm("Effacer ton flux?")) return;
+      etapes = []; verdict.innerHTML = ""; dessiner(); ecrire(); marquer(exo, false); sauver(exo);
+    });
+    exo.chargerFlux = json => { etapes = JSON.parse(json); dessiner(); ecrire(); };
+    exo.texteFlux = () => etapes.map((e, i) => {
+      const b = blocs[e.b];
+      if (!b) return `${i + 1}. (bloc non choisi)`;
+      let t = `${i + 1}. ${b.libelle}`;
+      if (e.p && b.params) t += " · " + (b.params.find(([v]) => v === e.p) || ["", e.p])[1];
+      if (e.s && scn.sinon[e.s]) t += " · sinon : " + scn.sinon[e.s].libelle;
+      return t;
+    }).join("\n");
+    dessiner();
+  }
+
   function init() {
     lireFichiers();
     document.querySelectorAll(".explorateur").forEach(brancherExplorateur);
@@ -216,6 +323,7 @@
       const sauve = stock.lire(CHAPITRE + ":" + exo.dataset.id);
       if (sauve && sauve.valeurs) champs(exo).forEach(c => { if (sauve.valeurs[c.dataset.k] !== undefined) c.value = sauve.valeurs[c.dataset.k]; });
       marquer(exo, !!(sauve && sauve.reussi));
+      if (exo.dataset.genre === "flux") { brancherFlux(exo, marquer, sauver, TYPE === "evaluation"); return; }
       champs(exo).forEach(c => {
         if (c.tagName === "TEXTAREA") { ajuster(c); c.addEventListener("input", () => ajuster(c)); }
         c.addEventListener(c.tagName === "SELECT" ? "change" : "input", () => {
@@ -300,6 +408,7 @@
         md += `\n## ${t.trim()}${enEval ? "" : e.reussi ? " — réussi" : " — à faire"}\n\n`;
         champs(exo).forEach(c => {
           const nomChamp = c.dataset.etiquette || c.dataset.k;
+          if (exo.texteFlux) { md += "```\n" + (exo.texteFlux() || "(flux vide)") + "\n```\n"; return; }
           md += c.tagName === "TEXTAREA" ? `**${nomChamp}**\n\n${texteChamp(c)}\n\n` : `- ${nomChamp} : ${texteChamp(c)}\n`;
         });
       });

@@ -271,3 +271,21 @@ details.reponse p,details.reponse li{margin:.3rem 0}
 .chaine .maillon{flex:1 1 6.5rem;min-width:0;border:1px solid var(--accent);border-radius:8px;padding:.6rem .7rem;background:var(--accent-soft);font-size:.9rem}
 .chaine .maillon b{display:block;font-family:var(--font-display);color:var(--accent)}
 .chaine .fleche{align-self:center;color:var(--accent);font-weight:700}
+
+/* Éditeur de flux */
+.exo.flux h4{font-family:var(--font-display);margin:1rem 0 .4rem}
+.cas-tests td{font-size:.88rem;vertical-align:top}
+.flux-etapes{list-style:none;padding:0;margin:.4rem 0;max-width:none}
+.flux-etape{display:flex;gap:.6rem;align-items:center;border:1px solid var(--rule);border-left:5px solid var(--muted);border-radius:8px;padding:.5rem .6rem;margin:.4rem 0;background:var(--paper)}
+.flux-etape.g-declencheur{border-left-color:#7b4fb0}.flux-etape.g-charger{border-left-color:var(--signal)}
+.flux-etape.g-condition{border-left-color:var(--accent)}.flux-etape.g-action{border-left-color:var(--ok)}.flux-etape.g-trace{border-left-color:#5b6470}
+.f-num{font-family:var(--font-mono);color:var(--muted);min-width:1.6rem;text-align:right}
+.f-reglages{flex:1;display:flex;flex-wrap:wrap;gap:.4rem}
+.f-reglages select{font-family:var(--font-body);font-size:.9rem;color:var(--ink);background:var(--sheet);border:1px solid var(--rule);border-radius:6px;padding:.35rem .4rem;max-width:100%}
+.f-reglages .f-bloc{flex:1 1 20rem}
+.f-outils button{border:1px solid var(--rule);background:transparent;color:var(--muted);border-radius:5px;padding:.15rem .45rem;cursor:pointer;font-size:.85rem}
+.f-outils button:hover{color:var(--accent);border-color:var(--accent)}
+.flux-ajout{margin:.4rem 0 .6rem}
+.exo .actions-exo .executer{background:var(--ok);border-color:var(--ok);color:#fff}
+.resultats-flux td{font-size:.88rem}
+.resultats-flux tr.bon td{background:var(--ok-soft)}.resultats-flux tr.faux td{background:var(--signal-soft)}
