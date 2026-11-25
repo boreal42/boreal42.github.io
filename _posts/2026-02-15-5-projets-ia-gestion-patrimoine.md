@@ -1,5 +1,6 @@
 ---
-layout: post
+layout: redirect
+redirect_to: https://boreal42.com/lab/5-projets-ia-gestion-patrimoine/
 title: "5 projets IA qui transforment la gestion de patrimoine — et pourquoi votre firme devrait y penser maintenant"
 description: "L'IA ne remplace pas le conseiller. Elle le libère. Voici 5 automatisations concrètes qui changent la donne pour les firmes de gestion privée — de l'optimisation fiscale à la gestion de crise."
 date: 2026-02-15
