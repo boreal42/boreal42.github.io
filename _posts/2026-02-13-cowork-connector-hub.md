@@ -1,5 +1,6 @@
 ---
-layout: post
+layout: redirect
+redirect_to: https://boreal42.com/lab/cowork-connector-hub/
 title: "10 use cases pour reprendre le contrôle de votre stack techno avec le Cowork Connector Hub"
 description: "Votre entreprise utilise 5, 10, 15 outils différents qui ne se parlent pas? Voici 10 scénarios concrets où un agent IA connecte vos systèmes existants — sans forcer personne à changer."
 date: 2026-02-13

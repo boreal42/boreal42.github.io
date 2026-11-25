@@ -1,5 +1,6 @@
 ---
-layout: post
+layout: redirect
+redirect_to: https://boreal42.com/lab/bill-adore-son-excel/
 title: "Bill adore Excel. On ne va pas lui enlever."
 description: "Comment synchroniser un ERP avec les fichiers Excel d'un superviseur de production — sans changer son workflow. Un use case réel avec Claude et le Cowork Connector Hub."
 date: 2026-02-13
