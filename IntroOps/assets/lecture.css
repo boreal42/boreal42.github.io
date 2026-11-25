@@ -289,3 +289,23 @@ details.reponse p,details.reponse li{margin:.3rem 0}
 .exo .actions-exo .executer{background:var(--ok);border-color:var(--ok);color:#fff}
 .resultats-flux td{font-size:.88rem}
 .resultats-flux tr.bon td{background:var(--ok-soft)}.resultats-flux tr.faux td{background:var(--signal-soft)}
+
+/* Agent simulé */
+.exo.agent h4{font-family:var(--font-display);margin:1rem 0 .4rem}
+.pile summary{cursor:pointer;font-weight:600;margin:.4rem 0}
+.mini-courriel{font-size:.86rem}.mini-courriel .de{display:block;font-family:var(--font-mono);font-size:.75rem;color:var(--muted)}
+.mini-courriel p{margin:.15rem 0}
+.agent-config{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;max-width:none}
+.agent-config fieldset{border:1px solid var(--rule);border-radius:8px;padding:.6rem .8rem;margin:0;background:var(--paper)}
+.agent-config fieldset:first-child{grid-row:span 2}
+.agent-config legend{font-family:var(--font-display);font-weight:600;padding:0 .3rem;color:var(--accent)}
+.agent-config .opt{display:flex;gap:.45rem;align-items:flex-start;font-size:.9rem;margin:.35rem 0;line-height:1.35}
+.agent-config .opt input{margin-top:.2rem}
+.agent-config .seuil{display:flex;flex-direction:column;gap:.2rem;font-size:.85rem;margin:.4rem 0}
+.agent-config select{font-family:var(--font-body);font-size:.88rem;color:var(--ink);background:var(--sheet);border:1px solid var(--rule);border-radius:6px;padding:.3rem .4rem}
+.tag{font-family:var(--font-mono);font-size:.68rem;border-radius:4px;padding:.05rem .35rem;margin-left:auto;white-space:nowrap}
+.tag.t-lecture{background:var(--signal-soft);color:var(--signal)}.tag.t-ecriture{background:var(--ok-soft);color:var(--ok)}.tag.t-risque{background:#fbe3e0;color:#a3261a}
+.consigne-agent{display:flex;flex-direction:column;gap:.3rem;font-weight:600;margin:.6rem 0}
+.consigne-agent textarea{font-family:var(--font-body);font-size:.95rem;color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:6px;padding:.6rem;min-height:6rem;overflow:hidden}
+@media (max-width:760px){.agent-config{grid-template-columns:1fr}.agent-config fieldset:first-child{grid-row:auto}}
+.resultats-flux td:first-child,.cas-tests td:first-child{white-space:nowrap}

@@ -248,6 +248,97 @@
     dessiner();
   }
 
+
+  // ---------- Agent simulé (miroir de outils/agent.py) ----------
+  function seuilAgent(config, id) { const v = (config.seuils || {})[id]; return (v === undefined || v === "inf" || v === "") ? Infinity : Number(v); }
+  function conditionAgent(c, config, cas) {
+    const o = config.outils || {}, g = config.gardes || {};
+    if ("garde" in c && !g[c.garde]) return false;
+    if ("sans_garde" in c && g[c.sans_garde]) return false;
+    if ("outil" in c && !o[c.outil]) return false;
+    if ("sans_outil" in c && o[c.sans_outil]) return false;
+    if ((c.sans_signaux || []).some(s => cas.signaux[s])) return false;
+    if ("seuil" in c) {
+      const v = cas.signaux[c.signal] || 0, t = seuilAgent(config, c.seuil);
+      if (!(c.sens === ">" ? v > t : v <= t)) return false;
+    }
+    return true;
+  }
+  function executerAgent(scn, config, cas) {
+    for (const r of scn.regles) {
+      if (r.si !== "toujours" && !cas.signaux[r.si]) continue;
+      for (const b of r.branches) if (conditionAgent(b.cond, config, cas)) return [b.issue, r.libelle];
+      if (r.sinon !== undefined && r.sinon !== null) return [r.sinon, r.libelle];
+    }
+    return ["aucune action", "Aucune règle n'a mené à une action."];
+  }
+
+  function brancherAgent(exo, marquer, sauver, enEval) {
+    const scn = JSON.parse(exo.dataset.scenario);
+    const cache = exo.querySelector('textarea[data-k="agent"]');
+    const zone = exo.querySelector(".agent-config");
+    const verdict = exo.querySelector(".verdict");
+    const vide = { outils: {}, gardes: {}, seuils: Object.fromEntries(scn.seuils.map(s => [s.id, s.options[s.options.length - 1][0]])) };
+    let config;
+    try { config = JSON.parse(cache.value || "null") || vide; } catch (e) { config = vide; }
+    const etiquette = { "lecture": "lecture", "écriture": "écriture", "risque": "à risque" };
+    function ecrire() { cache.value = JSON.stringify(config); if (exo.dataset.reussi === "1") marquer(exo, false); sauver(exo); }
+    function dessiner() {
+      zone.innerHTML = '<fieldset><legend>Outils permis</legend>' + scn.outils.map(o =>
+          `<label class="opt"><input type="checkbox" data-outil="${o.id}"${config.outils[o.id] ? " checked" : ""}> ${esc(o.libelle)} <span class="tag t-${o.genre === "à risque" || o.genre === "risque" ? "risque" : o.genre === "lecture" ? "lecture" : "ecriture"}">${etiquette[o.genre] || o.genre}</span></label>`).join("")
+        + '</fieldset><fieldset><legend>Garde-fous de la consigne</legend>' + scn.gardes.map(g =>
+          `<label class="opt"><input type="checkbox" data-garde="${g.id}"${config.gardes[g.id] ? " checked" : ""}> ${esc(g.libelle)}</label>`).join("")
+        + '</fieldset><fieldset><legend>Seuils : mettre de côté si…</legend>' + scn.seuils.map(s =>
+          `<label class="seuil">${esc(s.libelle)}<select data-seuil="${s.id}">${s.options.map(([v, l]) => `<option value="${v}"${config.seuils[s.id] === v ? " selected" : ""}>${esc(l)}</option>`).join("")}</select></label>`).join("")
+        + "</fieldset>";
+      zone.querySelectorAll("[data-outil]").forEach(i => i.addEventListener("change", () => { config.outils[i.dataset.outil] = i.checked; ecrire(); }));
+      zone.querySelectorAll("[data-garde]").forEach(i => i.addEventListener("change", () => { config.gardes[i.dataset.garde] = i.checked; ecrire(); }));
+      zone.querySelectorAll("[data-seuil]").forEach(i => i.addEventListener("change", () => { config.seuils[i.dataset.seuil] = i.value; ecrire(); }));
+    }
+    exo.querySelector(".executer").addEventListener("click", () => {
+      let ok = 0;
+      const lignes = scn.cas.map(c => {
+        const [issue, regle] = executerAgent(scn, config, c);
+        const bon = c.attendu !== undefined && issue === c.attendu;
+        if (bon) ok++;
+        return `<tr class="${c.attendu === undefined ? "" : bon ? "bon" : "faux"}"><td><strong>${esc(c.id)}</strong></td><td>${esc(issue)}</td><td>${esc(regle)}</td>`
+          + (c.attendu === undefined ? "" : `<td>${esc(c.attendu)}</td><td>${bon ? "✅" : "❌"}</td>`) + "</tr>";
+      }).join("");
+      const tete = "<tr><th>Cas</th><th>Ce que l'agent a fait</th><th>Décidé à l'étape</th>" + (enEval ? "" : "<th>Attendu</th><th></th>") + "</tr>";
+      let msg = "";
+      if (enEval) msg = '<p class="v-non">Ce que ton agent a fait de chaque courriel. À toi de juger si c\'est la bonne issue.</p>';
+      else {
+        const actifs = Object.keys(config.outils).filter(k => config.outils[k]);
+        const nom = id => (scn.outils.find(o => o.id === id) || {}).libelle || id;
+        const manquants = scn.requis.filter(k => !actifs.includes(k)).map(nom);
+        const superflus = actifs.filter(k => !scn.requis.includes(k)).map(nom);
+        const droits = !manquants.length && !superflus.length;
+        if (ok === scn.cas.length && droits) msg = '<p class="v-oui"><strong>Exercice réussi.</strong> Chaque courriel a la bonne issue, et l\'agent a exactement les droits nécessaires.</p>';
+        else msg = `<p class="v-non">${ok} / ${scn.cas.length} courriels ont la bonne issue.`
+          + (superflus.length ? ` Outils accordés sans nécessité : ${superflus.map(esc).join(", ")}.` : "")
+          + (manquants.length && ok === scn.cas.length ? ` Il manque un outil utile : ${manquants.map(esc).join(", ")}.` : "")
+          + " Les lignes en bleu sont à revoir.</p>";
+        marquer(exo, ok === scn.cas.length && droits); sauver(exo);
+      }
+      verdict.innerHTML = msg + `<div class="tablewrap"><table class="resultats-flux"><thead>${tete}</thead><tbody>${lignes}</tbody></table></div>`;
+    });
+    exo.querySelector(".reset").addEventListener("click", () => {
+      if (!window.confirm("Effacer la configuration de ton agent?")) return;
+      config = JSON.parse(JSON.stringify(vide)); verdict.innerHTML = ""; dessiner(); ecrire(); marquer(exo, false); sauver(exo);
+    });
+    exo.chargerAgent = json => { config = JSON.parse(json); dessiner(); ecrire(); };
+    exo.texteAgent = () => {
+      const nom = (liste, id) => (liste.find(x => x.id === id) || {}).libelle || id;
+      const o = Object.keys(config.outils).filter(k => config.outils[k]).map(k => nom(scn.outils, k));
+      const g = Object.keys(config.gardes).filter(k => config.gardes[k]).map(k => nom(scn.gardes, k));
+      const s = scn.seuils.map(x => `${x.libelle} : ${(x.options.find(([v]) => v === config.seuils[x.id]) || ["", "?"])[1]}`);
+      return `Outils : ${o.join("; ") || "aucun"}\nGarde-fous : ${g.join("; ") || "aucun"}\nSeuils : ${s.join("; ")}`;
+    };
+    dessiner();
+    const consigne = exo.querySelector('textarea[data-k="consigne"]');
+    if (consigne) { ajuster(consigne); consigne.addEventListener("input", () => { ajuster(consigne); sauver(exo); }); }
+  }
+
   function init() {
     lireFichiers();
     document.querySelectorAll(".explorateur").forEach(brancherExplorateur);
@@ -324,6 +415,7 @@
       if (sauve && sauve.valeurs) champs(exo).forEach(c => { if (sauve.valeurs[c.dataset.k] !== undefined) c.value = sauve.valeurs[c.dataset.k]; });
       marquer(exo, !!(sauve && sauve.reussi));
       if (exo.dataset.genre === "flux") { brancherFlux(exo, marquer, sauver, TYPE === "evaluation"); return; }
+      if (exo.dataset.genre === "agent") { brancherAgent(exo, marquer, sauver, TYPE === "evaluation"); return; }
       champs(exo).forEach(c => {
         if (c.tagName === "TEXTAREA") { ajuster(c); c.addEventListener("input", () => ajuster(c)); }
         c.addEventListener(c.tagName === "SELECT" ? "change" : "input", () => {
@@ -409,6 +501,7 @@
         champs(exo).forEach(c => {
           const nomChamp = c.dataset.etiquette || c.dataset.k;
           if (exo.texteFlux) { md += "```\n" + (exo.texteFlux() || "(flux vide)") + "\n```\n"; return; }
+          if (exo.texteAgent && c.dataset.k === "agent") { md += "```\n" + exo.texteAgent() + "\n```\n"; return; }
           md += c.tagName === "TEXTAREA" ? `**${nomChamp}**\n\n${texteChamp(c)}\n\n` : `- ${nomChamp} : ${texteChamp(c)}\n`;
         });
       });
